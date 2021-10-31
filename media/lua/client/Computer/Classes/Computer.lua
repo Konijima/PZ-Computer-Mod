@@ -52,7 +52,7 @@ function Computer.IsSpriteComputer(spriteName)
     return Computer.IsSpriteOn(spriteName) or Computer.IsSpriteOff(spriteName)
 end
 
----@return table
+---@return table<string, number>
 function Computer:getPosition()
     return { x = self.square:getX(), y = self.square:getY(), z = self.square:getZ() }
 end
@@ -422,22 +422,29 @@ function Computer:isAudioDisabled()
     return not self:getBiosValue("enable_audio")
 end
 
----TODO: Sound type return
+---@param audioName string
+---@return Sound
 function Computer:getAudio(audioName)
     return SoundManager.GetSoundAt(audioName, self.position.x, self.position.y, self.position.z)
 end
 
----TODO: Sound type return
+---@param audioName string
+---@return boolean
 function Computer:isAudioPlaying(audioName)
     return SoundManager.IsSoundPlayingAt(audioName, self.position.x, self.position.y, self.position.z)
 end
 
----TODO: Sound type return
+---@param audioName string
+---@param loop boolean
+---@param isAmbiant boolean
+---@param onCompleted function | nil
+---@return Sound | nil
 function Computer:playAudio(audioName, loop, isAmbiant, onCompleted)
     if not isAmbiant and self:isAudioDisabled() then return end
     return SoundManager.PlaySoundAt(audioName, self.position.x, self.position.y, self.position.z, loop, onCompleted)
 end
 
+---@param audioName string
 function Computer:stopAudio(audioName)
     SoundManager.StopSoundAt(audioName, self.position.x, self.position.y, self.position.z)
 end
