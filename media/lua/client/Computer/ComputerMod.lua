@@ -54,63 +54,25 @@ local ComputerGames = {}
 local ComputerSoftwares = {}
 
 --- All Computer Events
-local ComputerEvents = {
-
-    OnComputerPickedUp = Classes.ComputerEvent:new("InventoryItem", "IsoGridSquare"),
-    OnComputerPlacedDown = Classes.ComputerEvent:new("Computer"),
-
-    OnComputerBeforeBoot = Classes.ComputerEvent:new("Computer", "boolean"), -- computer, bootInBios
-    OnComputerBoot = Classes.ComputerEvent:new("Computer"),
-    OnComputerBootInBios = Classes.ComputerEvent:new("Computer"),
-    OnComputerAfterBoot = Classes.ComputerEvent:new("Computer"),
-
-    OnComputerBeforeShutDown = Classes.ComputerEvent:new("Computer"),
-    OnComputerShutDown = Classes.ComputerEvent:new("Computer"),
-
-    OnComputerHarddriveInstalled = Classes.ComputerEvent:new("Computer", "Harddrive", "number"),
-    OnComputerHarddriveUninstalled = Classes.ComputerEvent:new("Computer", "Harddrive", "number"),
-
-    OnComputerDiscdriveInstalled = Classes.ComputerEvent:new("Computer", "Discdrive", "number"),
-    OnComputerDiscdriveUninstalled = Classes.ComputerEvent:new("Computer", "Discdrive", "number"),
-
-    OnComputerFloppydriveInstalled = Classes.ComputerEvent:new("Computer", "Floppydrive", "number"),
-    OnComputerFloppydriveUninstalled = Classes.ComputerEvent:new("Computer", "Floppydrive", "number"),
-
-    OnComputerDiscInserted = Classes.ComputerEvent:new("Computer", "Discdrive", "Disc"),
-    OnComputerDiscEjected = Classes.ComputerEvent:new("Computer", "Discdrive", "Disc"),
-
-    OnComputerFloppyInserted = Classes.ComputerEvent:new("Computer", "Floppydrive", "Floppy"),
-    OnComputerFloppyEjected = Classes.ComputerEvent:new("Computer", "Floppydrive", "Floppy"),
-
-    OnBeforeComputerContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerPowerManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerPowerManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerBiosManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerBiosManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerHarddriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerHarddriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerDiscdriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerDiscdriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerFloppydriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerFloppydriveManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnBeforeComputerHardwareManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-    OnAfterComputerHardwareManagementContextMenu = Classes.ComputerEvent:new("number", "ISContextMenu", "Computer"),
-
-    OnComputerFlagsChanged = Classes.ComputerEvent:new("Computer", "string", "any"), -- computer, biosSettingKey, biosSettingValue
-    OnComputerBiosSettingChanged = Classes.ComputerEvent:new("Computer", "string", "any"), -- computer, biosSettingKey, biosSettingValue
-}
+---@type table<string, ComputerEvent>
+local ComputerEvents = {}
 
 -------------------------------------------------------------------------------------------------------
 
 --- EVENTS
 
+---@param eventName string
+---@vararg string
+---@return void
+local function CreateEvent(eventName, ...)
+    if type(eventName) == "string" and not ComputerEvents[eventName] then
+        ComputerEvents[eventName] = Classes.ComputerEvent:new(...)
+    end
+end
+
+---@param eventName string
+---@param eventFunc function
+---@return void
 local function AddEvent(eventName, eventFunc)
     if type(eventName) == "string" and type(eventFunc) == "function" and ComputerEvents[eventName] then
         ComputerEvents[eventName]:add(eventFunc)
@@ -919,6 +881,58 @@ Events.OnPreFillWorldObjectContextMenu.Add(OnPreFillWorldObjectContextMenu)
 
 --- COMPUTER EVENTS
 
+CreateEvent("OnComputerPickedUp", "InventoryItem", "IsoGridSquare")
+CreateEvent("OnComputerPlacedDown", "Computer")
+
+CreateEvent("OnComputerBeforeBoot", "Computer", "boolean")
+CreateEvent("OnComputerBoot", "Computer")
+CreateEvent("OnComputerBootInBios", "Computer")
+CreateEvent("OnComputerAfterBoot", "Computer")
+
+CreateEvent("OnComputerBeforeShutDown", "Computer")
+CreateEvent("OnComputerShutDown", "Computer")
+
+CreateEvent("OnComputerHarddriveInstalled", "Computer", "Harddrive", "number")
+CreateEvent("OnComputerHarddriveUninstalled", "Computer", "Harddrive", "number")
+
+CreateEvent("OnComputerDiscdriveInstalled", "Computer", "Discdrive", "number")
+CreateEvent("OnComputerDiscdriveUninstalled", "Computer", "Discdrive", "number")
+
+CreateEvent("OnComputerFloppydriveInstalled", "Computer", "Floppydrive", "number")
+CreateEvent("OnComputerFloppydriveUninstalled", "Computer", "Floppydrive", "number")
+
+CreateEvent("OnComputerDiscInserted", "Computer", "Discdrive", "Disc")
+CreateEvent("OnComputerDiscEjected", "Computer", "Discdrive", "Disc")
+
+CreateEvent("OnComputerFloppyInserted", "Computer", "Floppydrive", "Floppy")
+CreateEvent("OnComputerFloppyEjected", "Computer", "Floppydrive", "Floppy")
+
+CreateEvent("OnBeforeComputerContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerPowerManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerPowerManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerBiosManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerBiosManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerHarddriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerHarddriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerDiscdriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerDiscdriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerFloppydriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerFloppydriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnBeforeComputerHardwareManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnAfterComputerHardwareManagementContextMenu", "number", "ISContextMenu", "Computer")
+
+CreateEvent("OnComputerFlagsChanged", "Computer", "string", "any")
+CreateEvent("OnComputerBiosSettingChanged", "Computer", "string", "any")
+
+---@param computer Computer
+---@return void
 function OnComputerAfterBoot(computer)
     SetComputerStateOnSquare(computer.square, true)
 end
