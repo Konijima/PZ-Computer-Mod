@@ -304,19 +304,6 @@ end
 local function ValidateAddon(addon)
     if type(addon) == "table" and getmetatable(addon) == Classes.ComputerAddon then
 
-        -- Check if this addon was already added
-        if ComputerAddons:contains(addon) then
-            error("ComputerMod: Addon '"..addon.name.."' was already added!", 1);
-        end
-
-        -- Check if an addon has the same name
-        for i=0, ComputerAddons:size()-1 do
-            local checkAddon = ComputerAddons:get(i)
-            if checkAddon.name == addon.name then
-                error("ComputerMod: Addon '"..addon.name.."' already exist!", 1);
-            end
-        end
-
         -- Validate ComputerEvents
         if addon.ComputerEvents then
             if type(addon.ComputerEvents) ~= "table" then
@@ -457,11 +444,29 @@ local function RunAddon(addon)
     end
 end
 
+---@param addon ComputerAddon|string
+---@return boolean
+local function RemoveAddon(addon)
+    if type(addon) == "string" or getmetatable(addon) == Classes.ComputerAddon then
+        for i=0, ComputerAddons:size()-1 do
+            local checkAddon = ComputerAddons:get(i)
+            if type(addon) == "string" and checkAddon.name == addon or type(addon) == "table" and checkAddon.name == addon.name then
+                ComputerAddons:remove(checkAddon)
+                print("ComputerMod: Removing addon '"..checkAddon.name.."'!")
+                return true
+            end
+        end
+    end
+end
+
 ---@param addon ComputerAddon
 local function AddAddon(addon)
     --- Validate
     if pcall(ValidateAddon, addon) then
         print("ComputerMod: Addon '"..addon.name.."' has been validated!")
+
+        -- Check if an addon has the same name
+        RemoveAddon(addon)
 
         if not pcall(RunAddon, addon) then
             print("ComputerMod: There was a problem running addon '"..addon.name.."'!")
