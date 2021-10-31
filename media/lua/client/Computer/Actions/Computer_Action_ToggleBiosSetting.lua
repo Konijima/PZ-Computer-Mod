@@ -11,14 +11,25 @@ function Computer_Action_ToggleBiosSetting:update()
 end
 
 function Computer_Action_ToggleBiosSetting:start()
+    if self.sound ~= "" then
+        self.audio = self.character:getEmitter():playSound(self.sound)
+    end
 
+    self:setActionAnim("VehicleWorkOnMid")
 end
 
 function Computer_Action_ToggleBiosSetting:stop()
+    if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
+        self.character:stopOrTriggerSound(self.audio)
+    end
     ISBaseTimedAction.stop(self);
 end
 
 function Computer_Action_ToggleBiosSetting:perform()
+    if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
+        self.character:stopOrTriggerSound(self.audio)
+    end
+
     self.computer:setBiosValue(self.settingKey, self.settingValue)
 
     -- needed to remove from queue / start next.
@@ -40,6 +51,8 @@ function Computer_Action_ToggleBiosSetting:new(player, computer, settingKey, set
     o.stopOnRun = true;
     o.maxTime = time;
     -- custom fields
+    o.sound = "ComputerKeyboardFast"
+    o.audio = 0
     o.computer = computer
     o.settingKey = settingKey
     o.settingValue = settingValue

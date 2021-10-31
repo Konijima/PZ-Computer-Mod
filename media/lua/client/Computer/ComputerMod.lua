@@ -573,7 +573,7 @@ local function ComputerBiosManagementMenu(player, computerContext, computer)
         local character = getSpecificPlayer(player)
         local square = computer:getSquareInFront()
         ISTimedActionQueue.add(ISWalkToTimedAction:new(character, square))
-        ISTimedActionQueue.add(Computer_Action_ToggleBiosSetting:new(player, computer, settingKey, settingValue, 5))
+        ISTimedActionQueue.add(Computer_Action_ToggleBiosSetting:new(player, computer, settingKey, settingValue, 40))
     end
 
     for _, biosSetting in pairs(ComputerBiosSettings) do
