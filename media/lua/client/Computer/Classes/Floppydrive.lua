@@ -1,23 +1,30 @@
 require("ISBaseObject")
 
+---@class Floppydrive
 local Floppydrive = ISBaseObject:derive("Floppydrive")
 
+---@return string
 function Floppydrive:getName()
     return self.name
 end
 
+---@return string
 function Floppydrive:getType()
     return Floppydrive.Type
 end
 
+---@return Floppydrive
 function Floppydrive:getClass()
     return Floppydrive
 end
 
+---@return string
 function Floppydrive:getItemFullType()
     return "Computer.Floppydrive"
 end
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Floppydrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
@@ -29,6 +36,8 @@ function Floppydrive:createItem(inventory)
     end
 end
 
+---@vararg string | table | InventoryItem
+---@return Floppydrive
 function Floppydrive:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)

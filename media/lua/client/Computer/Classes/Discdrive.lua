@@ -1,23 +1,30 @@
 require("ISBaseObject")
 
+---@class Discdrive
 local Discdrive = ISBaseObject:derive("Discdrive")
 
+---@return string
 function Discdrive:getName()
     return self.name
 end
 
+---@return string
 function Discdrive:getType()
     return Discdrive.Type
 end
 
+---@return Discdrive
 function Discdrive:getClass()
     return Discdrive
 end
 
+---@return string
 function Discdrive:getItemFullType()
     return "Computer.Discdrive"
 end
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Discdrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
@@ -29,6 +36,8 @@ function Discdrive:createItem(inventory)
     end
 end
 
+---@vararg string | table | InventoryItem
+---@return Discdrive
 function Discdrive:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
@@ -36,7 +45,7 @@ function Discdrive:new(...)
 
     local args = {...}
 
-    -- Check if passing a Harddrive as data
+    -- Check if passing a Discdrive as data
     if #args > 1 then
         local paramCheck = {
             {name = "type",         type = "string", value = type(args[1])},
@@ -51,7 +60,7 @@ function Discdrive:new(...)
             end
         end
 
-    -- Check if passing a Harddrive as an Item
+    -- Check if passing a Discdrive as an Item
     elseif instanceof(args[1], "InventoryItem") and args[1]:getFullType() == o:getItemFullType() then
         local item = args[1]
 
