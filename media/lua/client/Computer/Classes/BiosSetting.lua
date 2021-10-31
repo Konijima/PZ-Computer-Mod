@@ -3,9 +3,7 @@ require("ISBaseObject")
 ---@class BiosSetting
 local BiosSetting = ISBaseObject:derive("BiosSetting")
 
--- TO-DO: check types as the value is saved in computer moddata, any isn't the right thing here
-
----@vararg any
+---@vararg string|number|table|boolean
 ---@return BiosSetting
 function BiosSetting:new(...)
     local o = ISBaseObject:new()
@@ -24,7 +22,7 @@ function BiosSetting:new(...)
     }
 
     for i = 1, #args do
-        if paramCheck[i].type ~= "any" and type(args[i]) ~= paramCheck[i].type then
+        if paramCheck[i].type ~= "any" and type(args[i]) ~= paramCheck[i].type or paramCheck[i].type == "any" and (type(args[i]) == "string" or type(args[i]) == "number" or type(args[i]) == "boolean" or type(args[i]) == "table") then
             error("Error calling BiosSetting:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
         else
             o[paramCheck[i].name] = args[i]
