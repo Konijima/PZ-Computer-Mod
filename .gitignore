@@ -12,6 +12,6 @@ logs/
 src/
 local.properties
 version.properties
-settings.gradle
 gradlew
 gradlew.bat
+Gemfile
