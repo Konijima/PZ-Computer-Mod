@@ -1,8 +1,11 @@
 require("ISBaseObject")
 require("Computer/ComputerUtils")
 
+---@class Game
 local Game = ISBaseObject:derive("Game")
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Game:createDiscItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Disc_Game")
@@ -12,6 +15,8 @@ function Game:createDiscItem(inventory)
     end
 end
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Game:createFloppyItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Floppy_Game")
@@ -21,7 +26,8 @@ function Game:createFloppyItem(inventory)
     end
 end
 
-function Game:getOptionTooltipDescription(inventory)
+---@return string
+function Game:getOptionTooltipDescription()
     local description = " <RGB:1,1,0.8> Title:                 <RGB:1,1,1> " .. self.title
     description = description .. " <LINE> <RGB:1,1,0.8> Publisher:     <RGB:1,1,1> " .. self.publisher
     description = description .. " <LINE> <RGB:1,1,0.8> Released:      <RGB:1,1,1> " .. self.date
@@ -29,6 +35,8 @@ function Game:getOptionTooltipDescription(inventory)
     return description
 end
 
+---@vararg string | number | table
+---@return Game
 function Game:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
