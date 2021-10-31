@@ -4,7 +4,6 @@ require("Computer/ComputerUtils")
 -------------------------------------------------------------------------------------------------------
 
 --- All Classes
----@type table<string, ComputerAddon|ComputerEvent|BiosSetting|Computer|Discdrive|File|Floppy|Floppydrive|Game|Harddrive|Software>
 local Classes = {
     ComputerAddon = require("Computer/ComputerAddon"),
     ComputerEvent = require("Computer/ComputerEvent"),
