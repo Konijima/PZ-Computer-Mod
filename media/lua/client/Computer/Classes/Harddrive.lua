@@ -1,8 +1,8 @@
 require("ISBaseObject")
 
-File = require("Computer/Classes/File")
-Game = require("Computer/Classes/Game")
-Software = require("Computer/Classes/Software")
+local File = require("Computer/Classes/File")
+local Game = require("Computer/Classes/Game")
+local Software = require("Computer/Classes/Software")
 
 ---@type table
 local ReadWriteSpeeds = {1, 2, 3, 4}

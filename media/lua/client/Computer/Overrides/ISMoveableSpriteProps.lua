@@ -1,5 +1,5 @@
 require("Computer/ComputerMod")
-Computer = require("Computer/Classes/Computer")
+local Computer = require("Computer/Classes/Computer")
 
 ------------------------------------------------------------------------------------------------------------------------
 
