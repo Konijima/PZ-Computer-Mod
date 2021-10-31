@@ -20,32 +20,44 @@ local ComputerSprites = {
     }
 }
 
+---@alias moddata table<string, string | boolean | number | table>
+
+---@class Computer
 local Computer = ISBaseObject:derive("Computer")
 
+---@return table
 function Computer.GetSprites()
     return copyTable(ComputerSprites)
 end
 
+---@param spriteName string
+---@return boolean
 function Computer.IsSpriteOn(spriteName)
     if spriteName == ComputerSprites.On.S or spriteName == ComputerSprites.On.E or spriteName == ComputerSprites.On.N or spriteName == ComputerSprites.On.W then
         return true
     end
 end
 
+---@param spriteName string
+---@return boolean
 function Computer.IsSpriteOff(spriteName)
     if spriteName == ComputerSprites.Off.S or spriteName == ComputerSprites.Off.E or spriteName == ComputerSprites.Off.N or spriteName == ComputerSprites.Off.W then
         return true
     end
 end
 
+---@param spriteName string
+---@return boolean
 function Computer.IsSpriteComputer(spriteName)
     return Computer.IsSpriteOn(spriteName) or Computer.IsSpriteOff(spriteName)
 end
 
+---@return table
 function Computer:getPosition()
     return { x = self.square:getX(), y = self.square:getY(), z = self.square:getZ() }
 end
 
+---@return boolean
 function Computer:isOn()
     if self.isoObject then
         local spriteName = self.isoObject:getSprite():getName()
@@ -53,6 +65,7 @@ function Computer:isOn()
     end
 end
 
+---@return boolean
 function Computer:isOff()
     if self.isoObject then
         local spriteName = self.isoObject:getSprite():getName()
@@ -60,12 +73,14 @@ function Computer:isOff()
     end
 end
 
+---@return boolean
 function Computer:isComputerSprite()
     if self:isOn() or self:isOff() then
         return true
     end
 end
 
+---@return string
 function Computer:getFacing()
     local spriteName = self.isoObject:getSprite():getName()
     if spriteName == ComputerSprites.On.S or spriteName == ComputerSprites.Off.S then
@@ -82,6 +97,8 @@ function Computer:getFacing()
     end
 end
 
+---@param inBios boolean
+---@param autoRestart boolean
 function Computer:toggleState(inBios, autoRestart)
     if type(inBios) ~= "boolean" then inBios = false end
     if type(autoRestart) ~= "boolean" then autoRestart = false end
@@ -125,10 +142,12 @@ function Computer:toggleState(inBios, autoRestart)
     end
 end
 
+---@return boolean
 function Computer:hasElectricity()
     return self.square:haveElectricity()
 end
 
+---@return IsoGridSquare
 function Computer:getSquareInFront()
     local frontSquare
     local x = self.square:getX()
@@ -156,6 +175,7 @@ function Computer:reset()
     print("Computer has been resetted!")
 end
 
+---@return moddata
 function Computer:getData()
     if not self.isoObject then return end
     local modData = self.isoObject:getModData()
@@ -193,10 +213,13 @@ end
 
 --- FLAGS
 
+---@return table
 function Computer:getFlags()
     return copyTable(self:getData().flags)
 end
 
+---@param key string
+---@return string | boolean | number
 function Computer:getFlag(key)
     if type(key) == "string" then
         local flags = self:getFlags()
@@ -204,6 +227,8 @@ function Computer:getFlag(key)
     end
 end
 
+---@param key string
+---@param value string | boolean | number | table
 function Computer:setFlag(key, value)
     if type(key) == "string" then
         self:getData().flags[string.lower(key)] = value
@@ -212,10 +237,13 @@ end
 
 --- BIOS
 
+---@return moddata
 function Computer:getBios()
     return copyTable(self:getData().bios)
 end
 
+---@param key string
+---@return string | boolean | number
 function Computer:getBiosValue(key)
     if type(key) == "string" then
         key = string.lower(key) -- force lowercase
@@ -231,6 +259,8 @@ function Computer:getBiosValue(key)
     end
 end
 
+---@param key string
+---@param value boolean
 function Computer:setBiosValue(key, value)
     if type(key) == "string" and type(value) == "boolean" then
         key = string.lower(key) -- force lowercase
@@ -243,16 +273,20 @@ function Computer:setBiosValue(key, value)
     end
 end
 
+---@return boolean
 function Computer:isBiosActive()
     return self:isOn() and self:getFlag("bios_active")
 end
 
 --- DRIVES
 
+---@return moddata
 function Computer:getAllDrives()
     return self:getData().drives
 end
 
+---@param bayIndex number
+---@return Harddrive | Discdrive | Floppydrive
 function Computer:getDriveInBayIndex(bayIndex)
     local drives = self:getAllDrives()
     local drive = drives[bayIndex]
@@ -264,6 +298,8 @@ function Computer:getDriveInBayIndex(bayIndex)
     return drive
 end
 
+---@param drive Harddrive | Discdrive | Floppydrive
+---@return number
 function Computer:getDriveCurrentBayIndex(drive)
     local drives = self:getAllDrives()
     for i=1, drives.count do
@@ -273,6 +309,7 @@ function Computer:getDriveCurrentBayIndex(drive)
     end
 end
 
+---@return table<Harddrive>
 function Computer:getAllHarddrives()
     local drives = self:getAllDrives()
     local harddrives = {}
@@ -285,6 +322,7 @@ function Computer:getAllHarddrives()
     return harddrives
 end
 
+---@return table<Discdrive>
 function Computer:getAllDiscdrives()
     local drives = self:getAllDrives()
     local discdrives = {}
@@ -297,6 +335,7 @@ function Computer:getAllDiscdrives()
     return discdrives
 end
 
+---@return table<Floppydrive>
 function Computer:getAllFloppydrives()
     local drives = self:getAllDrives()
     local floppydrives = {}
@@ -309,6 +348,11 @@ function Computer:getAllFloppydrives()
     return floppydrives
 end
 
+---TODO: Fix
+---@param computer Computer
+---@param inventory ItemContainer
+---@param item InventoryItem
+---@param bayIndex number
 function Computer:installDriveItemInBayIndex(computer, inventory, item, bayIndex)
     local drive
 
@@ -341,6 +385,10 @@ function Computer:installDriveItemInBayIndex(computer, inventory, item, bayIndex
     end
 end
 
+---TODO: Fix
+---@param Computer
+---@param ItemContainer
+---@param number
 function Computer:uninstallDriveFromBayIndex(computer, inventory, bayIndex)
     local drives = self:getAllDrives()
     local drive = self:getDriveInBayIndex(bayIndex)
@@ -362,24 +410,29 @@ end
 
 --- MISCS
 
+---@return boolean
 function Computer:isAutoRestarting()
     return self:getFlag("auto_restart") and self:getBiosValue("power_recovery")
 end
 
 --- AUDIOS
 
+---@return boolean
 function Computer:isAudioDisabled()
     return not self:getBiosValue("enable_audio")
 end
 
+---TODO: Sound type return
 function Computer:getAudio(audioName)
     return SoundManager.GetSoundAt(audioName, self.position.x, self.position.y, self.position.z)
 end
 
+---TODO: Sound type return
 function Computer:isAudioPlaying(audioName)
     return SoundManager.IsSoundPlayingAt(audioName, self.position.x, self.position.y, self.position.z)
 end
 
+---TODO: Sound type return
 function Computer:playAudio(audioName, loop, isAmbiant, onCompleted)
     if not isAmbiant and self:isAudioDisabled() then return end
     return SoundManager.PlaySoundAt(audioName, self.position.x, self.position.y, self.position.z, loop, onCompleted)
@@ -395,6 +448,8 @@ end
 
 --- CONSTRUCTOR
 
+---@param isoObject IsoObject
+---@return Computer
 function Computer:new(isoObject)
     local o = ISBaseObject:new()
     setmetatable(o, self)
