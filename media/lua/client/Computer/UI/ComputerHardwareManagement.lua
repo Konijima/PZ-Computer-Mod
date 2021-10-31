@@ -5,7 +5,7 @@ local Harddrive = require("Computer/Classes/Harddrive")
 local Discdrive = require("Computer/Classes/Discdrive")
 local Floppydrive = require("Computer/Classes/Floppydrive")
 
----@alias drive Harddrive | Discdrive | Floppydrive
+---@alias drive Harddrive|Discdrive|Floppydrive
 
 ---@class ComputerHardwareManagement
 ComputerHardwareManagement = ISCollapsableWindow:derive("ComputerMechanics");
@@ -201,9 +201,7 @@ end
 
 ---@param y number
 ---@param item table
----To-Do: @param alt ???
----@return void
-function ComputerHardwareManagement:doDrawItem(y, item, alt)
+function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param? unsure.
     -- NOTE: Draws background box of item if selected/hovered and not a category
     if not item.item or item.item.listCategory ~= true then
         if item.itemindex == self.selected then
@@ -239,14 +237,12 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
     return y + self.itemheight;
 end
 
----@return void
 function ComputerHardwareManagement:updateLayout()
     self.listbox:setWidth(self.listWidth)
     self.drivelist:setWidth(self.listWidth)
     self.drivelist:setX(self.listbox:getRight() + 20)
 end
 
----@return void
 function ComputerHardwareManagement:initParts()
     if not self.computer then return; end
 
@@ -271,11 +267,10 @@ function ComputerHardwareManagement:initParts()
     self:updateLayout()
 end
 
----@return void
 function ComputerHardwareManagement:createChildren()
     ISCollapsableWindow.createChildren(self);
     if self.resizeWidget then self.resizeWidget.yonly = true end
-    self:setInfo("Computer Hardware");
+    self:setInfo("Computer Hardware"); -- TODO: Nice explanation on the Computer Hardware UI.
 
     local rh = self.resizeable and self:resizeWidgetHeight() or 0;
     local y = self:titleBarHeight() + 25 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * 6
