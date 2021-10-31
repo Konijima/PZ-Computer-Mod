@@ -7,6 +7,13 @@
 [Setup Capsid](https://github.com/pzstorm/capsid)  
 [EmmyLua](https://emmylua.github.io/)  
 
+## How to setup
+1) Install IntelliJ
+2) Setup Capsid
+3) Clone this repository into `C:\Users\<your-username>\Zomboid\mods`
+4) Create a new project from an existing source
+5) Select the repository from the mods directory
+
 ### Links:
 [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2635550102)  
 [Development Wiki](https://github.com/Konijima/ProjectZomboid-Computer/wiki)  
