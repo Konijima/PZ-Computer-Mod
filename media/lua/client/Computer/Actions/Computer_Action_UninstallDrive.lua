@@ -41,7 +41,7 @@ function Computer_Action_UninstallDrive:perform()
 
     self.tool:setJobDelta(0.0)
 
-    self.computer:uninstallDriveFromBayIndex(self.computer, self.inventory, self.bayIndex)
+    self.computer:uninstallDriveFromBayIndex(self.inventory, self.bayIndex)
     self.character:getXp():AddXP(Perks.Electricity, 3)
 
     -- needed to remove from queue / start next.
