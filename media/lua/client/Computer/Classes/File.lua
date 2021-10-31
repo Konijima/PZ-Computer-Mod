@@ -1,7 +1,10 @@
 require("ISBaseObject")
 
+---@class File
 local File = ISBaseObject:derive("File")
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function File:createDiscItem(inventory)
     if inventory then
         local item = inventory:AddItem("Base.Disc")
@@ -12,6 +15,8 @@ function File:createDiscItem(inventory)
     end
 end
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function File:createFloppyItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Floppy")
@@ -22,10 +27,13 @@ function File:createFloppyItem(inventory)
     end
 end
 
+---@return number
 function File:calcSize()
     return 0
 end
 
+---@vararg string | table
+---@return File
 function File:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
