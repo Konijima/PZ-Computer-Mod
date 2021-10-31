@@ -117,7 +117,7 @@ local distributionTable = {
 ------------------------------------------------------------------------------------------------------
 
 --- split string by character
-local function split(s)
+local function split(s) --TODO: switch to luautils.split instead of our own?
     result = {}
     for i in string.gmatch(s, "[^%.]+") do
         table.insert(result, i)
@@ -129,6 +129,7 @@ end
 local function getLocation(locationParts)
     if locationParts then
         local partCount = #locationParts
+        --local location = _G[locationParts[1]]; TODO: Fix to this?
         local location = ProceduralDistributions
         local locationString = locationParts[1]
 
@@ -144,6 +145,8 @@ local function getLocation(locationParts)
             if location[locationParts[i]] then
                 locationString = locationString .. "-" .. locationParts[i]
                 location = location[locationParts[i]]
+            else
+                return nil; -- Break out of it and return nil instead of allowing incomplete location!
             end
             if i >= partCount then
                 return location
