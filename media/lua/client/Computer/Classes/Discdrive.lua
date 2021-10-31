@@ -24,7 +24,7 @@ function Discdrive:getItemFullType()
 end
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Discdrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
@@ -36,7 +36,7 @@ function Discdrive:createItem(inventory)
     end
 end
 
----@vararg string | table | InventoryItem
+---@vararg string|table|InventoryItem
 ---@return Discdrive
 function Discdrive:new(...)
     local o = ISBaseObject:new()
@@ -64,7 +64,7 @@ function Discdrive:new(...)
     elseif instanceof(args[1], "InventoryItem") and args[1]:getFullType() == o:getItemFullType() then
         local item = args[1]
 
-        local modData = item:getModData()
+        local modData = item:getModData() -- unused local, what for?
         o.type = o:getType()
         o.name = item:getName()
 

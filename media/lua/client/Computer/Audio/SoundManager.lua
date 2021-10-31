@@ -67,7 +67,6 @@ end
 ---@param x number
 ---@param y number
 ---@param z number
----@return void
 local function StopSoundAt(audioName, x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id then
@@ -108,7 +107,6 @@ end
 ---@param x number
 ---@param y number
 ---@param z number
----@return void
 local function StopAllSoundsAt(x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and Sounds[id] then
@@ -123,7 +121,6 @@ local function StopAllSoundsAt(x, y, z)
     end
 end
 
----@return void
 local function Update()
     for k, _ in pairs(Sounds) do
         local squareSounds = Sounds[k]

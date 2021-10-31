@@ -22,7 +22,7 @@ end
 
 ---@param inventory ItemContainer
 ---@param tag string
----@return ArrayList | nil
+---@return ArrayList|nil
 function ComputerUtils.findAllByTag(inventory, tag)
     if instanceof(inventory, "ItemContainer") and type(tag) == "string" then
         local foundItems = ArrayList.new();

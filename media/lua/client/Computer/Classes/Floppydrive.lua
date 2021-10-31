@@ -24,7 +24,7 @@ function Floppydrive:getItemFullType()
 end
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Floppydrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
@@ -36,7 +36,7 @@ function Floppydrive:createItem(inventory)
     end
 end
 
----@vararg string | table | InventoryItem
+---@vararg string|table|InventoryItem
 ---@return Floppydrive
 function Floppydrive:new(...)
     local o = ISBaseObject:new()
@@ -64,7 +64,7 @@ function Floppydrive:new(...)
     elseif instanceof(args[1], "InventoryItem") and args[1]:getFullType() == o:getItemFullType() then
         local item = args[1]
 
-        local modData = item:getModData()
+        local modData = item:getModData() --TODO: unused local variable?
         o.type = o:getType()
         o.name = item:getName()
 

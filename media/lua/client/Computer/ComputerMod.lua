@@ -4,7 +4,7 @@ require("Computer/ComputerUtils")
 -------------------------------------------------------------------------------------------------------
 
 --- All Classes
----@type table<string, any>
+---@type table<string, ComputerAddon|ComputerEvent|BiosSetting|Computer|Discdrive|File|Floppy|Floppydrive|Game|Harddrive|Software>
 local Classes = {
     ComputerAddon = require("Computer/ComputerAddon"),
     ComputerEvent = require("Computer/ComputerEvent"),
@@ -64,7 +64,6 @@ local ComputerEvents = {}
 
 ---@param eventName string
 ---@vararg string
----@return void
 local function CreateEvent(eventName, ...)
     if type(eventName) == "string" and not ComputerEvents[eventName] then
         ComputerEvents[eventName] = Classes.ComputerEvent:new(...)
@@ -73,7 +72,6 @@ end
 
 ---@param eventName string
 ---@param eventFunc function
----@return void
 local function AddEvent(eventName, eventFunc)
     if type(eventName) == "string" and type(eventFunc) == "function" and ComputerEvents[eventName] then
         ComputerEvents[eventName]:add(eventFunc)
@@ -82,7 +80,6 @@ end
 
 ---@param eventName string
 ---@param eventFunc function
----@return void
 local function RemoveEvent(eventName, eventFunc)
     if type(eventName) == "string" and type(eventFunc) == "function" and ComputerEvents[eventName] then
         ComputerEvents[eventName]:remove(eventFunc)
@@ -91,7 +88,6 @@ end
 
 ---@param eventName string
 ---@vararg any
----@return void
 local function TriggerEvent(eventName, ...)
     if type(eventName) == "string" and ComputerEvents[eventName] then
         --print("ComputerMod: Triggered Event '" .. eventName .. "'!")
@@ -102,7 +98,6 @@ end
 --- BIOS SETTINGS
 
 ---TO-DO: @vararg string
----@return void
 local function AddBiosSetting(...)
     local newSetting = Classes.BiosSetting:new(...)
 
@@ -131,7 +126,6 @@ end
 --- GAME FORMATS
 
 ---@param gameFormat string
----@return void
 local function AddGameFormat(gameFormat)
     if type(gameFormat) == "string" then
         if ComputerUtils.tableContains(GameFormats, string.lower(gameFormat)) then
@@ -153,7 +147,6 @@ end
 --- SOFTWARE TYPES
 
 ---@param softwareType string
----@return void
 local function AddSoftwareType(softwareType)
     if type(softwareType) == "string" then
         if ComputerUtils.tableContains(SoftwareTypes, string.lower(softwareType)) then
@@ -174,8 +167,8 @@ end
 
 --- FILES
 
----@vararg string | table
----@return File | nil
+---@vararg string|table
+---@return File|nil
 local function AddFile(...)
     local file = Classes.File:new(...)
     if file then
@@ -205,7 +198,7 @@ local function GetAllFiles()
     return copyTable(ComputerFiles)
 end
 
----@return File | nil
+---@return File|nil
 local function GetRandomFile()
     if #ComputerFiles > 0 then
         return GetFileByIndex(ZombRand(#ComputerFiles)+1)
@@ -214,8 +207,8 @@ end
 
 --- GAMES
 
----@vararg string | number | table
----@return Game | nil
+---@vararg string|number|table
+---@return Game|nil
 local function AddGame(...)
     local game = Classes.Game:new(...)
     if game then
@@ -232,7 +225,7 @@ local function AddGame(...)
 end
 
 ---@param id string
----@return Game | nil
+---@return Game|nil
 local function GetGameById(id)
     if type(id) == "string" and ComputerGames[string.lower(id)] then
         return copyTable(ComputerGames[string.lower(id)])
@@ -244,7 +237,7 @@ local function GetAllGames()
     return copyTable(ComputerGames)
 end
 
----@return Game | nil
+---@return Game|nil
 local function GetRandomGame()
     local keys = {}
 	for k in pairs(ComputerGames) do table.insert(keys, k); end
@@ -255,8 +248,8 @@ end
 
 --- SOFTWARE
 
----@vararg string | number | table
----@return Software | nil
+---@vararg string|number|table
+---@return Software|nil
 local function AddSoftware(...)
     local software = Classes.Software:new(...)
     if software and ComputerSoftwares[string.lower(software.id)] == nil then
@@ -273,7 +266,7 @@ local function AddSoftware(...)
 end
 
 ---@param id string
----@return Software | nil
+---@return Software|nil
 local function GetSoftwareById(id)
     if type(id) == "string" and ComputerSoftwares[string.lower(id)] then
         return copyTable(ComputerSoftwares[string.lower(id)])
@@ -285,7 +278,7 @@ local function GetAllSoftwares()
     return copyTable(ComputerSoftwares)
 end
 
----@return Software | nil
+---@return Software|nil
 local function GetRandomSoftware()
     local keys = {}
 	for k in pairs(ComputerSoftwares) do table.insert(keys, k); end
@@ -342,7 +335,6 @@ local function ValidateAddon(addon)
 end
 
 ---@param addon ComputerAddon
----@return void
 local function RunAddon(addon)
     if addon.BiosSettings then
         for i=1, #addon.BiosSettings do
@@ -382,7 +374,6 @@ local function RunAddon(addon)
 end
 
 ---@param addon ComputerAddon
----@return void
 local function AddAddon(addon)
     --- Validate
     if pcall(ValidateAddon, addon) then
@@ -399,7 +390,7 @@ end
 
 --- Get a Computer isntance on this square
 ---@param square IsoGridSquare
----@return Computer | nil
+---@return Computer|nil
 local function GetComputerOnSquare(square)
     if square and instanceof(square, "IsoGridSquare") then
         local objects = square:getObjects()
@@ -417,7 +408,7 @@ end
 ---@param x number
 ---@param y number
 ---@param z number
----@return Computer | nil
+---@return Computer|nil
 local function GetComputerAtPosition(x, y, z)
     local square = getCell():getGridSquare(x, y, z)
     if square then
@@ -448,7 +439,6 @@ end
 ---@param y number
 ---@param z number
 ---@param state boolean
----@return void
 local function SetComputerStateAtPosition(x, y, z, state)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and GlobalModData.computerStateLocations then
@@ -469,7 +459,6 @@ end
 --- Set the power state of the computer on this square
 ---@param square IsoGridSquare
 ---@param state boolean
----@return void
 local function SetComputerStateOnSquare(square, state)
     local id = ComputerUtils.squareToId(square)
     if id and GlobalModData.computerStateLocations then
@@ -479,7 +468,6 @@ end
 
 --- Add the computer to the known computer location database
 ---@param computer Computer
----@return void
 local function AddComputerLocation(computer)
     if type(computer) == "table" and getmetatable(computer) == Classes.Computer then
         local id = ComputerUtils.squareToId(computer.square)
@@ -495,7 +483,6 @@ end
 ---@param x number
 ---@param y number
 ---@param z number
----@return void
 local function RemoveComputerLocation(x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and GlobalModData.computerLocations[id] then
@@ -509,7 +496,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerPowerManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local square = computer:getSquareInFront()
@@ -545,7 +531,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerBiosManagementMenu(player, computerContext, computer)
     local option = computerContext:addOption("Bios Management")
     local context = ISContextMenu:getNew(computerContext)
@@ -584,7 +569,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerHardDriveManagementMenu(player, computerContext, computer)
     local harddrives = computer:getAllHarddrives()
 
@@ -609,7 +593,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerDiscDriveManagementMenu(player, computerContext, computer)
     local discdrives = computer:getAllDiscdrives()
 
@@ -634,7 +617,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerFloppyDriveManagementMenu(player, computerContext, computer)
     local floppydrives = computer:getAllFloppydrives()
 
@@ -659,7 +641,6 @@ end
 ---@param player number
 ---@param computerContext ISContextMenu
 ---@param computer Computer
----@return void
 local function ComputerHardwareManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local square = computer:getSquareInFront()
@@ -691,7 +672,6 @@ end
 ---@param player number
 ---@param context ISContextMenu
 ---@param computer Computer
----@return void
 local function FillComputerContextMenu(player, context, computer)
     local computerOption = context:addOption("Desktop Computer")
     local computerContext = ISContextMenu:getNew(context)
@@ -718,7 +698,7 @@ end
 
 --- GAME EVENTS
 
----@return void
+
 local function AddTagToDisc()
     local item = getScriptManager():getItem("Base.Disc")
     if item then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
@@ -726,7 +706,7 @@ local function AddTagToDisc()
     if item2 then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
 end
 
----@return void
+
 local function LoadGlobalModData()
     if not ModData.exists("ComputerMod") then
         ModData.create("ComputerMod")
@@ -740,7 +720,7 @@ local function LoadGlobalModData()
     print("ComputerMod: Global mod data has loaded!")
 end
 
----@return void
+
 local function InitializeComputers()
     if not GlobalModData or not GlobalModData.computerLocations then return; end
 
@@ -761,7 +741,7 @@ InitializeComputers() -- call when reload
 ---@type number
 local ticks = 0;
 
----@return void
+
 local function UpdateComputers()
     ticks = ticks + 1
     if ticks > 200 then
@@ -774,7 +754,7 @@ local function UpdateComputers()
         for i=1, #locations do
             local position = locations[i]
 
-            ---@type Computer | nil
+            ---@type Computer|nil
             local computer = GetComputerAtPosition(position.x, position.y, position.z)
 
             -- Handle computer power
@@ -805,7 +785,7 @@ local function OnPreFillWorldObjectContextMenu(player, context, _, test)
 
     if character:isDead() or character:isAsleep() or character:isDriving() then return end
 
-    ---@type Computer | nil
+    ---@type Computer|nil
     local computer = GetComputerOnSquare(clickedSquare)
     if computer then
         AddComputerLocation(computer)
@@ -872,25 +852,21 @@ CreateEvent("OnComputerFlagsChanged", "Computer", "string", "any")
 CreateEvent("OnComputerBiosSettingChanged", "Computer", "string", "any")
 
 ---@param computer Computer
----@return void
 function OnComputerAfterBoot(computer)
     SetComputerStateOnSquare(computer.square, true)
 end
 
 ---@param computer Computer
----@return void
 function OnComputerShutDown(computer)
     SetComputerStateOnSquare(computer.square, false)
 end
 
 ---@param square IsoGridSquare
----@return void
 function OnComputerPickedUp(_, square)
     RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
 end
 
 ---@param computer Computer
----@return void
 function OnComputerPlacedDown(computer)
     AddComputerLocation(computer)
 end

@@ -44,7 +44,7 @@ function Harddrive:getItemFullType()
 end
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Harddrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
@@ -181,7 +181,7 @@ function Harddrive:randomizeSoftwares()
     return self.softwares
 end
 
----@vararg string | table | InventoryItem
+---@vararg string|table|InventoryItem
 ---@return Harddrive
 function Harddrive:new(...)
     local o = ISBaseObject:new()

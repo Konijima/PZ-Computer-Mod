@@ -81,7 +81,6 @@ end
 ---@param bayIndex number
 ---@param driveItem InventoryItem
 ---@param screwdriver InventoryItem
----@return void
 function ComputerHardwareManagement.optionInstallDrive(self, driveItem, bayIndex, screwdriver)
     if screwdriver then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))

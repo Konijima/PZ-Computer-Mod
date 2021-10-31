@@ -5,7 +5,7 @@ require("Computer/ComputerUtils")
 local Software = ISBaseObject:derive("Software")
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Software:createDiscItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Disc_Software")
@@ -16,7 +16,7 @@ function Software:createDiscItem(inventory)
 end
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Software:createFloppyItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Floppy_Software")
@@ -26,7 +26,7 @@ function Software:createFloppyItem(inventory)
     end
 end
 
----@vararg string | number | table
+---@vararg string|number|table
 ---@return Software
 function Software:new(...)
     local o = ISBaseObject:new()
@@ -46,7 +46,7 @@ function Software:new(...)
         {name = "size",             type = "number",  value = type(args[7])},
         {name = "type",             type = "string",  value = type(args[8])}, values = ComputerMod.GetAllSoftwareTypes(),
     }
-
+    --TODO:Warning 2, values is part of paramCheck, not of an entry in paramcheck! Please recheck!!!!
     for i = 1, #args do
         if type(args[i]) ~= paramCheck[i].type then
             error("Error calling Software:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);

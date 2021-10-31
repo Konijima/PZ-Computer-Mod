@@ -5,7 +5,7 @@ require("Computer/ComputerUtils")
 local Game = ISBaseObject:derive("Game")
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Game:createDiscItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Disc_Game")
@@ -16,7 +16,7 @@ function Game:createDiscItem(inventory)
 end
 
 ---@param inventory ItemContainer
----@return InventoryItem | nil
+---@return InventoryItem|nil
 function Game:createFloppyItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Floppy_Game")
@@ -35,7 +35,7 @@ function Game:getOptionTooltipDescription()
     return description
 end
 
----@vararg string | number | table
+---@vararg string|number|table
 ---@return Game
 function Game:new(...)
     local o = ISBaseObject:new()
@@ -58,7 +58,7 @@ function Game:new(...)
         {name = "size",             type = "number",  value = type(args[10])},
         {name = "format",           type = "string",  value = type(args[11])}, values = ComputerMod.GetAllGameFormats(),
     }
-
+    --TODO: WARNING something wrong here with values! values is part of paramcheck, not each of those things, so paramCheck[i].values is incorrect!!!!!!
     for i = 1, #args do
         if type(args[i]) ~= paramCheck[i].type then
             error("Error calling Game:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);

@@ -3,7 +3,7 @@ require("ISBaseObject")
 ---@class Sound
 local Sound = ISBaseObject:derive("Sound")
 
----@return IsoGridSquare | nil
+---@return IsoGridSquare|nil
 function Sound:getSquare()
     local cell = getCell()
     if cell then
@@ -44,7 +44,7 @@ end
 ---@param y number
 ---@param z number
 ---@param loop boolean
----@param onCompleted function | nil
+---@param onCompleted function|nil
 ---@return Sound
 function Sound:new(audioName, x, y, z, loop, onCompleted)
     local o = ISBaseObject:new()

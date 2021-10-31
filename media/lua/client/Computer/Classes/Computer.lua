@@ -20,7 +20,7 @@ local ComputerSprites = {
     }
 }
 
----@alias moddata table<string, string | boolean | number | table>
+---@alias moddata table<string, string|boolean|number|table>
 
 ---@class Computer
 local Computer = ISBaseObject:derive("Computer")
@@ -213,13 +213,13 @@ end
 
 --- FLAGS
 
----@return table
+---@return moddata
 function Computer:getFlags()
     return copyTable(self:getData().flags)
 end
 
 ---@param key string
----@return string | boolean | number
+---@return string|boolean|number|table
 function Computer:getFlag(key)
     if type(key) == "string" then
         local flags = self:getFlags()
@@ -228,7 +228,7 @@ function Computer:getFlag(key)
 end
 
 ---@param key string
----@param value string | boolean | number | table
+---@param value string|boolean|number|table
 function Computer:setFlag(key, value)
     if type(key) == "string" then
         self:getData().flags[string.lower(key)] = value
@@ -243,7 +243,7 @@ function Computer:getBios()
 end
 
 ---@param key string
----@return string | boolean | number
+---@return string|boolean|number
 function Computer:getBiosValue(key)
     if type(key) == "string" then
         key = string.lower(key) -- force lowercase
@@ -286,7 +286,7 @@ function Computer:getAllDrives()
 end
 
 ---@param bayIndex number
----@return Harddrive | Discdrive | Floppydrive
+---@return Harddrive|Discdrive|Floppydrive
 function Computer:getDriveInBayIndex(bayIndex)
     local drives = self:getAllDrives()
     local drive = drives[bayIndex]
@@ -324,7 +324,7 @@ function Computer:getAllDiscdrives()
     return discdrives
 end
 
----@return table<Floppydrive>
+---@return table<number, Floppydrive>
 function Computer:getAllFloppydrives()
     local drives = self:getAllDrives()
     local floppydrives = {}
@@ -422,8 +422,8 @@ end
 ---@param audioName string
 ---@param loop boolean
 ---@param isAmbiant boolean
----@param onCompleted function | nil
----@return Sound | nil
+---@param onCompleted function|nil
+---@return Sound|nil
 function Computer:playAudio(audioName, loop, isAmbiant, onCompleted)
     if not isAmbiant and self:isAudioDisabled() then return end
     return SoundManager.PlaySoundAt(audioName, self.position.x, self.position.y, self.position.z, loop, onCompleted)
@@ -441,7 +441,7 @@ end
 --- CONSTRUCTOR
 
 ---@param isoObject IsoObject
----@return Computer
+---@return Computer|nil
 function Computer:new(isoObject)
     local o = ISBaseObject:new()
     setmetatable(o, self)
