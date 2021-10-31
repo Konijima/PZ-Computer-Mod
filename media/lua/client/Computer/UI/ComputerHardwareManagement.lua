@@ -1,6 +1,13 @@
 require "ISUI/ISCollapsableWindow"
 require "Computer/ComputerUtils"
 
+local Harddrive = require("Computer/Classes/Harddrive")
+local Discdrive = require("Computer/Classes/Discdrive")
+local Floppydrive = require("Computer/Classes/Floppydrive")
+
+---@alias drive Harddrive | Discdrive | Floppydrive
+
+---@class ComputerHardwareManagement
 ComputerHardwareManagement = ISCollapsableWindow:derive("ComputerMechanics");
 ComputerHardwareManagement.alphaOverlay = 1;
 ComputerHardwareManagement.alphaOverlayInc = true;
@@ -10,10 +17,12 @@ ComputerHardwareManagement.cheat = false;
 local FNT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small);
 local FNT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium);
 
+---@return void
 function ComputerHardwareManagement:initialise()
     ISCollapsableWindow.initialise(self);
 end
 
+---@return void
 function ComputerHardwareManagement:update()
     if self.computer:isOn() then
         self:close();
@@ -25,23 +34,36 @@ function ComputerHardwareManagement:update()
     end
 end
 
+---@return void
 function ComputerHardwareManagement:prerender()
     ISCollapsableWindow.prerender(self)
     self:updateLayout()
 end
 
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:getMouseOverPart(x, y)
     -- TODO: Remove?
 end
 
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:onMouseDown(x, y)
     ISCollapsableWindow.onMouseDown(self, x, y);
 end
 
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:onRightMouseUp(x, y)
     -- TODO: Remove?
 end
 
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:onListMouseDown(x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 and not getDebug() then return; end
 
@@ -55,50 +77,68 @@ function ComputerHardwareManagement:onListMouseDown(x, y)
     end
 end
 
+---@param self ComputerHardwareManagement
+---@param bayIndex number
+---@param driveItem InventoryItem
+---@param screwdriver InventoryItem
+---@return void
+function ComputerHardwareManagement.optionInstallDrive(self, driveItem, bayIndex, screwdriver)
+    if screwdriver then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
+        if self.character:getPrimaryHandItem() ~= screwdriver then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
+        end
+        if self.character:getSecondaryHandItem() ~= item then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, driveItem, 20, false, false))
+        end
+        ISTimedActionQueue.add(Computer_Action_InstallDrive:new(self.player, self.computer, driveItem, bayIndex, screwdriver, 200))
+    end
+end
+
+---@param self ComputerHardwareManagement
+---@param bayIndex number
+---@param screwdriver InventoryItem
+---@return void
+function ComputerHardwareManagement.optionUninstallDrive(self, bayIndex, screwdriver)
+    if screwdriver then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
+        if self.character:getPrimaryHandItem() ~= screwdriver then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
+        end
+        ISTimedActionQueue.add(Computer_Action_UninstallDrive:new(self.player, self.computer, bayIndex, screwdriver, 200))
+    end
+end
+
+---@param item table
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 then return; end
-
-    local bayIndex = item.index
-
     self.context = ISContextMenu.get(self.player, x + self:getAbsoluteX(), y + self:getAbsoluteY());
 
-    local function optionInstallDrive(item, screwdriver)
-        if screwdriver then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
-            if self.character:getPrimaryHandItem() ~= screwdriver then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
-            end
-            if self.character:getSecondaryHandItem() ~= item then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, item, 20, false, false))
-            end
-            ISTimedActionQueue.add(Computer_Action_InstallDrive:new(self.player, self.computer, item, bayIndex, screwdriver, 200))
-        end
-    end
+    ---@type number
+    local bayIndex = item.index
 
-    local function optionUninstallDrive(screwdriver)
-        if screwdriver then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
-            if self.character:getPrimaryHandItem() ~= screwdriver then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
-            end
-            ISTimedActionQueue.add(Computer_Action_UninstallDrive:new(self.player, self.computer, bayIndex, screwdriver, 200))
-        end
-    end
-
+    ---@type ArrayList
     local screwdriverItems = ComputerUtils.findAllByTag(self.inventory, "Screwdriver");
 
     -- Get All Drives from inventory
+    ---@type ArrayList
     local drives = ComputerUtils.findAllByTag(self.inventory, "ComputerDrive");
 
+    ---@type drive
     local drive = self.computer:getDriveInBayIndex(bayIndex) -- get drive by index
 
     -- get valid screwdrivers
     local validScrewdriverItems = getScriptManager():getItemsTag("Screwdriver");
     local neededDescription = "";
-    for i=0, validScrewdriverItems:size()-1 do
-        neededDescription = neededDescription .. validScrewdriverItems:get(i):getDisplayName();
-        if i < validScrewdriverItems:size()-1 then
-            neededDescription = neededDescription .. ",";
+    if validScrewdriverItems then
+        for i=0, validScrewdriverItems:size()-1 do
+            neededDescription = neededDescription .. validScrewdriverItems:get(i):getDisplayName();
+            if i < validScrewdriverItems:size()-1 then
+                neededDescription = neededDescription .. ",";
+            end
         end
     end
 
@@ -111,7 +151,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
             for i=0, drives:size()-1 do
                 local item = drives:get(i);
                 if screwdriverItems:size() > 0 then
-                    local installOption = bayContext:addOption(item:getDisplayName(), item, optionInstallDrive, screwdriverItems:get(0))
+                    local installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
                     local toolTip = ISToolTip:new()
                     toolTip.name = getText("IGUI_Install") .. " " .. item:getDisplayName()
                     toolTip.description = ""
@@ -137,7 +177,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
         end
     else
         if screwdriverItems:size() > 0 then
-            self.context:addOption("Uninstall " .. drive.name, screwdriverItems:get(0), optionUninstallDrive);
+            self.context:addOption("Uninstall " .. drive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
         else
             local bayOption = self.context:addOption(getText("IGUI_Uninstall").. " " .. drive.name)
             bayOption.notAvailable = true
@@ -149,6 +189,9 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     end
 end
 
+---@param x number
+---@param y number
+---@return void
 function ComputerHardwareManagement:onListRightMouseUp(x, y)
     self:onMouseDown(x, y);
     if self.items[self.selected] and self.items[self.selected].item and not self.items[self.selected].item.listCategory then
@@ -157,6 +200,10 @@ function ComputerHardwareManagement:onListRightMouseUp(x, y)
     end
 end
 
+---@param y number
+---@param item table
+---To-Do: @param alt ???
+---@return void
 function ComputerHardwareManagement:doDrawItem(y, item, alt)
     -- NOTE: Draws background box of item if selected/hovered and not a category
     if not item.item or item.item.listCategory ~= true then
@@ -174,6 +221,8 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
         local partCol = self.parent.partRGB
         local optCol = self.parent.partOptRGB;
         local reqCol = self.parent.partReqRGB;
+
+        ---@type drive
         local drive = self.parent.drives[item.item.index]
 
         if drive then -- Existing Part
@@ -191,14 +240,15 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
     return y + self.itemheight;
 end
 
+---@return void
 function ComputerHardwareManagement:updateLayout()
     self.listbox:setWidth(self.listWidth)
     self.drivelist:setWidth(self.listWidth)
     self.drivelist:setX(self.listbox:getRight() + 20)
 end
 
+---@return void
 function ComputerHardwareManagement:initParts()
-
     if not self.computer then return; end
 
     self.listbox:clear();
@@ -222,6 +272,7 @@ function ComputerHardwareManagement:initParts()
     self:updateLayout()
 end
 
+---@return void
 function ComputerHardwareManagement:createChildren()
     ISCollapsableWindow.createChildren(self);
     if self.resizeWidget then self.resizeWidget.yonly = true end
@@ -265,6 +316,9 @@ function ComputerHardwareManagement:createChildren()
     self:initParts();
 end
 
+---@param player number
+---@param computer Computer
+---@return ComputerHardwareManagement
 function ComputerHardwareManagement:new(player, computer)
     local width = 800;
     local height = 600;

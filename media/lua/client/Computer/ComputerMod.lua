@@ -3,10 +3,8 @@ require("Computer/ComputerUtils")
 
 -------------------------------------------------------------------------------------------------------
 
---- Global ModData Object
-local GlobalModData = ModData.get("ComputerMod")
-
 --- All Classes
+---@type table<string, any>
 local Classes = {
     ComputerAddon = require("Computer/ComputerAddon"),
     ComputerEvent = require("Computer/ComputerEvent"),
@@ -23,25 +21,36 @@ local Classes = {
     Software = require("Computer/Classes/Software"),
 }
 
+--- Global ModData Object
+---@type KahluaTable
+local GlobalModData = ModData.get("ComputerMod")
+
 --- Computer Addons
+---@type ArrayList
 local ComputerAddons = ArrayList.new()
 
 --- Bios Settings Database
+---@type table<string, any>
 local ComputerBiosSettings = {}
 
 --- Game Formats Database
+---@type table<string>
 local GameFormats = {}
 
 --- Software Types Database
+---@type table<string>
 local SoftwareTypes = {}
 
 --- Files Database
+---@type table<string, File>
 local ComputerFiles = {}
 
 --- Games Database
+---@type table<string, Game>
 local ComputerGames = {}
 
 --- Softwares Database
+---@type table<string, Software>
 local ComputerSoftwares = {}
 
 --- All Computer Events
@@ -108,12 +117,18 @@ local function AddEvent(eventName, eventFunc)
     end
 end
 
+---@param eventName string
+---@param eventFunc function
+---@return void
 local function RemoveEvent(eventName, eventFunc)
     if type(eventName) == "string" and type(eventFunc) == "function" and ComputerEvents[eventName] then
         ComputerEvents[eventName]:remove(eventFunc)
     end
 end
 
+---@param eventName string
+---@vararg any
+---@return void
 local function TriggerEvent(eventName, ...)
     if type(eventName) == "string" and ComputerEvents[eventName] then
         --print("ComputerMod: Triggered Event '" .. eventName .. "'!")
@@ -123,6 +138,8 @@ end
 
 --- BIOS SETTINGS
 
+---TO-DO: @vararg string
+---@return void
 local function AddBiosToggleSetting(...)
     local args = ...
     if type(...) ~= "table" then args = {...}; end
@@ -153,10 +170,13 @@ local function AddBiosToggleSetting(...)
     end
 end
 
+---@return table
 local function GetAllBiosToggleSettings()
     return copyTable(ComputerBiosSettings)
 end
 
+---@param key string
+---@return table
 local function GetBiosToggleSettingByKey(key)
     if type(key) == "string" and ComputerBiosSettings[string.lower(key)] then
         return copyTable(ComputerBiosSettings[string.lower(key)])
@@ -165,6 +185,8 @@ end
 
 --- GAME FORMATS
 
+---@param gameFormat string
+---@return void
 local function AddGameFormat(gameFormat)
     if type(gameFormat) == "string" then
         if ComputerUtils.tableContains(GameFormats, string.lower(gameFormat)) then
@@ -178,12 +200,15 @@ local function AddGameFormat(gameFormat)
     end
 end
 
+---@return table
 local function GetAllGameFormats()
     return copyTable(GameFormats)
 end
 
 --- SOFTWARE TYPES
 
+---@param softwareType string
+---@return void
 local function AddSoftwareType(softwareType)
     if type(softwareType) == "string" then
         if ComputerUtils.tableContains(SoftwareTypes, string.lower(softwareType)) then
@@ -197,12 +222,15 @@ local function AddSoftwareType(softwareType)
     end
 end
 
+---@return table
 local function GetAllSoftwareTypes()
     return copyTable(SoftwareTypes)
 end
 
 --- FILES
 
+---@vararg string | table
+---@return File | nil
 local function AddFile(...)
     local file = Classes.File:new(...)
     if file then
@@ -219,16 +247,20 @@ local function AddFile(...)
     end
 end
 
+---@param index number
+---@return table
 local function GetFileByIndex(index)
     if type(index) == "number" and ComputerFiles[index] then
         return copyTable(ComputerFiles[index])
     end
 end
 
+---@return table
 local function GetAllFiles()
     return copyTable(ComputerFiles)
 end
 
+---@return File | nil
 local function GetRandomFile()
     if #ComputerFiles > 0 then
         return GetFileByIndex(ZombRand(#ComputerFiles)+1)
@@ -237,6 +269,8 @@ end
 
 --- GAMES
 
+---@vararg string | number | table
+---@return Game | nil
 local function AddGame(...)
     local game = Classes.Game:new(...)
     if game then
@@ -252,16 +286,20 @@ local function AddGame(...)
     end
 end
 
+---@param id string
+---@return Game | nil
 local function GetGameById(id)
     if type(id) == "string" and ComputerGames[string.lower(id)] then
         return copyTable(ComputerGames[string.lower(id)])
     end
 end
 
+---@return table
 local function GetAllGames()
     return copyTable(ComputerGames)
 end
 
+---@return Game | nil
 local function GetRandomGame()
     local keys = {}
 	for k in pairs(ComputerGames) do table.insert(keys, k); end
@@ -272,6 +310,8 @@ end
 
 --- SOFTWARE
 
+---@vararg string | number | table
+---@return Software | nil
 local function AddSoftware(...)
     local software = Classes.Software:new(...)
     if software and ComputerSoftwares[string.lower(software.id)] == nil then
@@ -287,16 +327,20 @@ local function AddSoftware(...)
     end
 end
 
+---@param id string
+---@return Software | nil
 local function GetSoftwareById(id)
     if type(id) == "string" and ComputerSoftwares[string.lower(id)] then
         return copyTable(ComputerSoftwares[string.lower(id)])
     end
 end
 
+---@return table
 local function GetAllSoftwares()
     return copyTable(ComputerSoftwares)
 end
 
+---@return Software | nil
 local function GetRandomSoftware()
     local keys = {}
 	for k in pairs(ComputerSoftwares) do table.insert(keys, k); end
@@ -307,10 +351,14 @@ end
 
 --- ADDONS
 
-local function CreateAddon(...)
-    return Classes.ComputerAddon:new(...)
+---@param name string
+---@return ComputerAddon
+local function CreateAddon(name)
+    return Classes.ComputerAddon:new(name)
 end
 
+---@param addon ComputerAddon
+---@return boolean
 local function ValidateAddon(addon)
     if type(addon) == "table" and getmetatable(addon) == Classes.ComputerAddon then
 
@@ -348,6 +396,8 @@ local function ValidateAddon(addon)
     end
 end
 
+---@param addon ComputerAddon
+---@return void
 local function RunAddon(addon)
     if addon.BiosSettings then
         for i=1, #addon.BiosSettings do
@@ -386,6 +436,8 @@ local function RunAddon(addon)
     end
 end
 
+---@param addon ComputerAddon
+---@return void
 local function AddAddon(addon)
     --- Validate
     if pcall(ValidateAddon, addon) then
@@ -400,6 +452,8 @@ end
 
 --- COMPUTER
 
+---@param square IsoGridSquare
+---@return Computer | nil
 local function GetComputerOnSquare(square)
     if square and instanceof(square, "IsoGridSquare") then
         local objects = square:getObjects()
@@ -413,6 +467,10 @@ local function GetComputerOnSquare(square)
     end
 end
 
+---@param x number
+---@param y number
+---@param z number
+---@return Computer | nil
 local function GetComputerAtPosition(x, y, z)
     local square = getCell():getGridSquare(x, y, z)
     if square then
@@ -420,10 +478,15 @@ local function GetComputerAtPosition(x, y, z)
     end
 end
 
+---@return table
 local function GetAllKnownComputerLocations()
     return copyTable(GlobalModData.computerLocations)
 end
 
+---@param x number
+---@param y number
+---@param z number
+---@return number | nil
 local function GetIndexOfComputerLocationAtPosition(x, y, z)
     for i=1, #GlobalModData.computerLocations do
         local location = GlobalModData.computerLocations[i]
@@ -433,6 +496,8 @@ local function GetIndexOfComputerLocationAtPosition(x, y, z)
     end
 end
 
+---@param square IsoGridSquare
+---@return number | nil
 local function GetIndexOfComputerLocationOnSquare(square)
     if square and instanceof(square, "IsoGridSquare") then
         local position = { x = square:getX(), y = square:getY(), z = square:getZ() }
@@ -440,6 +505,10 @@ local function GetIndexOfComputerLocationOnSquare(square)
     end
 end
 
+---@param x number
+---@param y number
+---@param z number
+---@return boolean
 local function GetComputerStateAtPosition(x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and GlobalModData.computerStateLocations then
@@ -447,6 +516,8 @@ local function GetComputerStateAtPosition(x, y, z)
     end
 end
 
+---@param square IsoGridSquare
+---@return boolean
 local function GetComputerStateOnSquare(square)
     local id = ComputerUtils.squareToId(square)
     if id and GlobalModData.computerStateLocations then
@@ -454,13 +525,11 @@ local function GetComputerStateOnSquare(square)
     end
 end
 
-local function SetComputerStateOnSquare(square, state)
-    local id = ComputerUtils.squareToId(square)
-    if id and GlobalModData.computerStateLocations then
-        GlobalModData.computerStateLocations[id] = state
-    end
-end
-
+---@param x number
+---@param y number
+---@param z number
+---@param state boolean
+---@return void
 local function SetComputerStateAtPosition(x, y, z, state)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and GlobalModData.computerStateLocations then
@@ -468,6 +537,18 @@ local function SetComputerStateAtPosition(x, y, z, state)
     end
 end
 
+---@param square IsoGridSquare
+---@param state boolean
+---@return void
+local function SetComputerStateOnSquare(square, state)
+    local id = ComputerUtils.squareToId(square)
+    if id and GlobalModData.computerStateLocations then
+        GlobalModData.computerStateLocations[id] = state
+    end
+end
+
+---@param computer Computer
+---@return void
 local function AddComputerLocation(computer)
     if type(computer) == "table" and getmetatable(computer) == Classes.Computer then
         local index = GetIndexOfComputerLocationOnSquare(computer.square)
@@ -479,6 +560,10 @@ local function AddComputerLocation(computer)
     end
 end
 
+---@param x number
+---@param y number
+---@param z number
+---@return void
 local function RemoveComputerLocation(x, y, z)
     local index = GetIndexOfComputerLocationAtPosition(x, y, z)
     if index then
@@ -489,6 +574,10 @@ end
 
 --- CONTEXT MENU
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerPowerManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local square = computer:getSquareInFront()
@@ -521,6 +610,10 @@ local function ComputerPowerManagementMenu(player, computerContext, computer)
     end
 end
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerBiosManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local square = computer:getSquareInFront()
@@ -559,6 +652,10 @@ local function ComputerBiosManagementMenu(player, computerContext, computer)
     TriggerEvent("OnAfterComputerBiosManagementContextMenu", player, context, computer)
 end
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerHardDriveManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local harddrives = computer:getAllHarddrives()
@@ -581,6 +678,10 @@ local function ComputerHardDriveManagementMenu(player, computerContext, computer
     end
 end
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerDiscDriveManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local discdrives = computer:getAllDiscdrives()
@@ -603,6 +704,10 @@ local function ComputerDiscDriveManagementMenu(player, computerContext, computer
     end
 end
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerFloppyDriveManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local floppydrives = computer:getAllFloppydrives()
@@ -625,6 +730,10 @@ local function ComputerFloppyDriveManagementMenu(player, computerContext, comput
     end
 end
 
+---@param player number
+---@param computerContext ISContextMenu
+---@param computer Computer
+---@return void
 local function ComputerHardwareManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
     local inventory = character:getInventory()
@@ -677,6 +786,10 @@ local function ComputerHardwareManagementMenu(player, computerContext, computer)
     end
 end
 
+---@param player number
+---@param context ISContextMenu
+---@param computer Computer
+---@return void
 local function FillComputerContextMenu(player, context, computer)
     local computerOption = context:addOption("Desktop Computer")
     local computerContext = ISContextMenu:getNew(context)
@@ -703,6 +816,7 @@ end
 
 --- GAME EVENTS
 
+---@return void
 local function AddTagToDisc()
     local item = getScriptManager():getItem("Base.Disc")
     if item then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
@@ -710,6 +824,7 @@ local function AddTagToDisc()
     if item2 then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
 end
 
+---@return void
 local function LoadGlobalModData()
     if not ModData.exists("ComputerMod") then
         ModData.create("ComputerMod")
@@ -723,6 +838,7 @@ local function LoadGlobalModData()
     print("ComputerMod: Global mod data has loaded!")
 end
 
+---@return void
 local function InitializeComputers()
     if not GlobalModData or not GlobalModData.computerLocations then return; end
 
@@ -740,7 +856,10 @@ local function InitializeComputers()
 end
 InitializeComputers() -- call when reload
 
+---@type number
 local ticks = 0;
+
+---@return void
 local function UpdateComputers()
     ticks = ticks + 1
     if ticks > 200 then
@@ -748,9 +867,12 @@ local function UpdateComputers()
 
         --- Start of Update
 
+        ---@type table
         local locations = copyTable(GlobalModData.computerLocations)
         for i=1, #locations do
             local position = locations[i]
+
+            ---@type Computer | nil
             local computer = GetComputerAtPosition(position.x, position.y, position.z)
 
             -- Handle computer power
@@ -769,13 +891,19 @@ local function UpdateComputers()
     end
 end
 
-local function OnPreFillWorldObjectContextMenu(player, context, worldobjects, test)
+---@param player number
+---@param context ISContextMenu
+local function OnPreFillWorldObjectContextMenu(player, context, _, test)
     if test == true then return end
 
     if clickedSquare == nil then return end
+
+    ---@type IsoPlayer
     local character = getSpecificPlayer(player)
+
     if character:isDead() or character:isAsleep() or character:isDriving() then return end
 
+    ---@type Computer | nil
     local computer = GetComputerOnSquare(clickedSquare)
     if computer then
         AddComputerLocation(computer)
@@ -795,14 +923,21 @@ function OnComputerAfterBoot(computer)
     SetComputerStateOnSquare(computer.square, true)
 end
 
+---@param computer Computer
+---@return void
 function OnComputerShutDown(computer)
     SetComputerStateOnSquare(computer.square, false)
 end
 
+---@param item InventoryItem
+---@param square IsoGridSquare
+---@return void
 function OnComputerPickedUp(item, square)
     RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
 end
 
+---@param computer Computer
+---@return void
 function OnComputerPlacedDown(computer)
     AddComputerLocation(computer)
 end
@@ -835,6 +970,7 @@ AddSoftwareType("printer")
 
 --- GLOBAL
 
+---@class ComputerMod
 ComputerMod = {}
 
 function ComputerMod.CreateAddon(...) return CreateAddon(...); end
@@ -844,28 +980,28 @@ function ComputerMod.AddEvent(...) return AddEvent(...); end
 function ComputerMod.RemoveEvent(...) return RemoveEvent(...); end
 function ComputerMod.TriggerEvent(...) return TriggerEvent(...); end
 
-function ComputerMod.GetAllBiosToggleSettings(...) return GetAllBiosToggleSettings(...); end
+function ComputerMod.GetAllBiosToggleSettings() return GetAllBiosToggleSettings(); end
 function ComputerMod.GetBiosToggleSettingByKey(...) return GetBiosToggleSettingByKey(...); end
 
-function ComputerMod.GetAllGameFormats(...) return GetAllGameFormats(...); end
-function ComputerMod.GetAllSoftwareTypes(...) return GetAllSoftwareTypes(...); end
+function ComputerMod.GetAllGameFormats() return GetAllGameFormats(); end
+function ComputerMod.GetAllSoftwareTypes() return GetAllSoftwareTypes(); end
 
 function ComputerMod.GetFileByIndex(...) return GetFileByIndex(...); end
-function ComputerMod.GetAllFiles(...) return GetAllFiles(...); end
-function ComputerMod.GetRandomFile(...) return GetRandomFile(...); end
+function ComputerMod.GetAllFiles() return GetAllFiles(); end
+function ComputerMod.GetRandomFile() return GetRandomFile(); end
 
 function ComputerMod.GetGameById(...) return GetGameById(...); end
-function ComputerMod.GetAllGames(...) return GetAllGames(...); end
-function ComputerMod.GetRandomGame(...) return GetRandomGame(...); end -- so many isolations!
+function ComputerMod.GetAllGames() return GetAllGames(); end
+function ComputerMod.GetRandomGame() return GetRandomGame(); end
 
 function ComputerMod.GetSoftwareById(...) return GetSoftwareById(...); end
-function ComputerMod.GetAllSoftwares(...) return GetAllSoftwares(...); end
+function ComputerMod.GetAllSoftwares() return GetAllSoftwares(); end
 function ComputerMod.GetRandomSoftware(...) return GetRandomSoftware(...); end
 
 function ComputerMod.GetComputerOnSquare(...) return GetComputerOnSquare(...); end
 function ComputerMod.GetComputerAtPosition(...) return GetComputerAtPosition(...); end
 
-function ComputerMod.GetAllKnownComputerLocations(...) return GetAllKnownComputerLocations(...); end
+function ComputerMod.GetAllKnownComputerLocations() return GetAllKnownComputerLocations(); end
 function ComputerMod.GetIndexOfComputerLocationOnSquare(...) return GetIndexOfComputerLocationOnSquare(...); end
 function ComputerMod.GetIndexOfComputerLocationAtPosition(...) return GetIndexOfComputerLocationAtPosition(...); end
 
