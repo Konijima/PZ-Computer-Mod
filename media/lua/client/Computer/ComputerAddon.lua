@@ -1,7 +1,9 @@
 require("ISBaseObject")
 
+---@class ComputerAddon
 local ComputerAddon = ISBaseObject:derive("ComputerAddon")
 
+---@param name string
 function ComputerAddon:new(name)
     local o = ISBaseObject:new()
     setmetatable(o, self)
