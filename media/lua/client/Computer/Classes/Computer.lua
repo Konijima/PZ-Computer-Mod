@@ -380,7 +380,7 @@ function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
     if drive then
         local item = drive:createItem(inventory)
         if item then
-            drives[bayIndex] = false
+            drives[bayIndex] = nil
             print("Uninstalled "..drive.type.." from bay " .. bayIndex)
             if drive.type == "Harddrive" then
                 ComputerMod.TriggerEvent("OnComputerHarddriveUninstalled",self, drive, bayIndex)
