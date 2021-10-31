@@ -10,7 +10,17 @@ function ComputerAddon:new(name)
     setmetatable(o, self)
     self.__index = self
 
-    o.addonName = name
+    o.name = name
+
+    o.ComputerEvents = {}
+    o.BiosSettings = {}
+    o.SoftwareTypes = {}
+    o.FilePack = {}
+    o.GamePack = {}
+    o.SoftwarePack = {}
+
+    o.OnStart = nil
+    o.OnUpdate = nil
 
     return o
 end

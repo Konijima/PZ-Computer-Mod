@@ -62,10 +62,15 @@ local ComputerEvents = {}
 --- EVENTS
 
 ---@param eventName string
----@vararg string
-local function CreateEvent(eventName, ...)
-    if type(eventName) == "string" and not ComputerEvents[eventName] then
-        ComputerEvents[eventName] = Classes.ComputerEvent:new(...)
+---@param paramTypes table<string>
+local function CreateEvent(eventName, paramTypes)
+    if type(eventName) == "string" then
+        if ComputerEvents[eventName] == nil then
+            ComputerEvents[eventName] = Classes.ComputerEvent:new(paramTypes)
+            print("ComputerMod: ComputerEvent '"..eventName.."' has been created!")
+        else
+            print("ComputerMod: ComputerEvent '"..eventName.."' already exist!")
+        end
     end
 end
 
@@ -299,32 +304,103 @@ end
 local function ValidateAddon(addon)
     if type(addon) == "table" and getmetatable(addon) == Classes.ComputerAddon then
 
+        -- Check if this addon was already added
         if ComputerAddons:contains(addon) then
-            error("ComputerMod: Addon '"..addon.addonName.."' was already added!", 1);
+            error("ComputerMod: Addon '"..addon.name.."' was already added!", 1);
         end
 
-        if addon.BiosSettings and type(addon.BiosSettings) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .BiosSettings must be a table!", 1);
+        -- Check if an addon has the same name
+        for i=0, ComputerAddons:size()-1 do
+            local checkAddon = ComputerAddons:get(i)
+            if checkAddon.name == addon.name then
+                error("ComputerMod: Addon '"..addon.name.."' already exist!", 1);
+            end
         end
 
-        if addon.GameFormats and type(addon.GameFormats) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .GameFormats must be a table!", 1);
+        -- Validate ComputerEvents
+        if addon.ComputerEvents then
+            if type(addon.ComputerEvents) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .ComputerEvents must be a table!", 1);
+            else
+                for i=1, #addon.ComputerEvents do
+                    if type(addon.ComputerEvents[i]) == "table" then
+                        if type(addon.ComputerEvents[i][1]) == "string" then
+                            Classes.ComputerEvent:new(addon.ComputerEvents[i][2])
+                        else
+                            error("ComputerMod: Addon '"..addon.name.."' .ComputerEvents entry first param must be a string!", 1);
+                        end
+                    else
+                        error("ComputerMod: Addon '"..addon.name.."' .ComputerEvents entry must be a table!", 1);
+                    end
+                end
+            end
         end
 
-        if addon.SoftwareTypes and type(addon.SoftwareTypes) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .SoftwareTypes must be a table!", 1);
+        -- Validate BiosSettings
+        if addon.BiosSettings then
+            if type(addon.BiosSettings) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .BiosSettings must be a table!", 1);
+            else
+                for i=1, #addon.BiosSettings do
+                    Classes.BiosSetting:new(addon.BiosSettings[i])
+                end
+            end
         end
 
-        if addon.FilePack and type(addon.FilePack) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .FilePack must be a table!", 1);
+        -- Validate SoftwareTypes
+        if addon.SoftwareTypes then
+            if type(addon.SoftwareTypes) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .SoftwareTypes must be a table!", 1);
+            else
+                for i=1, #addon.SoftwareTypes do
+                    if type(addon.SoftwareTypes[i]) ~= "string" then
+                        error("ComputerMod: Addon '"..addon.name.."' software type must be a 'string' but got "..type(addon.SoftwareTypes[i]))
+                    end
+                end
+            end
         end
 
-        if addon.GamePack and type(addon.GamePack) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .GamePack must be a table!", 1);
+        -- Validate FilePack
+        if addon.FilePack then
+            if type(addon.FilePack) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .FilePack must be a table!", 1);
+            else
+                for i=1, #addon.FilePack do
+                    Classes.File:new(addon.FilePack[i])
+                end
+            end
         end
 
-        if addon.SoftwarePack and type(addon.SoftwarePack) ~= "table" then
-            error("ComputerMod: Addon '"..addon.addonName.."' .SoftwarePack must be a table!", 1);
+        -- Validate GamePack
+        if addon.GamePack then
+            if type(addon.GamePack) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .GamePack must be a table!", 1);
+            else
+                for i=1, #addon.GamePack do
+                    Classes.Game:new(addon.GamePack[i])
+                end
+            end
+        end
+
+        -- Validate SoftwarePack
+        if addon.SoftwarePack then
+            if type(addon.SoftwarePack) ~= "table" then
+                error("ComputerMod: Addon '"..addon.name.."' .SoftwarePack must be a table!", 1);
+            else
+                for i=1, #addon.SoftwarePack do
+                    Classes.Software:new(addon.SoftwarePack[i])
+                end
+            end
+        end
+
+        -- Validate OnStart
+        if addon.OnStart and type(addon.OnStart) ~= "function" then
+            error("ComputerMod: Addon '"..addon.name.."' OnStart must be a function!", 1);
+        end
+
+        -- Validate OnUpdate
+        if addon.OnUpdate and type(addon.OnUpdate) ~= "function" then
+            error("ComputerMod: Addon '"..addon.name.."' OnUpdate must be a function!", 1);
         end
 
         return true
@@ -335,15 +411,16 @@ end
 
 ---@param addon ComputerAddon
 local function RunAddon(addon)
-    if addon.BiosSettings then
-        for i=1, #addon.BiosSettings do
-            AddBiosSetting(addon.BiosSettings[i])
+
+    if addon.ComputerEvents then
+        for i=1, #addon.ComputerEvents do
+            CreateEvent(addon.ComputerEvents[i][1], addon.ComputerEvents[i][2])
         end
     end
 
-    if addon.GameFormats then
-        for i=1, #addon.GameFormats do
-            AddGameFormat(addon.GameFormats[i])
+    if addon.BiosSettings then
+        for i=1, #addon.BiosSettings do
+            AddBiosSetting(addon.BiosSettings[i])
         end
     end
 
@@ -370,24 +447,34 @@ local function RunAddon(addon)
             AddSoftware(addon.SoftwarePack[i])
         end
     end
+
+    if type(addon.OnStart) == "function" then
+        print("ComputerMod: Running addon "..addon.name.." OnStart...")
+
+        if not pcall(addon.OnStart) then
+            error("ComputerMod: Addon "..addon.name.." error in OnStart!", 3)
+        end
+    end
 end
 
 ---@param addon ComputerAddon
 local function AddAddon(addon)
     --- Validate
     if pcall(ValidateAddon, addon) then
+        print("ComputerMod: Addon '"..addon.name.."' has been validated!")
+
         if not pcall(RunAddon, addon) then
-            print("ComputerMod: There was a problem running addon '"..addon.addonName.."'!")
+            print("ComputerMod: There was a problem running addon '"..addon.name.."'!")
         else
             ComputerAddons:add(addon)
-            print("ComputerMod: Added addon '"..addon.addonName.."'!")
+            print("ComputerMod: Added addon '"..addon.name.."'!")
         end
     end
 end
 
 --- COMPUTER
 
---- Get a Computer isntance on this square
+--- Get a Computer instance on this square
 ---@param square IsoGridSquare
 ---@return Computer|nil
 local function GetComputerOnSquare(square)
@@ -800,55 +887,55 @@ Events.OnPreFillWorldObjectContextMenu.Add(OnPreFillWorldObjectContextMenu)
 
 --- COMPUTER EVENTS
 
-CreateEvent("OnComputerPickedUp", "InventoryItem", "IsoGridSquare")
-CreateEvent("OnComputerPlacedDown", "Computer")
+CreateEvent("OnComputerPickedUp", { "InventoryItem", "IsoGridSquare" })
+CreateEvent("OnComputerPlacedDown", { "Computer" })
 
-CreateEvent("OnComputerBeforeBoot", "Computer", "boolean")
-CreateEvent("OnComputerBoot", "Computer")
-CreateEvent("OnComputerBootInBios", "Computer")
-CreateEvent("OnComputerAfterBoot", "Computer")
+CreateEvent("OnComputerBeforeBoot", { "Computer", "boolean" })
+CreateEvent("OnComputerBoot", { "Computer" })
+CreateEvent("OnComputerBootInBios", { "Computer" })
+CreateEvent("OnComputerAfterBoot", { "Computer" })
 
-CreateEvent("OnComputerBeforeShutDown", "Computer")
-CreateEvent("OnComputerShutDown", "Computer")
+CreateEvent("OnComputerBeforeShutDown", { "Computer" })
+CreateEvent("OnComputerShutDown", { "Computer" })
 
-CreateEvent("OnComputerHarddriveInstalled", "Computer", "Harddrive", "number")
-CreateEvent("OnComputerHarddriveUninstalled", "Computer", "Harddrive", "number")
+CreateEvent("OnComputerHarddriveInstalled", { "Computer", "Harddrive", "number" })
+CreateEvent("OnComputerHarddriveUninstalled", { "Computer", "Harddrive", "number" })
 
-CreateEvent("OnComputerDiscdriveInstalled", "Computer", "Discdrive", "number")
-CreateEvent("OnComputerDiscdriveUninstalled", "Computer", "Discdrive", "number")
+CreateEvent("OnComputerDiscdriveInstalled", { "Computer", "Discdrive", "number" })
+CreateEvent("OnComputerDiscdriveUninstalled", { "Computer", "Discdrive", "number" })
 
-CreateEvent("OnComputerFloppydriveInstalled", "Computer", "Floppydrive", "number")
-CreateEvent("OnComputerFloppydriveUninstalled", "Computer", "Floppydrive", "number")
+CreateEvent("OnComputerFloppydriveInstalled", { "Computer", "Floppydrive", "number" })
+CreateEvent("OnComputerFloppydriveUninstalled", { "Computer", "Floppydrive", "number" })
 
-CreateEvent("OnComputerDiscInserted", "Computer", "Discdrive", "Disc")
-CreateEvent("OnComputerDiscEjected", "Computer", "Discdrive", "Disc")
+CreateEvent("OnComputerDiscInserted", { "Computer", "Discdrive", "Disc" })
+CreateEvent("OnComputerDiscEjected", { "Computer", "Discdrive", "Disc" })
 
-CreateEvent("OnComputerFloppyInserted", "Computer", "Floppydrive", "Floppy")
-CreateEvent("OnComputerFloppyEjected", "Computer", "Floppydrive", "Floppy")
+CreateEvent("OnComputerFloppyInserted", { "Computer", "Floppydrive", "Floppy" })
+CreateEvent("OnComputerFloppyEjected", { "Computer", "Floppydrive", "Floppy" })
 
-CreateEvent("OnBeforeComputerContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerPowerManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerPowerManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerPowerManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerPowerManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerBiosManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerBiosManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerBiosManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerBiosManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerHarddriveManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerHarddriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerHarddriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerHarddriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerDiscdriveManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerDiscdriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerDiscdriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerDiscdriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerFloppydriveManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerFloppydriveManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerFloppydriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerFloppydriveManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnBeforeComputerHardwareManagementContextMenu", "number", "ISContextMenu", "Computer")
-CreateEvent("OnAfterComputerHardwareManagementContextMenu", "number", "ISContextMenu", "Computer")
+CreateEvent("OnBeforeComputerHardwareManagementContextMenu", { "number", "ISContextMenu", "Computer" })
+CreateEvent("OnAfterComputerHardwareManagementContextMenu", { "number", "ISContextMenu", "Computer" })
 
-CreateEvent("OnComputerFlagsChanged", "Computer", "string", "any")
-CreateEvent("OnComputerBiosSettingChanged", "Computer", "string", "any")
+CreateEvent("OnComputerFlagsChanged", { "Computer", "string", "any" })
+CreateEvent("OnComputerBiosSettingChanged", { "Computer", "string", "any" })
 
 ---@param computer Computer
 function OnComputerAfterBoot(computer)

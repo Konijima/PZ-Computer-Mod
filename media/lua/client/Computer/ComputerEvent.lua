@@ -38,14 +38,14 @@ function ComputerEvent:trigger(eventName, ...)
     end
 end
 
----@vararg string
+---@param paramTypes table<string>|nil
 ---@return ComputerEvent
-function ComputerEvent:new(...)
+function ComputerEvent:new(paramTypes)
     local o = ISBaseObject:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.paramTypes = {...}
+    o.paramTypes = paramTypes
 
     --- Properties
     o.handlers = ArrayList.new()
