@@ -5,14 +5,15 @@
 ## Made using Capsid
 [Download IntelliJ Community](https://www.jetbrains.com/idea/download)  
 [Check Capsid Github Page](https://github.com/pzstorm/capsid)  
-[EmmyLua Documentation](https://emmylua.github.io/)  
+[EmmyLua Documentation](https://emmylua.github.io/)
   
 ## How to setup
 1) Install [IntelliJ Community](https://www.jetbrains.com/idea/download)
-2) Clone this repository into `C:\Users\<your-username>\Zomboid\mods`
-3) Create a new project from an existing source
-4) Select the repository from the mods directory
-5) Setup Capsid
+2) Use Java SDK 15
+3) Clone this repository into `C:\Users\<your-username>\Zomboid\mods`
+4) Create a new project from an existing source
+5) Select the repository from the mods directory
+6) Setup [Capsid](https://github.com/pzstorm/capsid)
   
 ### Links:
 [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2635550102)  
