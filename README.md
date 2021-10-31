@@ -4,8 +4,9 @@
   
 ## Made using Capsid
 [Download IntelliJ Community](https://www.jetbrains.com/idea/download)  
-[Check Capsid Github Page](https://github.com/pzstorm/capsid)  
-[EmmyLua Documentation](https://emmylua.github.io/)
+[Capsid Github Page](https://github.com/pzstorm/capsid)  
+[EmmyLua Documentation](https://emmylua.github.io/)  
+[Project Zomboid Documentation](https://projectzomboid.com/modding/)  
   
 ## How to setup
 1) Install [IntelliJ Community](https://www.jetbrains.com/idea/download)
