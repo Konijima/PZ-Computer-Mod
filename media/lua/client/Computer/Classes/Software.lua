@@ -1,8 +1,11 @@
 require("ISBaseObject")
 require("Computer/ComputerUtils")
 
+---@class Software
 local Software = ISBaseObject:derive("Software")
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Software:createDiscItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Disc_Software")
@@ -12,6 +15,8 @@ function Software:createDiscItem(inventory)
     end
 end
 
+---@param inventory ItemContainer
+---@return InventoryItem | nil
 function Software:createFloppyItem(inventory)
     if inventory then
         local item = inventory:AddItem("Computer.Floppy_Software")
@@ -21,6 +26,8 @@ function Software:createFloppyItem(inventory)
     end
 end
 
+---@vararg string | number | table
+---@return Software
 function Software:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
