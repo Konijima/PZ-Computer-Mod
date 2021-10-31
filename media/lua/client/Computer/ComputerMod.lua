@@ -901,35 +901,35 @@ AddSoftwareType("printer")
 ---@class ComputerMod
 ComputerMod = {}
 
-function ComputerMod.CreateAddon(...) return CreateAddon(...); end
-function ComputerMod.AddAddon(...) return AddAddon(...); end
+ComputerMod.CreateAddon = CreateAddon
+ComputerMod.AddAddon = AddAddon
 
-function ComputerMod.AddEvent(...) return AddEvent(...); end
-function ComputerMod.RemoveEvent(...) return RemoveEvent(...); end
-function ComputerMod.TriggerEvent(...) return TriggerEvent(...); end
+ComputerMod.AddEvent = AddEvent
+ComputerMod.RemoveEvent = RemoveEvent
+ComputerMod.TriggerEvent = TriggerEvent
 
-function ComputerMod.GetAllBiosSettings() return GetAllBiosSettings(); end
-function ComputerMod.GetBiosSettingByKey(...) return GetBiosSettingByKey(...); end
+ComputerMod.GetAllBiosSettings = GetAllBiosSettings
+ComputerMod.GetBiosSettingByKey = GetBiosSettingByKey
 
-function ComputerMod.GetAllGameFormats() return GetAllGameFormats(); end
-function ComputerMod.GetAllSoftwareTypes() return GetAllSoftwareTypes(); end
+ComputerMod.GetAllGameFormats = GetAllGameFormats
+ComputerMod.GetAllSoftwareTypes = GetAllSoftwareTypes
 
-function ComputerMod.GetFileByIndex(...) return GetFileByIndex(...); end
-function ComputerMod.GetAllFiles() return GetAllFiles(); end
-function ComputerMod.GetRandomFile() return GetRandomFile(); end
+ComputerMod.GetFileByIndex = GetFileByIndex
+ComputerMod.GetAllFiles = GetAllFiles
+ComputerMod.GetRandomFile = GetRandomFile
 
-function ComputerMod.GetGameById(...) return GetGameById(...); end
-function ComputerMod.GetAllGames() return GetAllGames(); end
-function ComputerMod.GetRandomGame() return GetRandomGame(); end
+ComputerMod.GetGameById = GetGameById
+ComputerMod.GetAllGames = GetAllGames
+ComputerMod.GetRandomGame = GetRandomGame
 
-function ComputerMod.GetSoftwareById(...) return GetSoftwareById(...); end
-function ComputerMod.GetAllSoftwares() return GetAllSoftwares(); end
-function ComputerMod.GetRandomSoftware() return GetRandomSoftware(); end
+ComputerMod.GetSoftwareById = GetSoftwareById
+ComputerMod.GetAllSoftwares = GetAllSoftwares
+ComputerMod.GetRandomSoftware = GetRandomSoftware
 
-function ComputerMod.GetComputerOnSquare(...) return GetComputerOnSquare(...); end
-function ComputerMod.GetComputerAtPosition(...) return GetComputerAtPosition(...); end
+ComputerMod.GetComputerOnSquare = GetComputerOnSquare
+ComputerMod.GetComputerAtPosition = GetComputerAtPosition
 
-function ComputerMod.GetAllKnownComputerLocations() return GetAllKnownComputerLocations(); end
+ComputerMod.GetAllKnownComputerLocations = GetAllKnownComputerLocations
 
-function ComputerMod.GetComputerStateAtPosition(...) return GetComputerStateAtPosition(...); end
-function ComputerMod.GetComputerStateOnSquare(...) return GetComputerStateOnSquare(...); end
+ComputerMod.GetComputerStateAtPosition = GetComputerStateAtPosition
+ComputerMod.GetComputerStateOnSquare = GetComputerStateOnSquare
