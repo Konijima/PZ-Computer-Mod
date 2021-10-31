@@ -933,5 +933,3 @@ function ComputerMod.GetAllKnownComputerLocations() return GetAllKnownComputerLo
 
 function ComputerMod.GetComputerStateAtPosition(...) return GetComputerStateAtPosition(...); end
 function ComputerMod.GetComputerStateOnSquare(...) return GetComputerStateOnSquare(...); end
-
-ComputerMod.
