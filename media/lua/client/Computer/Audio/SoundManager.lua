@@ -1,8 +1,13 @@
 require("Computer/ComputerUtils")
 local Sound = require("Computer/Audio/Sound")
 
+---@type table<string, ArrayList>
 local Sounds = {}
 
+---@param x number
+---@param y number
+---@param z number
+---@return ArrayList<Sound>
 local function GetAllSoundsAt(x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and Sounds[id] then
@@ -10,6 +15,11 @@ local function GetAllSoundsAt(x, y, z)
     end
 end
 
+---@param audioName string
+---@param x number
+---@param y number
+---@param z number
+---@return Sound | nil
 local function GetSoundAt(audioName, x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and Sounds[id] then
@@ -22,6 +32,11 @@ local function GetSoundAt(audioName, x, y, z)
     end
 end
 
+---@param audioName string
+---@param x number
+---@param y number
+---@param z number
+---@return boolean
 local function IsSoundLoopingAt(audioName, x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id then
@@ -32,6 +47,11 @@ local function IsSoundLoopingAt(audioName, x, y, z)
     end
 end
 
+---@param audioName string
+---@param x number
+---@param y number
+---@param z number
+---@return boolean
 local function IsSoundPlayingAt(audioName, x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id then
@@ -42,6 +62,11 @@ local function IsSoundPlayingAt(audioName, x, y, z)
     end
 end
 
+---@param audioName string
+---@param x number
+---@param y number
+---@param z number
+---@return void
 local function StopSoundAt(audioName, x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id then
@@ -54,6 +79,12 @@ local function StopSoundAt(audioName, x, y, z)
     end
 end
 
+---@param audioName string
+---@param x number
+---@param y number
+---@param z number
+---@param loop boolean
+---@param onCompleted function | nil
 local function PlaySoundAt(audioName, x, y, z, loop, onCompleted)
     local id = ComputerUtils.positionToId(x, y, z)
     if id then
@@ -73,6 +104,10 @@ local function PlaySoundAt(audioName, x, y, z, loop, onCompleted)
     end
 end
 
+---@param x number
+---@param y number
+---@param z number
+---@return void
 local function StopAllSoundsAt(x, y, z)
     local id = ComputerUtils.positionToId(x, y, z)
     if id and Sounds[id] then
@@ -115,6 +150,7 @@ Events.OnTick.Add(Update)
 
 --- GLOBAL
 
+---@class SoundManager
 SoundManager = {}
 
 function SoundManager.GetAllSoundsAt(...) return GetAllSoundsAt(...); end
