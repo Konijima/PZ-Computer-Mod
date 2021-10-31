@@ -28,6 +28,10 @@ function Computer_Action_EjectDisc:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param discdrive Discdrive
+---@param time number
 function Computer_Action_EjectDisc:new(player, computer, discdrive, time)
     local o = {}
     setmetatable(o, self)

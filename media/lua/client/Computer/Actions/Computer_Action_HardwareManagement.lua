@@ -30,6 +30,9 @@ function Computer_Action_HardwareManagement:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param time number
 function Computer_Action_HardwareManagement:new(player, computer, time)
     local o = {}
     setmetatable(o, self)

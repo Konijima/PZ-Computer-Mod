@@ -28,6 +28,10 @@ function Computer_Action_EjectFloppy:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param floppydrive Floppydrive
+---@param time number
 function Computer_Action_EjectFloppy:new(player, computer, floppydrive, time)
     local o = {}
     setmetatable(o, self)

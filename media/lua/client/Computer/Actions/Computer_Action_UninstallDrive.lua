@@ -48,6 +48,11 @@ function Computer_Action_UninstallDrive:perform()
     ISBaseTimedAction.perform(self)
 end
 
+---@param player number
+---@param computer Computer
+---@param bayIndex number
+---@param tool InventoryItem
+---@param time number
 function Computer_Action_UninstallDrive:new(player, computer, bayIndex, tool, time)
     local o = {}
     setmetatable(o, self)

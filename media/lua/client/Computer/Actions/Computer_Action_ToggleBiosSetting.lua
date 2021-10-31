@@ -25,6 +25,11 @@ function Computer_Action_ToggleBiosSetting:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param settingKey string
+---@param settingValue string | boolean | number
+---@param time number
 function Computer_Action_ToggleBiosSetting:new(player, computer, settingKey, settingValue, time)
     local o = {}
     setmetatable(o, self)

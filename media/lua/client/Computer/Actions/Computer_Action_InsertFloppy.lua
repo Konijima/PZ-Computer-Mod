@@ -28,6 +28,11 @@ function Computer_Action_InsertFloppy:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param floppydrive Floppydrive
+---@param floppy Floppy
+---@param time number
 function Computer_Action_InsertFloppy:new(player, computer, floppydrive, floppy, time)
     local o = {}
     setmetatable(o, self)

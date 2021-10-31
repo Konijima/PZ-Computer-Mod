@@ -53,6 +53,12 @@ function Computer_Action_InstallDrive:perform()
     ISBaseTimedAction.perform(self)
 end
 
+---@param player number
+---@param computer Computer
+---@param item InventoryItem
+---@param bayIndex number
+---@param tool InventoryItem
+---@param time number
 function Computer_Action_InstallDrive:new(player, computer, item, bayIndex, tool, time)
     local o = {}
     setmetatable(o, self)

@@ -28,6 +28,11 @@ function Computer_Action_InsertDisc:perform()
     ISBaseTimedAction.perform(self);
 end
 
+---@param player number
+---@param computer Computer
+---@param discdrive Discdrive
+---@param disc Disc
+---@param time number
 function Computer_Action_InsertDisc:new(player, computer, discdrive, disc, time)
     local o = {}
     setmetatable(o, self)
