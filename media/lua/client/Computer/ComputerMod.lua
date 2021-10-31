@@ -560,9 +560,6 @@ end
 ---@param computer Computer
 ---@return void
 local function ComputerBiosManagementMenu(player, computerContext, computer)
-    local character = getSpecificPlayer(player)
-    local square = computer:getSquareInFront()
-
     local option = computerContext:addOption("Bios Management")
     local context = ISContextMenu:getNew(computerContext)
     computerContext:addSubMenu(option, context)
@@ -602,7 +599,6 @@ end
 ---@param computer Computer
 ---@return void
 local function ComputerHardDriveManagementMenu(player, computerContext, computer)
-    local character = getSpecificPlayer(player)
     local harddrives = computer:getAllHarddrives()
 
     local option = computerContext:addOption("Hard Drives")
@@ -628,7 +624,6 @@ end
 ---@param computer Computer
 ---@return void
 local function ComputerDiscDriveManagementMenu(player, computerContext, computer)
-    local character = getSpecificPlayer(player)
     local discdrives = computer:getAllDiscdrives()
 
     local option = computerContext:addOption("Disc Drives")
@@ -654,7 +649,6 @@ end
 ---@param computer Computer
 ---@return void
 local function ComputerFloppyDriveManagementMenu(player, computerContext, computer)
-    local character = getSpecificPlayer(player)
     local floppydrives = computer:getAllFloppydrives()
 
     local option = computerContext:addOption("Floppy Drives")
@@ -681,7 +675,6 @@ end
 ---@return void
 local function ComputerHardwareManagementMenu(player, computerContext, computer)
     local character = getSpecificPlayer(player)
-    local inventory = character:getInventory()
     local square = computer:getSquareInFront()
 
     local function optionOpenUi()
@@ -691,29 +684,6 @@ local function ComputerHardwareManagementMenu(player, computerContext, computer)
 
     local function optionResetComputer()
         computer:reset()
-    end
-
-    local function optionInstallDrive(item, bayIndex, screwdriver)
-        if screwdriver then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(character, square))
-            if character:getPrimaryHandItem() ~= screwdriver then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(character, screwdriver, 40, true, false))
-            end
-            if character:getSecondaryHandItem() ~= item then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(character, item, 20, false, false))
-            end
-            ISTimedActionQueue.add(Computer_Action_InstallDrive:new(player, computer, item, bayIndex, screwdriver, 200))
-        end
-    end
-
-    local function optionUninstallDrive(bayIndex, screwdriver)
-        if screwdriver then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(character, square))
-            if character:getPrimaryHandItem() ~= screwdriver then
-                ISTimedActionQueue.add(ISEquipWeaponAction:new(character, screwdriver, 40, true, false))
-            end
-            ISTimedActionQueue.add(Computer_Action_UninstallDrive:new(player, computer, bayIndex, screwdriver, 200))
-        end
     end
 
     if computer:isOn() then
@@ -926,10 +896,9 @@ function OnComputerShutDown(computer)
     SetComputerStateOnSquare(computer.square, false)
 end
 
----@param item InventoryItem
 ---@param square IsoGridSquare
 ---@return void
-function OnComputerPickedUp(item, square)
+function OnComputerPickedUp(_, square)
     RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
 end
 
