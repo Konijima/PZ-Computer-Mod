@@ -35,9 +35,8 @@ function ISMoveableSpriteProps:pickUpMoveableInternal(_character, _square, _obje
             return item;
         end
 
-    else
-        local item = original_ISMoveableSpriteProps_pickUpMoveableInternal(self, _character, _square, _object, _sprInstance, _spriteName, _createItem, _rotating, ...)
-        return item
+    else -- we can just return whatever the original returns.
+        return original_ISMoveableSpriteProps_pickUpMoveableInternal(self, _character, _square, _object, _sprInstance, _spriteName, _createItem, _rotating, ...)
     end
 
 end
@@ -60,8 +59,8 @@ function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName
             computerData = copyTable(_item:getModData().computerData);
         end
 
-        -- Place the computer
-        original_ISMoveableSpriteProps_placeMoveableInternal(self, _square, _item, _spriteName, ...)
+        -- Place the computer | Please always return original function, just in case anything changes
+        local ret = original_ISMoveableSpriteProps_placeMoveableInternal(self, _square, _item, _spriteName, ...)
 
         -- Get the computer on square
         local computer = ComputerMod.GetComputerOnSquare(_square)
@@ -73,8 +72,9 @@ function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName
             print("Computer data transferred into object!")
         end
 
-    else
-        original_ISMoveableSpriteProps_placeMoveableInternal(self, _square, _item, _spriteName, ...)
+        return ret; -- we return original return.
+    else -- please always return original, just in case anything changes
+        return original_ISMoveableSpriteProps_placeMoveableInternal(self, _square, _item, _spriteName, ...)
     end
 
 end
