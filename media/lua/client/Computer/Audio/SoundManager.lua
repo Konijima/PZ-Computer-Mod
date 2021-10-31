@@ -123,8 +123,9 @@ local function StopAllSoundsAt(x, y, z)
     end
 end
 
+---@return void
 local function Update()
-    for k, v in pairs(Sounds) do
+    for k, _ in pairs(Sounds) do
         local squareSounds = Sounds[k]
         for i=0, squareSounds:size()-1 do
             local sound = squareSounds:get(i)
