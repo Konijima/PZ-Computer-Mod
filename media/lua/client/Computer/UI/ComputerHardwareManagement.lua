@@ -17,7 +17,6 @@ ComputerHardwareManagement.cheat = false;
 local FNT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small);
 local FNT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium);
 
----@return void
 function ComputerHardwareManagement:initialise()
     ISCollapsableWindow.initialise(self);
 end
@@ -34,7 +33,6 @@ function ComputerHardwareManagement:update()
     end
 end
 
----@return void
 function ComputerHardwareManagement:prerender()
     ISCollapsableWindow.prerender(self)
     self:updateLayout()
@@ -42,21 +40,18 @@ end
 
 ---@param x number
 ---@param y number
----@return void
 function ComputerHardwareManagement:getMouseOverPart(x, y)
     -- TODO: Remove?
 end
 
 ---@param x number
 ---@param y number
----@return void
 function ComputerHardwareManagement:onMouseDown(x, y)
     ISCollapsableWindow.onMouseDown(self, x, y);
 end
 
 ---@param x number
 ---@param y number
----@return void
 function ComputerHardwareManagement:onRightMouseUp(x, y)
     -- TODO: Remove?
 end
@@ -81,7 +76,7 @@ end
 ---@param bayIndex number
 ---@param driveItem InventoryItem
 ---@param screwdriver InventoryItem
-function ComputerHardwareManagement.optionInstallDrive(self, driveItem, bayIndex, screwdriver)
+function ComputerHardwareManagement:optionInstallDrive(driveItem, bayIndex, screwdriver)
     if screwdriver then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
         if self.character:getPrimaryHandItem() ~= screwdriver then
@@ -97,8 +92,7 @@ end
 ---@param self ComputerHardwareManagement
 ---@param bayIndex number
 ---@param screwdriver InventoryItem
----@return void
-function ComputerHardwareManagement.optionUninstallDrive(self, bayIndex, screwdriver)
+function ComputerHardwareManagement:optionUninstallDrive(bayIndex, screwdriver)
     if screwdriver then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
         if self.character:getPrimaryHandItem() ~= screwdriver then
@@ -190,7 +184,6 @@ end
 
 ---@param x number
 ---@param y number
----@return void
 function ComputerHardwareManagement:onListRightMouseUp(x, y)
     self:onMouseDown(x, y);
     if self.items[self.selected] and self.items[self.selected].item and not self.items[self.selected].item.listCategory then
@@ -201,6 +194,7 @@ end
 
 ---@param y number
 ---@param item table
+---@return number
 function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param? unsure.
     -- NOTE: Draws background box of item if selected/hovered and not a category
     if not item.item or item.item.listCategory ~= true then
@@ -243,6 +237,7 @@ function ComputerHardwareManagement:updateLayout()
     self.drivelist:setX(self.listbox:getRight() + 20)
 end
 
+---@return void
 function ComputerHardwareManagement:initParts()
     if not self.computer then return; end
 
