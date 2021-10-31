@@ -3,6 +3,8 @@ require("ISBaseObject")
 ---@class BiosSetting
 local BiosSetting = ISBaseObject:derive("BiosSetting")
 
+-- TO-DO: check types as the value is saved in computer moddata, any isn't the right thing here
+
 ---@vararg any
 ---@return BiosSetting
 function BiosSetting:new(...)
