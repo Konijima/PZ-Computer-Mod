@@ -397,6 +397,7 @@ end
 
 --- COMPUTER
 
+--- Get a Computer isntance on this square
 ---@param square IsoGridSquare
 ---@return Computer | nil
 local function GetComputerOnSquare(square)
@@ -412,6 +413,7 @@ local function GetComputerOnSquare(square)
     end
 end
 
+--- Get a Computer instance at this position
 ---@param x number
 ---@param y number
 ---@param z number
@@ -423,33 +425,13 @@ local function GetComputerAtPosition(x, y, z)
     end
 end
 
+--- Get a copy of all known computer locations database
 ---@return table
 local function GetAllKnownComputerLocations()
     return copyTable(GlobalModData.computerLocations)
 end
 
----@param x number
----@param y number
----@param z number
----@return number | nil
-local function GetIndexOfComputerLocationAtPosition(x, y, z)
-    for i=1, #GlobalModData.computerLocations do
-        local location = GlobalModData.computerLocations[i]
-        if location and location.x == x and location.y == y and location.z == z then
-            return i
-        end
-    end
-end
-
----@param square IsoGridSquare
----@return number | nil
-local function GetIndexOfComputerLocationOnSquare(square)
-    if square and instanceof(square, "IsoGridSquare") then
-        local position = { x = square:getX(), y = square:getY(), z = square:getZ() }
-        return GetIndexOfComputerLocationAtPosition(position.x, position.y, position.z)
-    end
-end
-
+--- Get the power state of the computer at this position
 ---@param x number
 ---@param y number
 ---@param z number
@@ -461,15 +443,7 @@ local function GetComputerStateAtPosition(x, y, z)
     end
 end
 
----@param square IsoGridSquare
----@return boolean
-local function GetComputerStateOnSquare(square)
-    local id = ComputerUtils.squareToId(square)
-    if id and GlobalModData.computerStateLocations then
-        return GlobalModData.computerStateLocations[id]
-    end
-end
-
+--- Set the power state of the computer at this position
 ---@param x number
 ---@param y number
 ---@param z number
@@ -482,6 +456,17 @@ local function SetComputerStateAtPosition(x, y, z, state)
     end
 end
 
+--- Get the power state of the computer on this square
+---@param square IsoGridSquare
+---@return boolean
+local function GetComputerStateOnSquare(square)
+    local id = ComputerUtils.squareToId(square)
+    if id and GlobalModData.computerStateLocations then
+        return GlobalModData.computerStateLocations[id]
+    end
+end
+
+--- Set the power state of the computer on this square
 ---@param square IsoGridSquare
 ---@param state boolean
 ---@return void
@@ -492,28 +477,30 @@ local function SetComputerStateOnSquare(square, state)
     end
 end
 
+--- Add the computer to the known computer location database
 ---@param computer Computer
 ---@return void
 local function AddComputerLocation(computer)
     if type(computer) == "table" and getmetatable(computer) == Classes.Computer then
-        local index = GetIndexOfComputerLocationOnSquare(computer.square)
-        if not index then
+        local id = ComputerUtils.squareToId(computer.square)
+        if id and not GlobalModData.computerLocations[id] then
             local position = { x = computer.square:getX(), y = computer.square:getY(), z = computer.square:getZ() }
-            table.insert(GlobalModData.computerLocations, position);
-            print("ComputerMod: Added Computer to globalModData.computerLocations x:", position.x, " y:", position.y, " z:", position.z)
+            GlobalModData.computerLocations[id] = position
+            print("ComputerMod: Added Computer to ComputerLocations -> x:", position.x, " y:", position.y, " z:", position.z)
         end
     end
 end
 
+--- Remove the computer at this location from the known computer database
 ---@param x number
 ---@param y number
 ---@param z number
 ---@return void
 local function RemoveComputerLocation(x, y, z)
-    local index = GetIndexOfComputerLocationAtPosition(x, y, z)
-    if index then
-        table.remove(GlobalModData.computerLocations, index)
-        print("ComputerMod: Remove Computer from globalModData.computerLocations x:", x, " y:", y, " z:", z)
+    local id = ComputerUtils.positionToId(x, y, z)
+    if id and GlobalModData.computerLocations[id] then
+        GlobalModData.computerLocations[id] = nil
+        print("ComputerMod: Removed Computer from ComputerLocations -> x:", x, " y:", y, " z:", z)
     end
 end
 
@@ -968,8 +955,6 @@ function ComputerMod.GetComputerOnSquare(...) return GetComputerOnSquare(...); e
 function ComputerMod.GetComputerAtPosition(...) return GetComputerAtPosition(...); end
 
 function ComputerMod.GetAllKnownComputerLocations() return GetAllKnownComputerLocations(); end
-function ComputerMod.GetIndexOfComputerLocationOnSquare(...) return GetIndexOfComputerLocationOnSquare(...); end
-function ComputerMod.GetIndexOfComputerLocationAtPosition(...) return GetIndexOfComputerLocationAtPosition(...); end
 
 function ComputerMod.GetComputerStateAtPosition(...) return GetComputerStateAtPosition(...); end
 function ComputerMod.GetComputerStateOnSquare(...) return GetComputerStateOnSquare(...); end
