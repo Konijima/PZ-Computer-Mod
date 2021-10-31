@@ -22,7 +22,7 @@ function BiosSetting:new(...)
     }
 
     for i = 1, #args do
-        if paramCheck[i].type ~= "any" and type(args[i]) ~= paramCheck[i].type or paramCheck[i].type == "any" and (type(args[i]) == "string" or type(args[i]) == "number" or type(args[i]) == "boolean" or type(args[i]) == "table") then
+        if paramCheck[i].type ~= "any" and type(args[i]) ~= paramCheck[i].type or paramCheck[i].type == "any" and not (type(args[i]) == "string" or type(args[i]) == "number" or type(args[i]) == "boolean" or type(args[i]) == "table") then
             error("Error calling BiosSetting:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
         else
             o[paramCheck[i].name] = args[i]
