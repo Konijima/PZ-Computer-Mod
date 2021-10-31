@@ -1,8 +1,16 @@
 require("Computer/ComputerMod")
 Computer = require("Computer/Classes/Computer")
 
---- pickUpMoveableInternal
+------------------------------------------------------------------------------------------------------------------------
+
 local original_ISMoveableSpriteProps_pickUpMoveableInternal = ISMoveableSpriteProps.pickUpMoveableInternal
+
+---@param _character IsoPlayer
+---@param _square IsoGridSquare
+---@param _object IsoObject
+---@param _sprInstance IsoSprite
+---@param _spriteName string
+---@return InventoryItem
 function ISMoveableSpriteProps:pickUpMoveableInternal(_character, _square, _object, _sprInstance, _spriteName, _createItem, _rotating, ...)
 
     local computer = Computer:new(_object)
@@ -33,8 +41,13 @@ function ISMoveableSpriteProps:pickUpMoveableInternal(_character, _square, _obje
 
 end
 
---- placeMoveableInternal
+------------------------------------------------------------------------------------------------------------------------
+
 local original_ISMoveableSpriteProps_placeMoveableInternal = ISMoveableSpriteProps.placeMoveableInternal
+
+---@param _square IsoGridSquare
+---@param _item InventoryItem
+---@param _spriteName string
 function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName, ...)
 
     -- Check if its a computer
