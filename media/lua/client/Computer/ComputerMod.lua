@@ -924,7 +924,7 @@ function ComputerMod.GetRandomGame() return GetRandomGame(); end
 
 function ComputerMod.GetSoftwareById(...) return GetSoftwareById(...); end
 function ComputerMod.GetAllSoftwares() return GetAllSoftwares(); end
-function ComputerMod.GetRandomSoftware(...) return GetRandomSoftware(...); end
+function ComputerMod.GetRandomSoftware() return GetRandomSoftware(); end
 
 function ComputerMod.GetComputerOnSquare(...) return GetComputerOnSquare(...); end
 function ComputerMod.GetComputerAtPosition(...) return GetComputerAtPosition(...); end
@@ -933,3 +933,5 @@ function ComputerMod.GetAllKnownComputerLocations() return GetAllKnownComputerLo
 
 function ComputerMod.GetComputerStateAtPosition(...) return GetComputerStateAtPosition(...); end
 function ComputerMod.GetComputerStateOnSquare(...) return GetComputerStateOnSquare(...); end
+
+ComputerMod.
