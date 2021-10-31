@@ -1,0 +1,118 @@
+module Computer
+{
+
+    imports {
+        Base,
+    }
+
+    item Disc_Game
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Game CD,
+        Icon             = Disc,
+        WorldStaticModel = Disk,
+        Tags             = ComputerMedium;ComputerDisc,
+    }
+
+    item Disc_Software
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Software CD,
+        Icon             = Disc,
+        WorldStaticModel = Disk,
+        Tags             = ComputerMedium;ComputerDisc,
+    }
+
+    item Disc_Learning
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Learning CD,
+        Icon             = Disc,
+        WorldStaticModel = Disk,
+        Tags             = ComputerMedium;ComputerDisc,
+    }
+
+    item Floppy
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Floppy,
+        Icon             = Floppy,
+        WorldStaticModel = Floppy,
+        Tags             = ComputerMedium;ComputerFloppy,
+    }
+
+    item Floppy_Game
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Game Floppy,
+        Icon             = Floppy,
+        WorldStaticModel = Floppy,
+        Tags             = ComputerMedium;ComputerFloppy,
+    }
+
+    item Floppy_Software
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Software Floppy,
+        Icon             = Floppy,
+        WorldStaticModel = Floppy,
+        Tags             = ComputerMedium;ComputerFloppy,
+    }
+
+    item Floppy_Learning
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Learning Floppy,
+        Icon             = Floppy,
+        WorldStaticModel = Floppy,
+        Tags             = ComputerMedium;ComputerFloppy,
+    }
+
+    item Harddrive
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Hard Drive,
+        Icon             = Harddrive,
+        WorldStaticModel = Harddrive,
+        Tags             = ComputerDrive;ComputerHardware,
+    }
+
+    item Discdrive
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Disc Drive,
+        Icon             = Discdrive,
+        WorldStaticModel = Discdrive,
+        Tags             = ComputerDrive;ComputerHardware,
+    }
+
+    item Floppydrive
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Floppy Drive,
+        Icon             = Floppydrive,
+        WorldStaticModel = Floppydrive,
+        Tags             = ComputerDrive;ComputerHardware,
+    }
+
+    item NetworkCard
+    {
+        Weight           = 0.1,
+        Type             = Normal,
+        DisplayName      = Network Card,
+        Icon             = NetworkCard,
+        WorldStaticModel = NetworkCard,
+        Tags             = ComputerHardware,
+    }
+
+}

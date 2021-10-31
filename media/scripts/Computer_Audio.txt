@@ -1,0 +1,81 @@
+module Base {
+
+    sound ComputerToggle
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerToggle.ogg, } }
+    }
+
+    sound ComputerBootStart
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerBootStart.ogg } }
+    }
+
+    sound ComputerHum
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerHum.ogg } }
+    }
+
+    sound ComputerBootEnd
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerBootEnd.ogg } }
+    }
+
+    sound ComputerInstallDrive
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerInstallDrive.ogg } }
+    }
+
+    sound ComputerDiscActivity
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerDiscActivity.ogg, } }
+    }
+
+    sound ComputerStartupMusic
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerStartupMusic.ogg, } }
+    }
+
+    sound ComputerErrorSound
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerErrorSound.ogg, } }
+    }
+
+    sound ComputerMouseClicks
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerMouseClicks.ogg, } }
+    }
+
+    sound ComputerKeyboardFast
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerKeyboardFast.ogg, } }
+    }
+
+    sound ComputerInsertDisc
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerInsertDisc.ogg, } }
+    }
+
+    sound ComputerEjectDisc
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerEjectDisc.ogg, } }
+    }
+
+    sound ComputerGame1
+    {
+        category = Computer,
+        clip { file = media/sound/ComputerGame1.ogg, } }
+    }
+
+}

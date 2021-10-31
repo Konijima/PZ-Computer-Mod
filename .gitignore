@@ -1,0 +1,17 @@
+
+*.sqlite
+.vs/VSWorkspaceState.json
+.vs/ProjectZomboid-Computer/v16/.suo
+.gradle/
+.idea/
+build/
+gradle/
+images/
+lib/
+logs/
+src/
+local.properties
+version.properties
+settings.gradle
+gradlew
+gradlew.bat
