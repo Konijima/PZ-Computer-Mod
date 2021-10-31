@@ -196,7 +196,7 @@ function Computer:getData()
     if not modData.data.bios then
         modData.data.bios = { }
         print("- Settings default bios settings...")
-        for _, biosSetting in pairs(ComputerMod.GetAllBiosToggleSettings()) do
+        for _, biosSetting in pairs(ComputerMod.GetAllBiosSettings()) do
             modData.data.bios[biosSetting.key] = biosSetting.default
             print("Setting bios setting '", biosSetting.key, "' to default '", biosSetting.default, "'!")
         end
@@ -250,7 +250,7 @@ function Computer:getBiosValue(key)
         local bios = self:getBios()
         local value = bios[key]
         if value == nil then
-            local setting = ComputerMod.GetBiosToggleSettingByKey(key)
+            local setting = ComputerMod.GetBiosSettingByKey(key)
             if setting then
                 value = setting.default
             end

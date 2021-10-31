@@ -10,6 +10,7 @@ local Classes = {
     ComputerEvent = require("Computer/ComputerEvent"),
 
     --- Computer Objects
+    BiosSetting = require("Computer/Classes/BiosSetting"),
     Computer = require("Computer/Classes/Computer"),
     Disc = require("Computer/Classes/Disc"),
     Discdrive = require("Computer/Classes/Discdrive"),
@@ -30,7 +31,7 @@ local GlobalModData = ModData.get("ComputerMod")
 local ComputerAddons = ArrayList.new()
 
 --- Bios Settings Database
----@type table<string, any>
+---@type table<string, BiosSetting>
 local ComputerBiosSettings = {}
 
 --- Game Formats Database
@@ -102,26 +103,8 @@ end
 
 ---TO-DO: @vararg string
 ---@return void
-local function AddBiosToggleSetting(...)
-    local args = ...
-    if type(...) ~= "table" then args = {...}; end
-
-    local newSetting = {}
-    local paramCheck = {
-        {name = "key",              type = "string",    value = type(args[1])},
-        {name = "name",             type = "string",    value = type(args[2])},
-        {name = "descriptionOn",    type = "string",    value = type(args[3])},
-        {name = "descriptionOff",   type = "string",    value = type(args[4])},
-        {name = "default",          type = "boolean",   value = type(args[5])},
-    }
-
-    for i = 1, #args do
-        if type(args[i]) ~= paramCheck[i].type then
-            error("Error calling ComputerMod:AddBiosToggleSetting - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
-        else
-            newSetting[paramCheck[i].name] = args[i]
-        end
-    end
+local function AddBiosSetting(...)
+    local newSetting = Classes.BiosSetting:new(...)
 
     if not ComputerBiosSettings[string.lower(newSetting.key)] then
         newSetting.key = string.lower(newSetting.key) -- force lowercase key
@@ -132,14 +115,14 @@ local function AddBiosToggleSetting(...)
     end
 end
 
----@return table
-local function GetAllBiosToggleSettings()
+---@return table<string, BiosSetting>
+local function GetAllBiosSettings()
     return copyTable(ComputerBiosSettings)
 end
 
 ---@param key string
 ---@return table
-local function GetBiosToggleSettingByKey(key)
+local function GetBiosSettingByKey(key)
     if type(key) == "string" and ComputerBiosSettings[string.lower(key)] then
         return copyTable(ComputerBiosSettings[string.lower(key)])
     end
@@ -363,7 +346,7 @@ end
 local function RunAddon(addon)
     if addon.BiosSettings then
         for i=1, #addon.BiosSettings do
-            AddBiosToggleSetting(addon.BiosSettings[i])
+            AddBiosSetting(addon.BiosSettings[i])
         end
     end
 
@@ -963,8 +946,8 @@ AddEvent("OnComputerPlacedDown", OnComputerPlacedDown)
 
 --- BIOS SETTINGS
 
-AddBiosToggleSetting("power_recovery", "Power Recovery", "Will not automatically restart when power becomes available.", "Will automatically restart when power becomes available.", false)
-AddBiosToggleSetting("enable_audio", "Audio", "Disable all computer audio.", "Enable all computer audio.", true)
+AddBiosSetting("power_recovery", "Power Recovery", "Will not automatically restart when power becomes available.", "Will automatically restart when power becomes available.", false)
+AddBiosSetting("enable_audio", "Audio", "Disable all computer audio.", "Enable all computer audio.", true)
 
 --- GAME FORMATS
 
@@ -994,8 +977,8 @@ function ComputerMod.AddEvent(...) return AddEvent(...); end
 function ComputerMod.RemoveEvent(...) return RemoveEvent(...); end
 function ComputerMod.TriggerEvent(...) return TriggerEvent(...); end
 
-function ComputerMod.GetAllBiosToggleSettings() return GetAllBiosToggleSettings(); end
-function ComputerMod.GetBiosToggleSettingByKey(...) return GetBiosToggleSettingByKey(...); end
+function ComputerMod.GetAllBiosSettings() return GetAllBiosSettings(); end
+function ComputerMod.GetBiosSettingByKey(...) return GetBiosSettingByKey(...); end
 
 function ComputerMod.GetAllGameFormats() return GetAllGameFormats(); end
 function ComputerMod.GetAllSoftwareTypes() return GetAllSoftwareTypes(); end
