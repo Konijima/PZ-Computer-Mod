@@ -1,8 +1,6 @@
---- ComputerUtils
 ---@class ComputerUtils
 ComputerUtils = ComputerUtils or {}
 
---- tableContains
 ---@param table table
 ---@param value any
 ---@return boolean
@@ -22,7 +20,6 @@ function ComputerUtils.tableContains(table, value)
     return false
 end
 
---- findAllByTag
 ---@param inventory ItemContainer
 ---@param tag string
 ---@return ArrayList | nil
@@ -39,7 +36,6 @@ function ComputerUtils.findAllByTag(inventory, tag)
     end
 end
 
---- positionToId
 ---@param x number
 ---@param y number
 ---@param z number
@@ -50,7 +46,6 @@ function ComputerUtils.positionToId(x, y, z)
     end
 end
 
---- squareToId
 ---@param square IsoGridSquare
 ---@return string
 function ComputerUtils.squareToId(square)
