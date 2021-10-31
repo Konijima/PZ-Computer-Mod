@@ -1,7 +1,9 @@
 require("ISBaseObject")
 
+---@class Disc
 local Disc = ISBaseObject:derive("Disc")
 
+---@return Disc
 function Disc:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)

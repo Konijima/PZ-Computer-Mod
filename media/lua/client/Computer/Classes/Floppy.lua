@@ -1,7 +1,9 @@
 require("ISBaseObject")
 
+---@class Floppy
 local Floppy = ISBaseObject:derive("Floppy")
 
+---@return Floppy
 function Floppy:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
