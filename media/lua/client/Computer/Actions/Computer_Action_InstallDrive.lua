@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InstallDrive = ISBaseTimedAction:derive("Computer_Action_InstallDrive");
 
 function Computer_Action_InstallDrive:isValid()
-    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil
+    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.drives[self.bayIndex] == nil
 end
 
 function Computer_Action_InstallDrive:update()
@@ -77,5 +77,6 @@ function Computer_Action_InstallDrive:new(player, computer, item, bayIndex, tool
     o.item = item
     o.bayIndex = bayIndex
     o.tool = tool
+    o.drives = computer:getAllDrives()
     return o;
 end
