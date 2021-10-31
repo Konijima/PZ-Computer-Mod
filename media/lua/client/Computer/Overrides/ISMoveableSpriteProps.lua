@@ -27,6 +27,7 @@ function ISMoveableSpriteProps:pickUpMoveableInternal(_character, _square, _obje
             local computerData = computer:getData()
             if computerData then
                 item:getModData().computerData = copyTable(computerData)
+                print("Computer data transferred into movable item!")
             end
 
             ComputerMod.TriggerEvent("OnComputerPickedUp", item, _square)
@@ -69,6 +70,7 @@ function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName
         if computer and computerData then
             computer.isoObject:getModData().data = computerData;
             ComputerMod.TriggerEvent("OnComputerPlacedDown", computer)
+            print("Computer data transferred into object!")
         end
 
     else
