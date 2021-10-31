@@ -1,6 +1,11 @@
+--- ComputerUtils
+---@class ComputerUtils
 ComputerUtils = ComputerUtils or {}
 
 --- tableContains
+---@param table table
+---@param value any
+---@return boolean
 function ComputerUtils.tableContains(table, value)
     if type(table) == "table" then
         for i=1, #table do
@@ -18,18 +23,27 @@ function ComputerUtils.tableContains(table, value)
 end
 
 --- findAllByTag
+---@param inventory ItemContainer
+---@param tag string
+---@return ArrayList | nil
 function ComputerUtils.findAllByTag(inventory, tag)
     if instanceof(inventory, "ItemContainer") and type(tag) == "string" then
-        local validItems = getScriptManager():getItemsTag(tag);
         local foundItems = ArrayList.new();
-        for i=0, validItems:size()-1 do
-            foundItems:addAll(inventory:getItemsFromFullType(validItems:get(i):getFullName()));
+        local validItems = getScriptManager():getItemsTag(tag);
+        if validItems then
+            for i=0, validItems:size()-1 do
+                foundItems:addAll(inventory:getItemsFromFullType(validItems:get(i):getFullName()));
+            end
         end
         return foundItems;
     end
 end
 
 --- positionToId
+---@param x number
+---@param y number
+---@param z number
+---@return string
 function ComputerUtils.positionToId(x, y, z)
     if type(x) == "number" and type(y) == "number" and type(z) == "number" then
         return x .. "|" .. y .. "|" .. z
@@ -37,6 +51,8 @@ function ComputerUtils.positionToId(x, y, z)
 end
 
 --- squareToId
+---@param square IsoGridSquare
+---@return string
 function ComputerUtils.squareToId(square)
     if instanceof(square, "IsoGridSquare") then
         return square:getX() .. "|" .. square:getY() .. "|" .. square:getZ()
