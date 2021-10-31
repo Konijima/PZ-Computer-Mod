@@ -348,12 +348,10 @@ function Computer:getAllFloppydrives()
     return floppydrives
 end
 
----TODO: Fix
----@param computer Computer
 ---@param inventory ItemContainer
 ---@param item InventoryItem
 ---@param bayIndex number
-function Computer:installDriveItemInBayIndex(computer, inventory, item, bayIndex)
+function Computer:installDriveItemInBayIndex(inventory, item, bayIndex)
     local drive
 
     if item then
@@ -374,22 +372,20 @@ function Computer:installDriveItemInBayIndex(computer, inventory, item, bayIndex
             print("Installed "..drive.type.." into bay " .. bayIndex)
 
             if drive.type == "Harddrive" then
-                ComputerMod.TriggerEvent("OnComputerHarddriveInstalled",computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerHarddriveInstalled", self, drive, bayIndex)
             elseif drive.type == "Discdrive" then
-                ComputerMod.TriggerEvent("OnComputerDiscdriveInstalled", computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerDiscdriveInstalled", self, drive, bayIndex)
             elseif drive.type == "Floppydrive" then
-                ComputerMod.TriggerEvent("OnComputerFloppydriveInstalled", computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerFloppydriveInstalled", self, drive, bayIndex)
             end
         end
 
     end
 end
 
----TODO: Fix
----@param Computer
----@param ItemContainer
----@param number
-function Computer:uninstallDriveFromBayIndex(computer, inventory, bayIndex)
+---@param inventory ItemContainer
+---@param bayIndex number
+function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
     local drives = self:getAllDrives()
     local drive = self:getDriveInBayIndex(bayIndex)
     if drive then
@@ -398,11 +394,11 @@ function Computer:uninstallDriveFromBayIndex(computer, inventory, bayIndex)
             drives[bayIndex] = false
             print("Uninstalled "..drive.type.." from bay " .. bayIndex)
             if drive.type == "Harddrive" then
-                ComputerMod.TriggerEvent("OnComputerHarddriveUninstalled",computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerHarddriveUninstalled",self, drive, bayIndex)
             elseif drive.type == "Discdrive" then
-                ComputerMod.TriggerEvent("OnComputerDiscdriveUninstalled", computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerDiscdriveUninstalled", self, drive, bayIndex)
             elseif drive.type == "Floppydrive" then
-                ComputerMod.TriggerEvent("OnComputerFloppydriveUninstalled", computer, drive, bayIndex)
+                ComputerMod.TriggerEvent("OnComputerFloppydriveUninstalled", self, drive, bayIndex)
             end
         end
     end
