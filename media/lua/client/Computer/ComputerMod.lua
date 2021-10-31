@@ -863,11 +863,13 @@ end
 ---@param square IsoGridSquare
 function OnComputerPickedUp(_, square)
     RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
+    SetComputerStateOnSquare(square, nil)
 end
 
 ---@param computer Computer
 function OnComputerPlacedDown(computer)
     AddComputerLocation(computer)
+    SetComputerStateOnSquare(computer.square, computer:isOn())
 end
 
 AddEvent("OnComputerAfterBoot", OnComputerAfterBoot)
