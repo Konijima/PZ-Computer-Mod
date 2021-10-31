@@ -1,19 +1,24 @@
 require("ISBaseObject")
 
+---@class ComputerEvent
 local ComputerEvent = ISBaseObject:derive("ComputerEvent")
 
+---@param func function
 function ComputerEvent:add(func)
     if func and type(func) == "function" then
         self.handlers:add(func)
     end
 end
 
+---@param func function
 function ComputerEvent:remove(func)
     if func and type(func) == "function" then
         self.handlers:remove(func)
     end
 end
 
+---@param eventName string
+---@vararg any
 function ComputerEvent:trigger(eventName, ...)
     local args = {...}
 
@@ -33,6 +38,7 @@ function ComputerEvent:trigger(eventName, ...)
     end
 end
 
+---@vararg string
 function ComputerEvent:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
