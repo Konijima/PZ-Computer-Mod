@@ -39,6 +39,7 @@ function ComputerEvent:trigger(eventName, ...)
 end
 
 ---@vararg string
+---@return ComputerEvent
 function ComputerEvent:new(...)
     local o = ISBaseObject:new()
     setmetatable(o, self)
