@@ -298,17 +298,6 @@ function Computer:getDriveInBayIndex(bayIndex)
     return drive
 end
 
----@param drive Harddrive | Discdrive | Floppydrive
----@return number
-function Computer:getDriveCurrentBayIndex(drive)
-    local drives = self:getAllDrives()
-    for i=1, drives.count do
-        if drives[i] == drive then
-            return i
-        end
-    end
-end
-
 ---@return table<Harddrive>
 function Computer:getAllHarddrives()
     local drives = self:getAllDrives()
