@@ -236,10 +236,16 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
             self:drawText(drive.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
         else
+            local curText = "Empty";
             local curColor = optCol;
-            if item.required then curColor = reqCol; end
+            if item.item.required then
+                curText = "Missing";
+                curColor = reqCol;
+            elseif item.item.main then
+                curText = "None";
+            end
             self:drawText(item.text, 20, y - 2, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
-            self:drawText("Empty", 120, y - 2, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
+            self:drawText(curText, 120, y - 2, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
         end
     end
 
@@ -262,18 +268,18 @@ function ComputerHardwareManagement:initParts()
 
     self.mainlist:addItem("Hardware Slots", { listCategory = true});
 
-    self.mainlist:addItem("Processor", { });
-    self.mainlist:addItem("Graphic Card", { });
-    self.mainlist:addItem("Network Card", { });
-    self.mainlist:addItem("Sound Card", { });
-    self.mainlist:addItem("Power Supply", { });
-    self.mainlist:addItem("Car Battery", { });
+    self.mainlist:addItem("Processor", { main = true, required = true });
+    self.mainlist:addItem("Graphic Card", { main = true, required = true });
+    self.mainlist:addItem("Power Supply", { main = true, required = true });
+    self.mainlist:addItem("Network Card", { main = true,  });
+    self.mainlist:addItem("Sound Card", { main = true,  });
+    self.mainlist:addItem("Car Battery", { main = true,  });
 
     self.mainlist:addItem("Drive Bays", {listCategory = true});
 
     for index = 1, self.drives.count do
         if self.drives[i] then self.hasOneDrive = true; end
-        self.mainlist:addItem("[Bay "..tostring(index).."] ", {
+        self.mainlist:addItem("Drive Bay "..tostring(index), {
             index = index,
         });
     end
