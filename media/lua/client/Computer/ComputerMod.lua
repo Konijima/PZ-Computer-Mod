@@ -789,7 +789,6 @@ end
 
 --- GAME EVENTS
 
-
 local function AddTagToDisc()
     local item = getScriptManager():getItem("Base.Disc")
     if item then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
@@ -797,8 +796,8 @@ local function AddTagToDisc()
     if item2 then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
 end
 
-
 local function LoadGlobalModData()
+    print("LoadGlobalModData")
     if not ModData.exists("ComputerMod") then
         ModData.create("ComputerMod")
         print("ComputerMod: Global mod data was created!")
@@ -811,24 +810,21 @@ local function LoadGlobalModData()
     print("ComputerMod: Global mod data has loaded!")
 end
 
-
 local function InitializeComputers()
     if not GlobalModData or not GlobalModData.computerLocations then return; end
-    if getCell() == nil then return; end
+    print("InitializeComputers")
 
-    local locations = GlobalModData.computerLocations
-    for i=1, #locations do
-        local position = locations[i]
+    for key, _ in pairs(GlobalModData.computerLocations) do
+        local position = GlobalModData.computerLocations[key]
 
-        --print("COMPUTER STATE at ", position.x, ":",position.y, ":",position.z, GetComputerStateAtPosition(position.x, position.y, position.z))
+        print("COMPUTER STATE at ", position.x, ":", position.y, ":", position.z, " = ", GetComputerStateAtPosition(position.x, position.y, position.z))
 
         -- Handle computer audio
-        if GetComputerStateAtPosition(position.x, position.y, position.z) == true then
+        if GetComputerStateAtPosition(position.x, position.y, position.z) then
             SoundManager.PlaySoundAt("computer", "ComputerHum", position.x, position.y, position.z)
         end
     end
 end
-
 
 ---@type number
 local ticks = 0;
