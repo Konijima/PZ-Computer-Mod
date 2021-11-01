@@ -116,12 +116,11 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     ---@type ArrayList
     local screwdriverItems = ComputerUtils.findAllByTag(self.inventory, "Screwdriver");
 
-    -- Get All Drives from inventory
     ---@type ArrayList
-    local drivesInventory = ComputerUtils.findAllByTag(self.inventory, "ComputerDrive");
+    local hardwareItems = ComputerUtils.findAllByTag(self.inventory, "ComputerHardware");
 
-    ---@type drive
-    local drive = self.computer:getDriveInBayIndex(bayIndex) -- get drive by index
+    ---@type BaseHardware
+    local bayDrive = self.computer:getDriveInBayIndex(bayIndex) -- get drive by index
 
     -- get valid screwdrivers
     local validScrewdriverItems = getScriptManager():getItemsTag("Screwdriver");
@@ -136,13 +135,14 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     end
 
     -- Empty Bay
-    if not drive then
-        if drivesInventory:size() > 0 then
+    if not bayDrive then
+        -- We have some hardware in inventory
+        if hardwareItems:size() > 0 then
             local bayOption = self.context:addOption(getText("IGUI_Install"));
             local bayContext = ISContextMenu:getNew(self.context)
             self.context:addSubMenu(bayOption, bayContext)
-            for i=0, drivesInventory:size()-1 do
-                local item = drivesInventory:get(i);
+            for i=0, hardwareItems:size()-1 do
+                local item = hardwareItems:get(i);
 
                 local hardware
                 if item:getType() == "Harddrive" then
@@ -175,13 +175,13 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     else
         local uninstallOption
         local tooltip = ISToolTip:new()
-        tooltip.name = "Uninstall " .. drive:getName()
+        tooltip.name = "Uninstall " .. bayDrive.name
         if screwdriverItems:size() > 0 then
-            uninstallOption = self.context:addOption("Uninstall " .. drive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
-            tooltip.description = drive:getTooltipDescription()
+            uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            tooltip.description = bayDrive:getTooltipDescription()
             tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> (Click to uninstall drive)"
         else
-            uninstallOption = self.context:addOption("Uninstall " .. drive.name)
+            uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name)
             uninstallOption.notAvailable = true
             tooltip.description = "Needs:"
             tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> "..neededDescription.." 0/1"
@@ -236,17 +236,16 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
             self:drawText(drive.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
             if item.item.condition ~= nil then
-                local color = ComputerHardwareManagement.getConditionRGB(item.item.condition)
-                self:drawText(" ("..item.item.condition.."%)", 120 + driveNameWidth, y - 2, color.r, color.g, color.b, 1, UIFont.Small);
+                self:drawText(" ("..item.item.condition.value..")", 120 + driveNameWidth, y - 2, item.item.condition.color.r, item.item.condition.color.g, item.item.condition.color.b, 1, UIFont.Small);
             end
         else
-            local curText = "Empty";
+            local curText = "None";
             local curColor = optCol;
             if item.item.required then
                 curText = "Missing";
                 curColor = reqCol;
-            elseif item.item.main then
-                curText = "None";
+            elseif item.item.type == "Drive" then
+                curText = "Empty";
             end
             self:drawText(item.text, 20, y - 2, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
             self:drawText(curText, 120, y - 2, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
@@ -272,20 +271,25 @@ function ComputerHardwareManagement:initParts()
 
     self.mainlist:addItem("Hardware Slots", { listCategory = true});
 
-    self.mainlist:addItem("Processor", { main = true, required = true });
-    self.mainlist:addItem("Graphic Card", { main = true, required = true });
-    self.mainlist:addItem("Power Supply", { main = true, required = true });
-    self.mainlist:addItem("Network Card", { main = true, });
-    self.mainlist:addItem("Sound Card", { main = true, });
-    self.mainlist:addItem("Car Battery", { main = true, });
+    self.mainlist:addItem("Processor", { type = "CPU", required = true });
+    self.mainlist:addItem("Graphic Card", { type = "GPU", required = true });
+    self.mainlist:addItem("Power Supply", { type = "PowerSupply", required = true });
+    self.mainlist:addItem("Network Card", { type = "NetworkCard", });
+    self.mainlist:addItem("Sound Card", { type = "SoundCard", });
+    self.mainlist:addItem("Car Battery", { type = "Battery", });
 
     self.mainlist:addItem("Drive Bays", {listCategory = true});
 
     for index = 1, self.drives.count do
         if self.drives[i] then self.hasOneDrive = true; end
+        local tempConditionValue = ZombRand(0, 100)
         self.mainlist:addItem("Drive Bay "..tostring(index), {
             index = index,
-            condition = ZombRand(0, 100),
+            type = "Drive",
+            condition = {
+                color = self.getConditionRGB(tempConditionValue),
+                value = tempConditionValue.."%"
+            },
         });
     end
 
