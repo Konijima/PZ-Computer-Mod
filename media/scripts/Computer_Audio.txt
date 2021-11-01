@@ -19,6 +19,7 @@ module Base {
         category = Computer,
 		loop = true, is3D = true,
         clip { file = media/sound/ComputerHum.ogg, distanceMax = 15, volume = 1.0, },
+        clip { file = media/sound/ComputerHum2.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerBootEnd
