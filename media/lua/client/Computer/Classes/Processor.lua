@@ -1,4 +1,4 @@
-require("Computer/BaseHardware")
+require("Computer/Classes/BaseHardware")
 
 ---@class Processor
 local Processor = BaseHardware:derive("Processor", "Processor")

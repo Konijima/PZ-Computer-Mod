@@ -1,47 +1,52 @@
 require "TimedActions/ISBaseTimedAction"
 
-Computer_Action_UninstallDrive = ISBaseTimedAction:derive("Computer_Action_UninstallDrive");
+Computer_Action_InstallHardware = ISBaseTimedAction:derive("Computer_Action_InstallHardware");
 
-function Computer_Action_UninstallDrive:isValid()
-    return self.computer ~= nil and self.tool ~= nil and self.drives[self.bayIndex] ~= nil
+function Computer_Action_InstallHardware:isValid()
+    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.drives[self.bayIndex] == nil
 end
 
-function Computer_Action_UninstallDrive:update()
+function Computer_Action_InstallHardware:update()
     self.character:faceThisObject(self.computer.isoObject)
 
+    self.item:setJobDelta(self:getJobDelta())
     --self.tool:setJobDelta(self:getJobDelta())
     self.character:setMetabolicTarget(Metabolics.LightDomestic)
 end
 
-function Computer_Action_UninstallDrive:start()
+function Computer_Action_InstallHardware:start()
     if self.sound ~= "" then
         self.audio = self.character:getEmitter():playSound(self.sound)
     end
 
+    self:setActionAnim("VehicleWorkOnMid")
+    self.item:setJobType(self.jotText)
+    self.item:setJobDelta(0.0)
     --self.tool:setJobType(self.jotText)
     --self.tool:setJobDelta(0.0)
-
-    self:setActionAnim("VehicleWorkOnMid")
 end
 
-function Computer_Action_UninstallDrive:stop()
+function Computer_Action_InstallHardware:stop()
+    if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
+        self.character:stopOrTriggerSound(self.audio)
+    end
+    self.item:setJobDelta(0.0)
+    --self.tool:setJobDelta(0.0)
+
+    ISBaseTimedAction.stop(self);
+end
+
+function Computer_Action_InstallHardware:perform()
     if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
         self.character:stopOrTriggerSound(self.audio)
     end
 
+    self.item:setJobDelta(0.0)
     --self.tool:setJobDelta(0.0)
 
-    ISBaseTimedAction.stop(self)
-end
+    self.character:setSecondaryHandItem(nil)
 
-function Computer_Action_UninstallDrive:perform()
-    if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
-        self.character:stopOrTriggerSound(self.audio)
-    end
-
-    --self.tool:setJobDelta(0.0)
-
-    self.computer:uninstallDriveFromBayIndex(self.inventory, self.bayIndex)
+    self.computer:installDriveItemInBayIndex(self.inventory, self.item, self.bayIndex)
     self.character:getXp():AddXP(Perks.Electricity, 3)
 
     -- needed to remove from queue / start next.
@@ -50,10 +55,11 @@ end
 
 ---@param player number
 ---@param computer Computer
+---@param item InventoryItem
 ---@param bayIndex number
 ---@param tool InventoryItem
 ---@param time number
-function Computer_Action_UninstallDrive:new(player, computer, bayIndex, tool, time)
+function Computer_Action_InstallHardware:new(player, computer, item, bayIndex, tool, time)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -64,10 +70,11 @@ function Computer_Action_UninstallDrive:new(player, computer, bayIndex, tool, ti
     o.stopOnRun = true;
     o.maxTime = time;
     -- custom fields
-    o.jotText = "Uninstall"
+    o.jotText = "Install"
     o.sound = "ComputerInstallDrive"
     o.audio = 0
     o.computer = computer
+    o.item = item
     o.bayIndex = bayIndex
     o.tool = tool
     o.drives = computer:getAllDrives()

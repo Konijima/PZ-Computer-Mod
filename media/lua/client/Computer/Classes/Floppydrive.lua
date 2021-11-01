@@ -1,4 +1,4 @@
-require("Computer/BaseHardware")
+require("Computer/Classes/BaseHardware")
 
 ---@class Floppydrive
 local Floppydrive = BaseHardware:derive("Floppydrive", "Floppy Drive")

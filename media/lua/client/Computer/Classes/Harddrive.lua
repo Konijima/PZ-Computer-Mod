@@ -1,4 +1,4 @@
-require("Computer/BaseHardware")
+require("Computer/Classes/BaseHardware")
 
 local File = require("Computer/Classes/File")
 local Game = require("Computer/Classes/Game")

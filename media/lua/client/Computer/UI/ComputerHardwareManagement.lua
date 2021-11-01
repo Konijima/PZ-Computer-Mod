@@ -86,7 +86,7 @@ function ComputerHardwareManagement:optionInstallDrive(driveItem, bayIndex, scre
         if self.character:getSecondaryHandItem() ~= item then
             ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, driveItem, 20, false, false))
         end
-        ISTimedActionQueue.add(Computer_Action_InstallDrive:new(self.player, self.computer, driveItem, bayIndex, screwdriver, 200))
+        ISTimedActionQueue.add(Computer_Action_InstallHardware:new(self.player, self.computer, driveItem, bayIndex, screwdriver, 200))
     end
 end
 
@@ -99,7 +99,7 @@ function ComputerHardwareManagement:optionUninstallDrive(bayIndex, screwdriver)
         if self.character:getPrimaryHandItem() ~= screwdriver then
             ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
         end
-        ISTimedActionQueue.add(Computer_Action_UninstallDrive:new(self.player, self.computer, bayIndex, screwdriver, 200))
+        ISTimedActionQueue.add(Computer_Action_UninstallHardware:new(self.player, self.computer, bayIndex, screwdriver, 200))
     end
 end
 
@@ -107,12 +107,12 @@ end
 ---@param x number
 ---@param y number
 ---@return void
-function ComputerHardwareManagement:doPartContextMenu(item, x, y)
+function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 then return; end
     self.context = ISContextMenu.get(self.player, x + self:getAbsoluteX(), y + self:getAbsoluteY());
 
     ---@type number
-    local bayIndex = item.index
+    local bayIndex = selectedItem.index
 
     ---@type ArrayList
     local screwdriverItems = ComputerUtils.findAllByTag(self.inventory, "Screwdriver");
@@ -121,7 +121,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     local hardwareItems = ComputerUtils.findAllByTag(self.inventory, "ComputerHardware");
 
     ---@type BaseHardware
-    local bayDrive = self.computer:getDriveInBayIndex(bayIndex) -- get drive by index
+    local bayDrive = self.computer:getDriveInBayIndex(bayIndex)
 
     -- get valid screwdrivers
     local validScrewdriverItems = getScriptManager():getItemsTag("Screwdriver");
@@ -137,40 +137,59 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
 
     -- Empty Bay
     if not bayDrive then
+
         -- We have some hardware in inventory
         if hardwareItems:size() > 0 then
-            local bayOption = self.context:addOption(getText("IGUI_Install"));
-            local bayContext = ISContextMenu:getNew(self.context)
-            self.context:addSubMenu(bayOption, bayContext)
+
+            local validItems = {}
+
             for i=0, hardwareItems:size()-1 do
                 local item = hardwareItems:get(i);
+                local itemType = item:getType()
 
-                local hardware
-                if item:getType() == "Harddrive" then
-                    hardware = Harddrive:new(item)
-                elseif item:getType() == "Discdrive" then
-                    hardware = Discdrive:new(item)
-                elseif item:getType() == "Floppydrive" then
-                    hardware = Floppydrive:new(item)
-                elseif item:getType() == "Processor" then
-                    hardware = Processor:new(item)
-                end
+                -- Get the hardware class
+                local hardwareType = ComputerMod.GetHardwareType(itemType)
+                if hardwareType then
 
-                --- Install Option
-                local installOption
-                local tooltip = ISToolTip:new()
-                tooltip.name = "Install " .. item:getDisplayName()
-                if screwdriverItems:size() > 0 then
-                    installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
-                    tooltip.description = hardware:getTooltipDescription()
-                    tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
-                else
-                    installOption = bayContext:addOption(item:getDisplayName())
-                    installOption.notAvailable = true
-                    tooltip.description = "Needs:"
-                    tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
+                    -- Check if item fit into this slot type
+                    if selectedItem.type == "Drive" and  ComputerMod.GetDriveType(itemType) or selectedItem.type == itemType then
+
+                        -- Get an instance of the hardware class
+                        local hardware = hardwareType:new(item)
+                        if hardware then
+                            table.insert(validItems, {
+                                item = item,
+                                hardware = hardware,
+                            })
+                        end
+                    end
                 end
-                installOption.toolTip = tooltip
+            end
+
+            if #validItems > 0 then
+                local bayOption = self.context:addOption(getText("IGUI_Install"));
+                local bayContext = ISContextMenu:getNew(self.context)
+                self.context:addSubMenu(bayOption, bayContext)
+
+                for i=1, #validItems do
+                    local validItem = validItems[i]
+
+                    --- Install Option
+                    local installOption
+                    local tooltip = ISToolTip:new()
+                    tooltip.name = "Install " .. validItem.item:getDisplayName()
+                    if screwdriverItems:size() > 0 then
+                        installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
+                        tooltip.description = validItem.hardware:getTooltipDescription()
+                        tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
+                    else
+                        installOption = bayContext:addOption(validItem.item:getDisplayName())
+                        installOption.notAvailable = true
+                        tooltip.description = "Needs:"
+                        tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
+                    end
+                    installOption.toolTip = tooltip
+                end
             end
         end
 
@@ -274,8 +293,8 @@ function ComputerHardwareManagement:initParts()
 
     self.mainlist:addItem("Hardware Slots", { listCategory = true});
 
-    self.mainlist:addItem("Processor", { type = "CPU", required = true });
-    self.mainlist:addItem("Graphic Card", { type = "GPU", required = true });
+    self.mainlist:addItem("Processor", { type = "Processor", required = true });
+    self.mainlist:addItem("Graphic Card", { type = "GraphicCard", required = true });
     self.mainlist:addItem("Power Supply", { type = "PowerSupply", required = true });
     self.mainlist:addItem("Network Card", { type = "NetworkCard", });
     self.mainlist:addItem("Sound Card", { type = "SoundCard", });

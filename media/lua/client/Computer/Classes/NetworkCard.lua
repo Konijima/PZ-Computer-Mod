@@ -1,17 +1,17 @@
 require("Computer/Classes/BaseHardware")
 
----@class Discdrive
-local Discdrive = BaseHardware:derive("Discdrive", "Disc Drive")
+---@class NetworkCard
+local NetworkCard = BaseHardware:derive("NetworkCard", "Network Card")
 
 ---@return string
-function Discdrive:getTooltipDescription()
-    local description = " <RGB:1,1,1> Disc:  <RGB:1,0,0> Empty <LINE> "
+function NetworkCard:getTooltipDescription()
+    local description = ""
     return description
 end
 
 ---@param inventory ItemContainer
 ---@return InventoryItem|nil
-function Discdrive:createItem(inventory)
+function NetworkCard:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
         local modData = item:getModData()
@@ -23,8 +23,8 @@ function Discdrive:createItem(inventory)
 end
 
 ---@vararg string|table|InventoryItem
----@return Discdrive
-function Discdrive:new(...)
+---@return NetworkCard
+function NetworkCard:new(...)
     local o = BaseHardware:new()
     setmetatable(o, self)
     self.__index = self
@@ -62,4 +62,4 @@ function Discdrive:new(...)
     return o
 end
 
-return Discdrive
+return PowerSupply

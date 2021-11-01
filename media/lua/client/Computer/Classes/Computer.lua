@@ -198,12 +198,15 @@ function Computer:getData()
             print("Setting bios setting '", biosSetting.key, "' to default '", biosSetting.default, "'!")
         end
     end
+    -- data.hardwares
+    if modData.data.hardwares == nil then
+        print("- Settings default hardwares slots...")
+        modData.data.hardwares = { }
+    end
     -- data.drives
     if not modData.data.drives or not modData.data.drives.count then
-        print("- Settings default drives slots...")
-        modData.data.drives = {
-            count = 6,
-        }
+        print("- Settings default drives bays...")
+        modData.data.drives = { count = 6 }
     end
     return modData.data
 end

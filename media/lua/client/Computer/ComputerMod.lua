@@ -9,6 +9,7 @@ local Classes = {
     ComputerEvent = require("Computer/ComputerEvent"),
 
     --- Computer Objects
+    BaseHardware = require("Computer/Classes/BaseHardware"),
     BiosSetting = require("Computer/Classes/BiosSetting"),
     Computer = require("Computer/Classes/Computer"),
     Disc = require("Computer/Classes/Disc"),
@@ -17,9 +18,30 @@ local Classes = {
     Floppy = require("Computer/Classes/Floppy"),
     Floppydrive = require("Computer/Classes/Floppydrive"),
     Game = require("Computer/Classes/Game"),
+    GraphicCard = require("Computer/Classes/GraphicCard"),
     Harddrive = require("Computer/Classes/Harddrive"),
+    NetworkCard = require("Computer/Classes/NetworkCard"),
+    PowerSupply = require("Computer/Classes/PowerSupply"),
     Processor = require("Computer/Classes/Processor"),
     Software = require("Computer/Classes/Software"),
+    SoundCard = require("Computer/Classes/SoundCard"),
+}
+
+local HardwareTypes = {
+    Discdrive = Classes.Discdrive,
+    Floppydrive = Classes.Floppydrive,
+    GraphicCard = Classes.GraphicCard,
+    Harddrive = Classes.Harddrive,
+    NetworkCard = Classes.NetworkCard,
+    PowerSupply = Classes.PowerSupply,
+    Processor = Classes.Processor,
+    SoundCard = Classes.SoundCard,
+}
+
+local DriveTypes = {
+    Discdrive = Classes.Discdrive,
+    Floppydrive = Classes.Floppydrive,
+    Harddrive = Classes.Harddrive,
 }
 
 --- Global ModData Object
@@ -59,6 +81,24 @@ local ComputerSoftwares = {}
 local ComputerEvents = {}
 
 -------------------------------------------------------------------------------------------------------
+
+local function GetAllHardwareTypes()
+    return HardwareTypes
+end
+
+---@param type string
+local function GetHardwareType(type)
+    return HardwareTypes[type]
+end
+
+local function GetAllDriveTypes()
+    return DriveTypes
+end
+
+---@param type string
+local function GetDriveType(type)
+    return DriveTypes[type]
+end
 
 --- EVENTS
 
@@ -794,9 +834,9 @@ local function AddTagsToBaseItems()
     local list = {
         { item = "Base.Disc", tags = { "ComputerMedium", "ComputerDisc" } },
         { item = "Base.Disc_Retail", tags = { "ComputerMedium", "ComputerDisc" } },
-        { item = "Base.CarBattery1", tags = { "ComputerHardware", "ComputerBattery" } },
-        { item = "Base.CarBattery2", tags = { "ComputerHardware", "ComputerBattery" } },
-        { item = "Base.CarBattery3", tags = { "ComputerHardware", "ComputerBattery" } },
+        --{ item = "Base.CarBattery1", tags = { "ComputerHardware", "ComputerBattery" } },
+        --{ item = "Base.CarBattery2", tags = { "ComputerHardware", "ComputerBattery" } },
+        --{ item = "Base.CarBattery3", tags = { "ComputerHardware", "ComputerBattery" } },
     }
 
     for _, entry in ipairs(list) do
@@ -1008,6 +1048,12 @@ AddSoftwareType("printer")
 
 ---@class ComputerMod
 ComputerMod = {}
+
+ComputerMod.GetAllHardwareTypes = GetAllHardwareTypes
+ComputerMod.GetHardwareType = GetHardwareType
+
+ComputerMod.GetAllDriveTypes = GetAllDriveTypes
+ComputerMod.GetDriveType = GetDriveType
 
 ComputerMod.CreateAddon = CreateAddon
 ComputerMod.AddAddon = AddAddon
