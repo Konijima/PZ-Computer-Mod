@@ -353,7 +353,7 @@ function ComputerHardwareManagement:new(player, computer)
     o.partRGB =    {r=0.8, g=0.8, b=0.8, a=1}; -- Part Existing Color
     o.partReqRGB = {r=1, g=0, b=0, a=1}; --       Part Missing & Required Color
     o.partOptRGB = {r=0.8, g=0.5, b=0.5, a=1}; -- Part Missing & Optional Color
-    o.title = "Computer Hardware";
+    o.title = "Hardware Management";
     o.clearStentil = false;
     o.leftListHasFocus = true
     o:setWantKeyEvents(true)
