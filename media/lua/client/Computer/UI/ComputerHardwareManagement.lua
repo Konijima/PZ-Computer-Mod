@@ -63,8 +63,7 @@ end
 function ComputerHardwareManagement:onListMouseDown(x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 and not getDebug() then return; end
 
-    self.parent.drivelist.selected = 0;
-    self.parent.extralist.selected = 0;
+    self.parent.mainlist.selected = 0;
 
     local row = self:rowAt(x, y);
     if row < 1 or row > #self.items then return end
@@ -172,7 +171,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
             end
         end
 
-    -- Bay have a drive
+        -- Bay have a drive
     else
         local uninstallOption
         local tooltip = ISToolTip:new()
@@ -222,7 +221,7 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
         self:drawText(item.text, 10, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
         y = y + 10;
 
-    -- List
+        -- List
     else
         local partCol = self.parent.partRGB
         local optCol = self.parent.partOptRGB;
@@ -233,14 +232,14 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
 
         if drive then -- Existing Part
             local itemWidth = getTextManager():MeasureStringX(UIFont.Small, item.text)
-            self:drawText(item.text, 20, y - 5, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
-            self:drawText(drive.name, 100, y - 5, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(item.text, 20, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(drive.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
         else
             local curColor = optCol;
             if item.required then curColor = reqCol; end
-            self:drawText(item.text, 20, y - 5, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
-            self:drawText("Empty", 100, y - 5, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
+            self:drawText(item.text, 20, y - 2, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
+            self:drawText("Empty", 120, y - 2, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
         end
     end
 
@@ -248,30 +247,33 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
 end
 
 function ComputerHardwareManagement:updateLayout()
-    self.drivelist:setWidth(self.listWidth)
-    self.drivelist:setX(5)
-
-    self.extralist:setWidth(self.listWidth)
-    self.extralist:setX(5)
+    self.mainlist:setWidth(self.listWidth)
+    self.mainlist:setX(5)
 end
 
 ---@return void
 function ComputerHardwareManagement:initParts()
     if not self.computer then return; end
 
-    self.drivelist:clear();
-    self.extralist:clear();
-
     local maxWidth = 390;
-
-    self.drivelist:addItem("Drive Bays", {listCategory = true});
-    self.extralist:addItem("Extra Bays", {listCategory = true});
-
     self.hasOneDrive = false;
+
+    self.mainlist:clear();
+
+    self.mainlist:addItem("Hardware Slots", { listCategory = true});
+
+    self.mainlist:addItem("Processor", { });
+    self.mainlist:addItem("Graphic Card", { });
+    self.mainlist:addItem("Network Card", { });
+    self.mainlist:addItem("Sound Card", { });
+    self.mainlist:addItem("Power Supply", { });
+    self.mainlist:addItem("Car Battery", { });
+
+    self.mainlist:addItem("Drive Bays", {listCategory = true});
 
     for index = 1, self.drives.count do
         if self.drives[i] then self.hasOneDrive = true; end
-        self.drivelist:addItem("[Bay "..tostring(index).."] ", {
+        self.mainlist:addItem("[Bay "..tostring(index).."] ", {
             index = index,
         });
     end
@@ -291,39 +293,38 @@ function ComputerHardwareManagement:createChildren()
     local rh = 0;
     local y = self:titleBarHeight() + 25 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * 6
 
-    local driveListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
-    self.drivelist = ISScrollingListBox:new(10, y, self.width, driveListHeight);
-    self.drivelist:initialise();
-    self.drivelist:instantiate();
-    self.drivelist:setAnchorLeft(true);
-    self.drivelist:setAnchorRight(false);
-    self.drivelist:setAnchorTop(true);
-    self.drivelist:setAnchorBottom(true);
-    self.drivelist.itemheight = FNT_HGT_SMALL;
-    self.drivelist.drawBorder = true;
-    self.drivelist.backgroundColor.a = 0;
-    self.drivelist.doDrawItem = ComputerHardwareManagement.doDrawItem;
-    self.drivelist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
-    self.drivelist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
-    self.drivelist.parent = self;
-    self:addChild(self.drivelist);
+    self.mainlist = ISScrollingListBox:new(10, y, self.width, 300);
+    self.mainlist:initialise();
+    self.mainlist:instantiate();
+    self.mainlist:setAnchorLeft(true);
+    self.mainlist:setAnchorRight(false);
+    self.mainlist:setAnchorTop(true);
+    self.mainlist:setAnchorBottom(true);
+    self.mainlist.itemheight = FNT_HGT_SMALL;
+    self.mainlist.drawBorder = true;
+    self.mainlist.backgroundColor.a = 0;
+    self.mainlist.doDrawItem = ComputerHardwareManagement.doDrawItem;
+    self.mainlist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
+    self.mainlist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
+    self.mainlist.parent = self;
+    self:addChild(self.mainlist);
 
-    local extraListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
-    self.extralist = ISScrollingListBox:new(10, y + 5 + self.drivelist.height, self.width, extraListHeight);
-    self.extralist:initialise();
-    self.extralist:instantiate();
-    self.extralist:setAnchorLeft(true);
-    self.extralist:setAnchorRight(false);
-    self.extralist:setAnchorTop(true);
-    self.extralist:setAnchorBottom(true);
-    self.extralist.itemheight = FNT_HGT_SMALL;
-    self.extralist.drawBorder = true;
-    self.extralist.backgroundColor.a = 0;
-    self.extralist.doDrawItem = ComputerHardwareManagement.doDrawItem;
-    self.extralist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
-    self.extralist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
-    self.extralist.parent = self;
-    self:addChild(self.extralist);
+    --local driveListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
+    --self.drivelist = ISScrollingListBox:new(10, y + 5 + self.mainlist.height, self.width, driveListHeight);
+    --self.drivelist:initialise();
+    --self.drivelist:instantiate();
+    --self.drivelist:setAnchorLeft(true);
+    --self.drivelist:setAnchorRight(false);
+    --self.drivelist:setAnchorTop(true);
+    --self.drivelist:setAnchorBottom(true);
+    --self.drivelist.itemheight = FNT_HGT_SMALL;
+    --self.drivelist.drawBorder = true;
+    --self.drivelist.backgroundColor.a = 0;
+    --self.drivelist.doDrawItem = ComputerHardwareManagement.doDrawItem;
+    --self.drivelist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
+    --self.drivelist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
+    --self.drivelist.parent = self;
+    --self:addChild(self.drivelist);
 
     self:initParts();
 end
@@ -342,6 +343,13 @@ function ComputerHardwareManagement:onKeyRelease(key)
     end
 end
 
+function ComputerHardwareManagement:autoSetSize()
+    --self.mainListHeight = self.mainlist.height
+    --self.height = self.startHeight + self.mainListHeight
+    --self.x = (getCore():getScreenWidth()) - (self.width + 100);
+    --self.y = (getCore():getScreenHeight()) - (self.height + 100);
+end
+
 ---@param player number
 ---@param computer Computer
 ---@return ComputerHardwareManagement
@@ -350,8 +358,8 @@ function ComputerHardwareManagement:new(player, computer)
     local height = 450;
 
     --Start in corner
-    local x = (getCore():getScreenWidth()) - (width + 100);
-    local y = (getCore():getScreenHeight()) - (height + 100);
+    local x = getCore():getScreenWidth() - (width + 100);
+    local y = getCore():getScreenHeight() - (height + 100);
 
     local o = ISCollapsableWindow:new(x, y, width, height);
     setmetatable(o, self);
@@ -365,8 +373,6 @@ function ComputerHardwareManagement:new(player, computer)
     o.drives = computer:getAllDrives();
     o.hasOneDrive = false;
 
-    o.minimumHeight = height;
-    o:setResizable(false);
     o.partCatRGB = {r=1, g=1, b=1, a=1}; --       CATEGORY Color
     o.partRGB =    {r=0.8, g=0.8, b=0.8, a=1}; -- Part Existing Color
     o.partReqRGB = {r=1, g=0, b=0, a=1}; --       Part Missing & Required Color
