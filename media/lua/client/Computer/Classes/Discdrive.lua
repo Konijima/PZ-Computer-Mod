@@ -31,7 +31,7 @@ function Discdrive:new(...)
 
     local args = {...}
 
-    -- Check if passing a Discdrive as data
+    -- Check if passing data
     if #args > 1 then
         local paramCheck = {
             {name = "type",         type = "string", value = type(args[1])},
@@ -40,13 +40,13 @@ function Discdrive:new(...)
         
         for i = 1, #args do
             if type(args[i]) ~= paramCheck[i].type then
-                error("Error calling Harddrive:new - argument "..i.." ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
+                error("Error calling "..self.Type..":new - argument "..i.." ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
             else
                 o[paramCheck[i].name] = args[i]
             end
         end
 
-    -- Check if passing a Discdrive as an Item
+    -- Check if passing an Item
     elseif instanceof(args[1], "InventoryItem") and args[1]:getFullType() == o:getItemFullType() then
         local item = args[1]
 
