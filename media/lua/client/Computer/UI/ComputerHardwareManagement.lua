@@ -13,6 +13,7 @@ ComputerHardwareManagement.alphaOverlay = 1;
 ComputerHardwareManagement.alphaOverlayInc = true;
 ComputerHardwareManagement.tooltip = nil;
 ComputerHardwareManagement.cheat = false;
+ComputerHardwareManagement.instance = nil;
 
 local FNT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small);
 local FNT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium);
@@ -356,5 +357,13 @@ function ComputerHardwareManagement:new(player, computer)
     o.clearStentil = false;
     o.leftListHasFocus = true
     o:setWantKeyEvents(true)
+
+    if ComputerHardwareManagement.instance then
+        ComputerHardwareManagement.instance:close()
+        ComputerHardwareManagement.instance = nil
+    end
+
+    ComputerHardwareManagement.instance = o
+
     return o
 end
