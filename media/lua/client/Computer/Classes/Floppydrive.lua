@@ -23,6 +23,12 @@ function Floppydrive:getItemFullType()
     return "Computer.Floppydrive"
 end
 
+---@return string
+function Floppydrive:getTooltipDescription()
+    local description = " <RGB:1,1,1> Floppy: <RGB:1,0,0> Empty <LINE> "
+    return description
+end
+
 ---@param inventory ItemContainer
 ---@return InventoryItem|nil
 function Floppydrive:createItem(inventory)

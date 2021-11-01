@@ -43,6 +43,15 @@ function Harddrive:getItemFullType()
     return "Computer.Harddrive"
 end
 
+---@return string
+function Harddrive:getTooltipDescription()
+    local description = ""
+    description = description .. "<RGB:1,1,1> Files: " .. #self.files .. " <LINE> "
+    description = description .. "<RGB:1,1,1> Games: " .. #self.games .. " <LINE> "
+    description = description .. "<RGB:1,1,1> Softwares: " .. #self.softwares .. " <LINE> "
+    return description
+end
+
 ---@param inventory ItemContainer
 ---@return InventoryItem|nil
 function Harddrive:createItem(inventory)
