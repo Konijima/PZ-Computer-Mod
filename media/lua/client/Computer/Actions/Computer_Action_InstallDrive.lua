@@ -10,7 +10,7 @@ function Computer_Action_InstallDrive:update()
     self.character:faceThisObject(self.computer.isoObject)
 
     self.item:setJobDelta(self:getJobDelta())
-    self.tool:setJobDelta(self:getJobDelta())
+    --self.tool:setJobDelta(self:getJobDelta())
     self.character:setMetabolicTarget(Metabolics.LightDomestic)
 end
 
@@ -22,8 +22,8 @@ function Computer_Action_InstallDrive:start()
     self:setActionAnim("VehicleWorkOnMid")
     self.item:setJobType(self.jotText)
     self.item:setJobDelta(0.0)
-    self.tool:setJobType(self.jotText)
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobType(self.jotText)
+    --self.tool:setJobDelta(0.0)
 end
 
 function Computer_Action_InstallDrive:stop()
@@ -31,7 +31,7 @@ function Computer_Action_InstallDrive:stop()
         self.character:stopOrTriggerSound(self.audio)
     end
     self.item:setJobDelta(0.0)
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobDelta(0.0)
 
     ISBaseTimedAction.stop(self);
 end
@@ -42,7 +42,7 @@ function Computer_Action_InstallDrive:perform()
     end
 
     self.item:setJobDelta(0.0)
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobDelta(0.0)
 
     self.character:setSecondaryHandItem(nil)
 
@@ -70,7 +70,7 @@ function Computer_Action_InstallDrive:new(player, computer, item, bayIndex, tool
     o.stopOnRun = true;
     o.maxTime = time;
     -- custom fields
-    o.jotText = "Install Drive..."
+    o.jotText = "Install"
     o.sound = "ComputerInstallDrive"
     o.audio = 0
     o.computer = computer

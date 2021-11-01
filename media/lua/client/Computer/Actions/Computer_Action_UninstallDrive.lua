@@ -9,7 +9,7 @@ end
 function Computer_Action_UninstallDrive:update()
     self.character:faceThisObject(self.computer.isoObject)
 
-    self.tool:setJobDelta(self:getJobDelta())
+    --self.tool:setJobDelta(self:getJobDelta())
     self.character:setMetabolicTarget(Metabolics.LightDomestic)
 end
 
@@ -18,8 +18,8 @@ function Computer_Action_UninstallDrive:start()
         self.audio = self.character:getEmitter():playSound(self.sound)
     end
 
-    self.tool:setJobType(self.jotText)
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobType(self.jotText)
+    --self.tool:setJobDelta(0.0)
 
     self:setActionAnim("VehicleWorkOnMid")
 end
@@ -29,7 +29,7 @@ function Computer_Action_UninstallDrive:stop()
         self.character:stopOrTriggerSound(self.audio)
     end
 
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobDelta(0.0)
 
     ISBaseTimedAction.stop(self)
 end
@@ -39,7 +39,7 @@ function Computer_Action_UninstallDrive:perform()
         self.character:stopOrTriggerSound(self.audio)
     end
 
-    self.tool:setJobDelta(0.0)
+    --self.tool:setJobDelta(0.0)
 
     self.computer:uninstallDriveFromBayIndex(self.inventory, self.bayIndex)
     self.character:getXp():AddXP(Perks.Electricity, 3)
@@ -64,7 +64,7 @@ function Computer_Action_UninstallDrive:new(player, computer, bayIndex, tool, ti
     o.stopOnRun = true;
     o.maxTime = time;
     -- custom fields
-    o.jotText = "Uninstall Drive..."
+    o.jotText = "Uninstall"
     o.sound = "ComputerInstallDrive"
     o.audio = 0
     o.computer = computer
