@@ -250,7 +250,8 @@ end
 function ComputerHardwareManagement:updateLayout()
     self.listbox:setWidth(self.listWidth)
     self.drivelist:setWidth(self.listWidth)
-    self.drivelist:setX(self.listbox:getRight() + 5)
+    --self.drivelist:setX(self.listbox:getRight() + 5)
+    self.drivelist:setX(5)
 end
 
 ---@return void
@@ -261,7 +262,7 @@ function ComputerHardwareManagement:initParts()
     self.drivelist:clear();
 
     local scrollbarWidth = self.listbox.vscroll:getWidth()
-    local maxWidth = 392.5;
+    local maxWidth = 390;
 
     self.drivelist:addItem("Drive Bays", {listCategory = true});
 
@@ -303,7 +304,7 @@ function ComputerHardwareManagement:createChildren()
     self.listbox.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
     self.listbox.onMouseDown = ComputerHardwareManagement.onListMouseDown;
     self.listbox.parent = self;
-    self:addChild(self.listbox);
+    --self:addChild(self.listbox);
 
     self.drivelist = ISScrollingListBox:new(10 + self.listbox.width, y, 400, self.height-rh-5-y);
     self.drivelist:initialise();
@@ -328,12 +329,12 @@ end
 ---@param computer Computer
 ---@return ComputerHardwareManagement
 function ComputerHardwareManagement:new(player, computer)
-    local width = 800;
+    local width = 400;
     local height = 600;
 
     --Start in corner
-    local x = (getCore():getScreenWidth()) - (width);
-    local y = (getCore():getScreenHeight()) - (height);
+    local x = (getCore():getScreenWidth()) - (width + 100);
+    local y = (getCore():getScreenHeight()) - (height + 100);
 
     local o = ISCollapsableWindow:new(x, y, width, height);
     setmetatable(o, self);
@@ -348,7 +349,7 @@ function ComputerHardwareManagement:new(player, computer)
     o.hasOneDrive = false;
 
     o.minimumHeight = height;
-    o:setResizable(true);
+    o:setResizable(false);
     o.partCatRGB = {r=1, g=1, b=1, a=1}; --       CATEGORY Color
     o.partRGB =    {r=0.8, g=0.8, b=0.8, a=1}; -- Part Existing Color
     o.partReqRGB = {r=1, g=0, b=0, a=1}; --       Part Missing & Required Color
