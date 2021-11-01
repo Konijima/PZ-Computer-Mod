@@ -77,42 +77,82 @@ module Computer
 
     item Harddrive
     {
-        Weight           = 0.1,
+        Weight           = 3.0,
         Type             = Normal,
         DisplayName      = Hard Drive,
         Icon             = Harddrive,
         WorldStaticModel = Harddrive,
-        Tags             = ComputerDrive;ComputerHardware,
+        Tags             = ComputerHardware;ComputerDrive,
     }
 
     item Discdrive
     {
-        Weight           = 0.1,
+        Weight           = 3.0,
         Type             = Normal,
         DisplayName      = Disc Drive,
         Icon             = Discdrive,
         WorldStaticModel = Discdrive,
-        Tags             = ComputerDrive;ComputerHardware,
+        Tags             = ComputerHardware;ComputerDrive,
     }
 
     item Floppydrive
     {
-        Weight           = 0.1,
+        Weight           = 3.0,
         Type             = Normal,
         DisplayName      = Floppy Drive,
         Icon             = Floppydrive,
         WorldStaticModel = Floppydrive,
-        Tags             = ComputerDrive;ComputerHardware,
+        Tags             = ComputerHardware;ComputerDrive,
+    }
+
+    item Processor
+    {
+        Weight           = 1.0,
+        Type             = Normal,
+        DisplayName      = Processor,
+        Icon             = Processor,
+        WorldStaticModel = Processor,
+        Tags             = ComputerHardware;ComputerProcessor,
+    }
+
+    item GraphicCard
+    {
+        Weight           = 3.0,
+        Type             = Normal,
+        DisplayName      = Graphic Card,
+        Icon             = GraphicCard,
+        WorldStaticModel = GraphicCard,
+        Tags             = ComputerHardware;ComputerGraphicCard,
     }
 
     item NetworkCard
     {
-        Weight           = 0.1,
+        Weight           = 1.0,
         Type             = Normal,
         DisplayName      = Network Card,
         Icon             = NetworkCard,
         WorldStaticModel = NetworkCard,
-        Tags             = ComputerHardware,
+        Tags             = ComputerHardware;ComputerNetworkCard,
+    }
+
+    item SoundCard
+    {
+        Weight           = 1.0,
+        Type             = Normal,
+        DisplayName      = Sound Card,
+        Icon             = SoundCard,
+        WorldStaticModel = SoundCard,
+        Tags             = ComputerHardware;ComputerSoundCard,
+    }
+
+    item PowerSupply
+    {
+        Weight           = 5.0,
+        Type             = Normal,
+        DisplayName      = Power Supply,
+        Icon             = PowerSupply,
+        WorldStaticModel = PowerSupply,
+        Tags             = ComputerHardware;ComputerPowerSupply,
     }
 
 }
