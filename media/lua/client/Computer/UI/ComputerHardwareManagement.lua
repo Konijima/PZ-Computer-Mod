@@ -1,6 +1,7 @@
 require "ISUI/ISCollapsableWindow"
 require "Computer/ComputerUtils"
 
+local Processor = require("Computer/Classes/Processor")
 local Harddrive = require("Computer/Classes/Harddrive")
 local Discdrive = require("Computer/Classes/Discdrive")
 local Floppydrive = require("Computer/Classes/Floppydrive")
@@ -151,6 +152,8 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
                     hardware = Discdrive:new(item)
                 elseif item:getType() == "Floppydrive" then
                     hardware = Floppydrive:new(item)
+                elseif item:getType() == "Processor" then
+                    hardware = Processor:new(item)
                 end
 
                 --- Install Option
