@@ -63,8 +63,8 @@ end
 function ComputerHardwareManagement:onListMouseDown(x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 and not getDebug() then return; end
 
-    self.parent.listbox.selected = 0;
     self.parent.drivelist.selected = 0;
+    self.parent.extralist.selected = 0;
 
     local row = self:rowAt(x, y);
     if row < 1 or row > #self.items then return end
@@ -219,7 +219,7 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
 
     -- Category
     if item.item and item.item.listCategory == true then
-        self:drawText(item.text, 20, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
+        self:drawText(item.text, 10, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
         y = y + 10;
 
     -- List
@@ -248,23 +248,24 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
 end
 
 function ComputerHardwareManagement:updateLayout()
-    self.listbox:setWidth(self.listWidth)
     self.drivelist:setWidth(self.listWidth)
-    --self.drivelist:setX(self.listbox:getRight() + 5)
     self.drivelist:setX(5)
+
+    self.extralist:setWidth(self.listWidth)
+    self.extralist:setX(5)
 end
 
 ---@return void
 function ComputerHardwareManagement:initParts()
     if not self.computer then return; end
 
-    self.listbox:clear();
     self.drivelist:clear();
+    self.extralist:clear();
 
-    local scrollbarWidth = self.listbox.vscroll:getWidth()
     local maxWidth = 390;
 
     self.drivelist:addItem("Drive Bays", {listCategory = true});
+    self.extralist:addItem("Extra Bays", {listCategory = true});
 
     self.hasOneDrive = false;
 
@@ -290,23 +291,8 @@ function ComputerHardwareManagement:createChildren()
     local rh = 0;
     local y = self:titleBarHeight() + 25 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * 6
 
-    self.listbox = ISScrollingListBox:new(5, y, 400, self.height-rh-5-y);
-    self.listbox:initialise();
-    self.listbox:instantiate();
-    self.listbox:setAnchorLeft(true);
-    self.listbox:setAnchorRight(false);
-    self.listbox:setAnchorTop(true);
-    self.listbox:setAnchorBottom(true);
-    self.listbox.itemheight = FNT_HGT_SMALL;
-    self.listbox.drawBorder = true;
-    self.listbox.backgroundColor.a = 0;
-    self.listbox.doDrawItem = ComputerHardwareManagement.doDrawItem;
-    self.listbox.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
-    self.listbox.onMouseDown = ComputerHardwareManagement.onListMouseDown;
-    self.listbox.parent = self;
-    --self:addChild(self.listbox);
-
-    self.drivelist = ISScrollingListBox:new(10 + self.listbox.width, y, 400, self.height-rh-5-y);
+    local driveListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
+    self.drivelist = ISScrollingListBox:new(10, y, self.width, driveListHeight);
     self.drivelist:initialise();
     self.drivelist:instantiate();
     self.drivelist:setAnchorLeft(true);
@@ -321,6 +307,23 @@ function ComputerHardwareManagement:createChildren()
     self.drivelist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
     self.drivelist.parent = self;
     self:addChild(self.drivelist);
+
+    local extraListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
+    self.extralist = ISScrollingListBox:new(10, y + 5 + self.drivelist.height, self.width, extraListHeight);
+    self.extralist:initialise();
+    self.extralist:instantiate();
+    self.extralist:setAnchorLeft(true);
+    self.extralist:setAnchorRight(false);
+    self.extralist:setAnchorTop(true);
+    self.extralist:setAnchorBottom(true);
+    self.extralist.itemheight = FNT_HGT_SMALL;
+    self.extralist.drawBorder = true;
+    self.extralist.backgroundColor.a = 0;
+    self.extralist.doDrawItem = ComputerHardwareManagement.doDrawItem;
+    self.extralist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
+    self.extralist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
+    self.extralist.parent = self;
+    self:addChild(self.extralist);
 
     self:initParts();
 end
@@ -344,7 +347,7 @@ end
 ---@return ComputerHardwareManagement
 function ComputerHardwareManagement:new(player, computer)
     local width = 400;
-    local height = 600;
+    local height = 450;
 
     --Start in corner
     local x = (getCore():getScreenWidth()) - (width + 100);
