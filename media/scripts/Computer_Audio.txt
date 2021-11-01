@@ -3,79 +3,92 @@ module Base {
     sound ComputerToggle
     {
         category = Computer,
-        clip { file = media/sound/ComputerToggle.ogg, } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerToggle.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerBootStart
     {
         category = Computer,
-        clip { file = media/sound/ComputerBootStart.ogg } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerBootStart.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerHum
     {
         category = Computer,
-        clip { file = media/sound/ComputerHum.ogg } }
+		loop = true, is3D = true,
+        clip { file = media/sound/ComputerHum.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerBootEnd
     {
         category = Computer,
-        clip { file = media/sound/ComputerBootEnd.ogg } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerBootEnd.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerInstallDrive
     {
         category = Computer,
-        clip { file = media/sound/ComputerInstallDrive.ogg } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerInstallDrive.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerDiscActivity
     {
         category = Computer,
-        clip { file = media/sound/ComputerDiscActivity.ogg, } }
+		loop = true, is3D = true,
+        clip { file = media/sound/ComputerDiscActivity.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerStartupMusic
     {
         category = Computer,
-        clip { file = media/sound/ComputerStartupMusic.ogg, } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerStartupMusic.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerErrorSound
     {
         category = Computer,
-        clip { file = media/sound/ComputerErrorSound.ogg, } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerErrorSound.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerMouseClicks
     {
         category = Computer,
-        clip { file = media/sound/ComputerMouseClicks.ogg, } }
+		loop = true, is3D = true,
+        clip { file = media/sound/ComputerMouseClicks.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerKeyboardFast
     {
         category = Computer,
-        clip { file = media/sound/ComputerKeyboardFast.ogg, } }
+		loop = true, is3D = true,
+        clip { file = media/sound/ComputerKeyboardFast.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerInsertDisc
     {
         category = Computer,
-        clip { file = media/sound/ComputerInsertDisc.ogg, } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerInsertDisc.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerEjectDisc
     {
         category = Computer,
-        clip { file = media/sound/ComputerEjectDisc.ogg, } }
+		loop = false, is3D = true,
+        clip { file = media/sound/ComputerEjectDisc.ogg, distanceMax = 15, volume = 1.0, },
     }
 
     sound ComputerGame1
     {
         category = Computer,
-        clip { file = media/sound/ComputerGame1.ogg, } }
+		loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame1.ogg, distanceMax = 15, volume = 1.0, },
     }
 
 }
