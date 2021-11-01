@@ -18,6 +18,7 @@ local Classes = {
     Floppydrive = require("Computer/Classes/Floppydrive"),
     Game = require("Computer/Classes/Game"),
     Harddrive = require("Computer/Classes/Harddrive"),
+    Processor = require("Computer/Classes/Processor"),
     Software = require("Computer/Classes/Software"),
 }
 
@@ -791,28 +792,24 @@ end
 
 local function AddTagsToBaseItems()
     local list = {
-        { "Base.Disc", "ComputerMedium;ComputerDisc" },
-        { "Base.Disc_Retail", "ComputerMedium;ComputerDisc" },
-        { "Base.CarBattery1", "ComputerHardware;ComputerBattery" },
-        { "Base.CarBattery2", "ComputerHardware;ComputerBattery" },
-        { "Base.CarBattery3", "ComputerHardware;ComputerBattery" },
+        { item = "Base.Disc", tags = { "ComputerMedium", "ComputerDisc" } },
+        { item = "Base.Disc_Retail", tags = { "ComputerMedium", "ComputerDisc" } },
+        { item = "Base.CarBattery1", tags = { "ComputerHardware", "ComputerBattery" } },
+        { item = "Base.CarBattery2", tags = { "ComputerHardware", "ComputerBattery" } },
+        { item = "Base.CarBattery3", tags = { "ComputerHardware", "ComputerBattery" } },
     }
 
-    for i=1, #list do
-        local itemFullName = list[i][1]
-        local itemAddTags = list[i][2]
-
-        local item = getScriptManager():getItem(itemFullName)
+    for _, entry in ipairs(list) do
+        local item = getScriptManager():getItem(entry.item)
         if item then
-            local newTags = ""
             local tags = item:getTags()
-            for t=0, tags:size()-1 do
-                local tag = tags:get(t)
-                newTags = newTags .. tag .. ";"
+            for i=1, #entry.tags do
+                local tag = entry.tags[i]
+                if not tags:contains(tag) then
+                    tags:add(tag)
+                end
             end
-            newTags = newTags .. itemAddTags
-            item:DoParam("Tags = " .. newTags)
-            print("ComputerMod: Set base item tags ["..itemFullName.."] = " .. newTags)
+            print("ComputerMod: Set base item tags ["..entry.item.."] = ", item:getTags())
         end
     end
 end
