@@ -837,9 +837,8 @@ local function UpdateComputers()
         --- Start of Update
 
         ---@type table
-        local locations = copyTable(GlobalModData.computerLocations)
-        for i=1, #locations do
-            local position = locations[i]
+        for key, _ in pairs(GlobalModData.computerLocations) do
+            local position = GlobalModData.computerLocations[key]
 
             ---@type Computer|nil
             local computer = GetComputerAtPosition(position.x, position.y, position.z)
@@ -849,7 +848,7 @@ local function UpdateComputers()
                 computer:toggleState(false, true) -- set will auto restart
                 print("ComputerMod: Computer at x:", position.x, " y:", position.y, " z:", position.z, " shut down no power!")
 
-            -- Handle computer auto restart
+                -- Handle computer auto restart
             elseif computer and computer:isOff() and computer:isAutoRestarting() and computer:hasElectricity() then
                 computer:toggleState()
                 print("ComputerMod: Computer at x:", position.x, " y:", position.y, " z:", position.z, " auto restarted!")
