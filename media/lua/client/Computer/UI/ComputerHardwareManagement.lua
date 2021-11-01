@@ -309,23 +309,6 @@ function ComputerHardwareManagement:createChildren()
     self.mainlist.parent = self;
     self:addChild(self.mainlist);
 
-    --local driveListHeight = 30 + ((25 + FNT_HGT_SMALL) * #self.drives)
-    --self.drivelist = ISScrollingListBox:new(10, y + 5 + self.mainlist.height, self.width, driveListHeight);
-    --self.drivelist:initialise();
-    --self.drivelist:instantiate();
-    --self.drivelist:setAnchorLeft(true);
-    --self.drivelist:setAnchorRight(false);
-    --self.drivelist:setAnchorTop(true);
-    --self.drivelist:setAnchorBottom(true);
-    --self.drivelist.itemheight = FNT_HGT_SMALL;
-    --self.drivelist.drawBorder = true;
-    --self.drivelist.backgroundColor.a = 0;
-    --self.drivelist.doDrawItem = ComputerHardwareManagement.doDrawItem;
-    --self.drivelist.onRightMouseUp = ComputerHardwareManagement.onListRightMouseUp;
-    --self.drivelist.onMouseDown = ComputerHardwareManagement.onListMouseDown;
-    --self.drivelist.parent = self;
-    --self:addChild(self.drivelist);
-
     self:initParts();
 end
 
@@ -341,13 +324,6 @@ function ComputerHardwareManagement:onKeyRelease(key)
             self:close()
         end
     end
-end
-
-function ComputerHardwareManagement:autoSetSize()
-    --self.mainListHeight = self.mainlist.height
-    --self.height = self.startHeight + self.mainListHeight
-    --self.x = (getCore():getScreenWidth()) - (self.width + 100);
-    --self.y = (getCore():getScreenHeight()) - (self.height + 100);
 end
 
 ---@param player number
