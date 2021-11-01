@@ -118,7 +118,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
 
     -- Get All Drives from inventory
     ---@type ArrayList
-    local drives = ComputerUtils.findAllByTag(self.inventory, "ComputerDrive");
+    local drivesInventory = ComputerUtils.findAllByTag(self.inventory, "ComputerDrive");
 
     ---@type drive
     local drive = self.computer:getDriveInBayIndex(bayIndex) -- get drive by index
@@ -136,37 +136,39 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
     end
 
     -- Empty Bay
-    if not drive and drives:size() > 0 then
-        local bayOption = self.context:addOption(getText("IGUI_Install"));
-        local bayContext = ISContextMenu:getNew(self.context)
-        self.context:addSubMenu(bayOption, bayContext)
-        for i=0, drives:size()-1 do
-            local item = drives:get(i);
+    if not drive then
+        if drivesInventory:size() > 0 then
+            local bayOption = self.context:addOption(getText("IGUI_Install"));
+            local bayContext = ISContextMenu:getNew(self.context)
+            self.context:addSubMenu(bayOption, bayContext)
+            for i=0, drivesInventory:size()-1 do
+                local item = drivesInventory:get(i);
 
-            local hardware
-            if item:getType() == "Harddrive" then
-                hardware = Harddrive:new(item)
-            elseif item:getType() == "Discdrive" then
-                hardware = Discdrive:new(item)
-            elseif item:getType() == "Floppydrive" then
-                hardware = Floppydrive:new(item)
-            end
+                local hardware
+                if item:getType() == "Harddrive" then
+                    hardware = Harddrive:new(item)
+                elseif item:getType() == "Discdrive" then
+                    hardware = Discdrive:new(item)
+                elseif item:getType() == "Floppydrive" then
+                    hardware = Floppydrive:new(item)
+                end
 
-            --- Install Option
-            local installOption
-            local tooltip = ISToolTip:new()
-            tooltip.name = "Install " .. item:getDisplayName()
-            if screwdriverItems:size() > 0 then
-                installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
-                tooltip.description = hardware:getTooltipDescription()
-                tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
-            else
-                installOption = bayContext:addOption(item:getDisplayName())
-                installOption.notAvailable = true
-                tooltip.description = "Needs:"
-                tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
+                --- Install Option
+                local installOption
+                local tooltip = ISToolTip:new()
+                tooltip.name = "Install " .. item:getDisplayName()
+                if screwdriverItems:size() > 0 then
+                    installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
+                    tooltip.description = hardware:getTooltipDescription()
+                    tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
+                else
+                    installOption = bayContext:addOption(item:getDisplayName())
+                    installOption.notAvailable = true
+                    tooltip.description = "Needs:"
+                    tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
+                end
+                installOption.toolTip = tooltip
             end
-            installOption.toolTip = tooltip
         end
 
     -- Bay have a drive
@@ -177,6 +179,7 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
         if screwdriverItems:size() > 0 then
             uninstallOption = self.context:addOption("Uninstall " .. drive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
             tooltip.description = drive:getTooltipDescription()
+            tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> (Click to uninstall drive)"
         else
             uninstallOption = self.context:addOption("Uninstall " .. drive.name)
             uninstallOption.notAvailable = true
@@ -215,7 +218,7 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param?
     -- Category
     if item.item and item.item.listCategory == true then
         self:drawText(item.text, 20, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
-        y = y + 5;
+        y = y + 10;
 
     -- List
     else
@@ -228,14 +231,14 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param?
 
         if drive then -- Existing Part
             local itemWidth = getTextManager():MeasureStringX(UIFont.Small, item.text)
-            self:drawText(item.text, 20, y, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
-            self:drawText(drive.name, 100, y, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(item.text, 20, y - 5, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(drive.name, 100, y - 5, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
         else
             local curColor = optCol;
             if item.required then curColor = reqCol; end
-            self:drawText(item.text, 20, y, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
-            self:drawText("Empty", 100, y, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
+            self:drawText(item.text, 20, y - 5, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
+            self:drawText("Empty", 100, y - 5, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
         end
     end
 
@@ -276,7 +279,7 @@ end
 function ComputerHardwareManagement:createChildren()
     ISCollapsableWindow.createChildren(self);
     if self.resizeWidget then self.resizeWidget.yonly = true end
-    self:setInfo("Computer Hardware"); -- TODO: Nice explanation on the Computer Hardware UI.
+    self:setInfo(" <CENTRE> <SIZE:medium> This is the Hardware Management Panel. <LINE> <LINE> <SIZE:small> <LEFT> Welcome to the computer Hardware Management menu! <LINE> <LINE> Here you can find informations about your current computer hardwares. If you have a screwdriver, right click a bay to install or remove hardware. <LINE> <LINE> Left click to get more detailed informations from each installed hardware. <LINE> <LINE> The hardware menu can only be accessed while the computer is off. <LINE> <LINE> ");
 
     local rh = self.resizeable and self:resizeWidgetHeight() or 0;
     local y = self:titleBarHeight() + 25 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * 6
