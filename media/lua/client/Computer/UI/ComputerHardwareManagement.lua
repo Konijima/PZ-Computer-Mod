@@ -28,7 +28,7 @@ function ComputerHardwareManagement:update()
         self:close();
         return;
     end
-    if self.computer and self.character and self.character:DistTo(self.computer.square:getX(), self.computer.square:getY()) > 3 then
+    if self.computer and self.character and self.character:getSquare() ~= self.square then
         self:close();
         return;
     end
@@ -231,10 +231,14 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
         local drive = self.parent.drives[item.item.index]
 
         if drive then -- Existing Part
-            local itemWidth = getTextManager():MeasureStringX(UIFont.Small, item.text)
+            local driveNameWidth = getTextManager():MeasureStringX(UIFont.Small, drive.name)
             self:drawText(item.text, 20, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
             self:drawText(drive.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
+            if item.item.condition ~= nil then
+                local color = ComputerHardwareManagement.getConditionRGB(item.item.condition)
+                self:drawText(" ("..item.item.condition.."%)", 120 + driveNameWidth, y - 2, color.r, color.g, color.b, 1, UIFont.Small);
+            end
         else
             local curText = "Empty";
             local curColor = optCol;
@@ -271,9 +275,9 @@ function ComputerHardwareManagement:initParts()
     self.mainlist:addItem("Processor", { main = true, required = true });
     self.mainlist:addItem("Graphic Card", { main = true, required = true });
     self.mainlist:addItem("Power Supply", { main = true, required = true });
-    self.mainlist:addItem("Network Card", { main = true,  });
-    self.mainlist:addItem("Sound Card", { main = true,  });
-    self.mainlist:addItem("Car Battery", { main = true,  });
+    self.mainlist:addItem("Network Card", { main = true, });
+    self.mainlist:addItem("Sound Card", { main = true, });
+    self.mainlist:addItem("Car Battery", { main = true, });
 
     self.mainlist:addItem("Drive Bays", {listCategory = true});
 
@@ -281,6 +285,7 @@ function ComputerHardwareManagement:initParts()
         if self.drives[i] then self.hasOneDrive = true; end
         self.mainlist:addItem("Drive Bay "..tostring(index), {
             index = index,
+            condition = ZombRand(0, 100),
         });
     end
 
@@ -330,6 +335,12 @@ function ComputerHardwareManagement:onKeyRelease(key)
             self:close()
         end
     end
+end
+
+function ComputerHardwareManagement.getConditionRGB(condition)
+    local r = ((100 - condition) / 100) ;
+    local g = (condition / 100);
+    return {r = r, g = g, b = 0};
 end
 
 ---@param player number
