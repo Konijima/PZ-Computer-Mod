@@ -789,11 +789,32 @@ end
 
 --- GAME EVENTS
 
-local function AddTagToDisc()
-    local item = getScriptManager():getItem("Base.Disc")
-    if item then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
-    local item2 = getScriptManager():getItem("Base.Disc_Retail")
-    if item2 then item:DoParam("Tags = ComputerMedium;ComputerDisc") end
+local function AddTagsToBaseItems()
+    local list = {
+        { "Base.Disc", "ComputerMedium;ComputerDisc" },
+        { "Base.Disc_Retail", "ComputerMedium;ComputerDisc" },
+        { "Base.CarBattery1", "ComputerHardware;ComputerBattery" },
+        { "Base.CarBattery2", "ComputerHardware;ComputerBattery" },
+        { "Base.CarBattery3", "ComputerHardware;ComputerBattery" },
+    }
+
+    for i=1, #list do
+        local itemFullName = list[i][1]
+        local itemAddTags = list[i][2]
+
+        local item = getScriptManager():getItem(itemFullName)
+        if item then
+            local newTags = ""
+            local tags = item:getTags()
+            for t=0, tags:size()-1 do
+                local tag = tags:get(t)
+                newTags = newTags .. tag .. ";"
+            end
+            newTags = newTags .. itemAddTags
+            item:DoParam("Tags = " .. newTags)
+            print("ComputerMod: Set base item tags ["..itemFullName.."] = " .. newTags)
+        end
+    end
 end
 
 local function LoadGlobalModData()
@@ -880,7 +901,7 @@ local function OnPreFillWorldObjectContextMenu(player, context, _, test)
     end
 end
 
-Events.OnGameStart.Add(AddTagToDisc)
+Events.OnGameStart.Add(AddTagsToBaseItems)
 Events.OnGameStart.Add(LoadGlobalModData)
 Events.OnGameStart.Add(InitializeComputers)
 Events.OnTick.Add(UpdateComputers)
