@@ -25,7 +25,7 @@ end
 
 ---@return string
 function Floppydrive:getTooltipDescription()
-    local description = " <RGB:1,1,1> Floppy: <RGB:1,0,0> Empty <LINE> "
+    local description = " <RGB:1,1,1> Floppy:  <RGB:1,0,0> Empty <LINE> "
     return description
 end
 

@@ -25,7 +25,7 @@ end
 
 ---@return string
 function Discdrive:getTooltipDescription()
-    local description = " <RGB:1,1,1> Disc: <RGB:1,0,0> Empty <LINE> "
+    local description = " <RGB:1,1,1> Disc:  <RGB:1,0,0> Empty <LINE> "
     return description
 end
 

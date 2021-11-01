@@ -46,6 +46,7 @@ end
 ---@return string
 function Harddrive:getTooltipDescription()
     local description = ""
+    description = description .. "<RGB:1,1,1> Size:  0/512 <LINE> "
     description = description .. "<RGB:1,1,1> Files: " .. #self.files .. " <LINE> "
     description = description .. "<RGB:1,1,1> Games: " .. #self.games .. " <LINE> "
     description = description .. "<RGB:1,1,1> Softwares: " .. #self.softwares .. " <LINE> "
