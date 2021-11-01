@@ -112,8 +112,8 @@ function Computer:toggleState(inBios, autoRestart)
 
         self.isoObject:setSpriteFromName(ComputerSprites.Off[facing])
 
-        self:stopAllAudio()
-        self:playAudio("ComputerBootEnd", false, true)
+        self:stopAudioEmitter()
+        self:playAudio("ComputerBootEnd", "ComputerBootEnd", true)
 
         ComputerMod.TriggerEvent("OnComputerShutDown", self)
 
@@ -123,11 +123,8 @@ function Computer:toggleState(inBios, autoRestart)
         self:setFlag("bios_active", inBios)
         self:setFlag("auto_restart", false)
 
-        self:stopAllAudio()
-        local position = self.position
-        self:playAudio("ComputerBootStart", false, true, function()
-            SoundManager.PlaySoundAt("ComputerHum", position.x, position.y, position.z, true)
-        end)
+        self:stopAudioEmitter()
+        self:playAudio({"ComputerBootStart", "ComputerHum"}, true)
 
         self.isoObject:setSpriteFromName(ComputerSprites.On[facing])
 
@@ -407,35 +404,30 @@ function Computer:isAudioDisabled()
     return not self:getBiosValue("enable_audio")
 end
 
----@param audioName string
----@return Sound
-function Computer:getAudio(audioName)
-    return SoundManager.GetSoundAt(audioName, self.position.x, self.position.y, self.position.z)
+---@return EmitterInstance
+function Computer:getAudioEmitter()
+    return SoundManager.GetEmitterAt("computer", self.position.x, self.position.y, self.position.z)
 end
 
 ---@param audioName string
 ---@return boolean
 function Computer:isAudioPlaying(audioName)
-    return SoundManager.IsSoundPlayingAt(audioName, self.position.x, self.position.y, self.position.z)
+    local sound = SoundManager.GetSoundAt(audioName, self.position.x, self.position.y, self.position.z)
+    if sound then
+        return sound:isPlaying()
+    end
 end
 
----@param audioName string
----@param loop boolean
+---@param soundList string|table<string>
 ---@param isAmbiant boolean
----@param onCompleted function|nil
----@return Sound|nil
-function Computer:playAudio(audioName, loop, isAmbiant, onCompleted)
+---@return EmitterInstance|nil
+function Computer:playAudio(soundList, isAmbiant)
     if not isAmbiant and self:isAudioDisabled() then return end
-    return SoundManager.PlaySoundAt(audioName, self.position.x, self.position.y, self.position.z, loop, onCompleted)
+    return SoundManager.PlaySoundAt("computer", soundList, self.position.x, self.position.y, self.position.z)
 end
 
----@param audioName string
-function Computer:stopAudio(audioName)
-    SoundManager.StopSoundAt(audioName, self.position.x, self.position.y, self.position.z)
-end
-
-function Computer:stopAllAudio()
-    SoundManager.StopAllSoundsAt(self.position.x, self.position.y, self.position.z)
+function Computer:stopAudioEmitter()
+    SoundManager.StopEmitterAt("computer", self.position.x, self.position.y, self.position.z)
 end
 
 --- CONSTRUCTOR

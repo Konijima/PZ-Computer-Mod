@@ -814,6 +814,7 @@ end
 
 local function InitializeComputers()
     if not GlobalModData or not GlobalModData.computerLocations then return; end
+    if getCell() == nil then return; end
 
     local locations = GlobalModData.computerLocations
     for i=1, #locations do
@@ -822,16 +823,15 @@ local function InitializeComputers()
         --print("COMPUTER STATE at ", position.x, ":",position.y, ":",position.z, GetComputerStateAtPosition(position.x, position.y, position.z))
 
         -- Handle computer audio
-        if GetComputerStateAtPosition(position.x, position.y, position.z) then
-            SoundManager.PlaySoundAt("ComputerHum", position.x, position.y, position.z, true)
+        if GetComputerStateAtPosition(position.x, position.y, position.z) == true then
+            SoundManager.PlaySoundAt("computer", "ComputerHum", position.x, position.y, position.z)
         end
     end
 end
-InitializeComputers() -- call when reload
+
 
 ---@type number
 local ticks = 0;
-
 
 local function UpdateComputers()
     ticks = ticks + 1
@@ -880,6 +880,7 @@ local function OnPreFillWorldObjectContextMenu(player, context, _, test)
     local computer = GetComputerOnSquare(clickedSquare)
     if computer then
         AddComputerLocation(computer)
+        SetComputerStateOnSquare(computer.square, computer:isOn())
         FillComputerContextMenu(player, context, computer)
     end
 end
@@ -949,13 +950,13 @@ end
 
 ---@param computer Computer
 function OnComputerShutDown(computer)
-    SetComputerStateOnSquare(computer.square, false)
+    SetComputerStateOnSquare(computer.square, nil)
 end
 
 ---@param square IsoGridSquare
 function OnComputerPickedUp(_, square)
-    RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
     SetComputerStateOnSquare(square, nil)
+    RemoveComputerLocation(square:getX(), square:getY(), square:getZ())
 end
 
 ---@param computer Computer
