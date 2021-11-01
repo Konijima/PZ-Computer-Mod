@@ -135,50 +135,55 @@ function ComputerHardwareManagement:doPartContextMenu(item, x, y)
         end
     end
 
-    -- If no part
-    if not drive then
-        if drives:size() > 0 then
-            local bayOption = self.context:addOption(getText("IGUI_Install"));
-            local bayContext = ISContextMenu:getNew(self.context)
-            self.context:addSubMenu(bayOption, bayContext)
-            for i=0, drives:size()-1 do
-                local item = drives:get(i);
-                if screwdriverItems:size() > 0 then
-                    local installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
-                    local toolTip = ISToolTip:new()
-                    toolTip.name = getText("IGUI_Install") .. " " .. item:getDisplayName()
-                    toolTip.description = ""
+    -- Empty Bay
+    if not drive and drives:size() > 0 then
+        local bayOption = self.context:addOption(getText("IGUI_Install"));
+        local bayContext = ISContextMenu:getNew(self.context)
+        self.context:addSubMenu(bayOption, bayContext)
+        for i=0, drives:size()-1 do
+            local item = drives:get(i);
 
-                    if item:getType() == "Harddrive" then
-                        local drive = Harddrive:new(item)
-                        toolTip.description = toolTip.description .. "<RGB:1,1,1> Files: " .. #drive.files .. " <LINE> "
-                        toolTip.description = toolTip.description .. "<RGB:1,1,1> Games: " .. #drive.games .. " <LINE> "
-                        toolTip.description = toolTip.description .. "<RGB:1,1,1> Softwares: " .. #drive.softwares .. " <LINE> "
-                    end
-                    toolTip.description = toolTip.description .. "<RGB:0,1,0> (Click to install drive)"
-                    installOption.toolTip = toolTip
-                else
-                    local installOption = bayContext:addOption(item:getDisplayName())
-                    installOption.notAvailable = true
-                    local toolTip = ISToolTip:new()
-                    toolTip.name = getText("IGUI_Install") .. " " .. item:getDisplayName()
-                    toolTip.description = "Needs:"
-                    toolTip.description = toolTip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
-                    installOption.toolTip = toolTip
-                end
+            local hardware
+            if item:getType() == "Harddrive" then
+                hardware = Harddrive:new(item)
+            elseif item:getType() == "Discdrive" then
+                hardware = Discdrive:new(item)
+            elseif item:getType() == "Floppydrive" then
+                hardware = Floppydrive:new(item)
             end
+
+            --- Install Option
+            local installOption
+            local tooltip = ISToolTip:new()
+            tooltip.name = "Install " .. item:getDisplayName()
+            if screwdriverItems:size() > 0 then
+                installOption = bayContext:addOption(item:getDisplayName(), self, self.optionInstallDrive, item, bayIndex, screwdriverItems:get(0))
+                tooltip.description = hardware:getTooltipDescription()
+                tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
+            else
+                installOption = bayContext:addOption(item:getDisplayName())
+                installOption.notAvailable = true
+                tooltip.description = "Needs:"
+                tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
+            end
+            installOption.toolTip = tooltip
         end
+
+    -- Bay have a drive
     else
+        local uninstallOption
+        local tooltip = ISToolTip:new()
+        tooltip.name = "Uninstall " .. drive:getName()
         if screwdriverItems:size() > 0 then
-            self.context:addOption("Uninstall " .. drive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            uninstallOption = self.context:addOption("Uninstall " .. drive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            tooltip.description = drive:getTooltipDescription()
         else
-            local bayOption = self.context:addOption(getText("IGUI_Uninstall").. " " .. drive.name)
-            bayOption.notAvailable = true
-            local toolTip = ISToolTip:new()
-            toolTip.description = "Needs:"
-            toolTip.description = toolTip.description .. " <LINE> <RGB:1,0,0> "..neededDescription.." 0/1"
-            bayOption.toolTip = toolTip
+            uninstallOption = self.context:addOption("Uninstall " .. drive.name)
+            uninstallOption.notAvailable = true
+            tooltip.description = "Needs:"
+            tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> "..neededDescription.." 0/1"
         end
+        uninstallOption.toolTip = tooltip
     end
 end
 
@@ -205,9 +210,14 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param?
         end
     end
 
-    if item.item and item.item.listCategory == true then -- Category
-        self:drawText(item.text, 0, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
+    y = y + 10
+
+    -- Category
+    if item.item and item.item.listCategory == true then
+        self:drawText(item.text, 20, y, self.parent.partCatRGB.r, self.parent.partCatRGB.g, self.parent.partCatRGB.b, self.parent.partCatRGB.a, UIFont.Medium);
         y = y + 5;
+
+    -- List
     else
         local partCol = self.parent.partRGB
         local optCol = self.parent.partOptRGB;
@@ -217,14 +227,15 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param?
         local drive = self.parent.drives[item.item.index]
 
         if drive then -- Existing Part
+            local itemWidth = getTextManager():MeasureStringX(UIFont.Small, item.text)
             self:drawText(item.text, 20, y, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
-            self:drawText(drive.name, getTextManager():MeasureStringX(UIFont.Small, item.text) + 42, y, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(drive.name, 100, y, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
         else
             local curColor = optCol;
             if item.required then curColor = reqCol; end
             self:drawText(item.text, 20, y, partCol.r, partCol.g, partCol.b, partCol.a, UIFont.Small);
-            self:drawText("Empty", getTextManager():MeasureStringX(UIFont.Small, item.text) + 42, y, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
+            self:drawText("Empty", 100, y, curColor.r, curColor.g, curColor.b, curColor.a, UIFont.Small);
         end
     end
 
