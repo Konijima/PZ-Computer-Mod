@@ -325,6 +325,20 @@ function ComputerHardwareManagement:createChildren()
     self:initParts();
 end
 
+function ComputerHardwareManagement:isKeyConsumed(key)
+    return key == Keyboard.KEY_ESCAPE
+end
+
+function ComputerHardwareManagement:onKeyRelease(key)
+    if key == Keyboard.KEY_ESCAPE then
+        if isPlayerDoingActionThatCanBeCancelled(self.character) then
+            stopDoingActionThatCanBeCancelled(self.character)
+        else
+            self:close()
+        end
+    end
+end
+
 ---@param player number
 ---@param computer Computer
 ---@return ComputerHardwareManagement
