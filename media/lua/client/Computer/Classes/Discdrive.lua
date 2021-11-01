@@ -1,27 +1,7 @@
-require("ISBaseObject")
+require("Computer/BaseHardware")
 
 ---@class Discdrive
-local Discdrive = ISBaseObject:derive("Discdrive")
-
----@return string
-function Discdrive:getName()
-    return self.name
-end
-
----@return string
-function Discdrive:getType()
-    return Discdrive.Type
-end
-
----@return Discdrive
-function Discdrive:getClass()
-    return Discdrive
-end
-
----@return string
-function Discdrive:getItemFullType()
-    return "Computer.Discdrive"
-end
+local Discdrive = BaseHardware:derive("Discdrive", "Disc Drive")
 
 ---@return string
 function Discdrive:getTooltipDescription()
@@ -35,8 +15,8 @@ function Discdrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
         local modData = item:getModData()
-        modData.type = self:getType()
-        modData.name = self:getName()
+        modData.type = self.Type
+        modData.name = self.name
         item:setName(modData.name)
         return item
     end
@@ -45,7 +25,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Discdrive
 function Discdrive:new(...)
-    local o = ISBaseObject:new()
+    local o = BaseHardware:new()
     setmetatable(o, self)
     self.__index = self
 
@@ -71,11 +51,11 @@ function Discdrive:new(...)
         local item = args[1]
 
         local modData = item:getModData() -- unused local, what for?
-        o.type = o:getType()
+        o.type = o.Type
         o.name = item:getName()
 
     elseif type(args[1]) == "table" then
-        o.type = o:getType()
+        o.type = o.Type
         o.name = args[1].name
     end
 

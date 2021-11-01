@@ -1,4 +1,4 @@
-require("ISBaseObject")
+require("Computer/BaseHardware")
 
 local File = require("Computer/Classes/File")
 local Game = require("Computer/Classes/Game")
@@ -11,7 +11,7 @@ local ReadWriteSpeeds = {1, 2, 3, 4}
 local StorageCapacities = {64, 128, 256, 512}
 
 ---@class Harddrive
-local Harddrive = ISBaseObject:derive("Harddrive")
+local Harddrive = BaseHardware:derive("Harddrive", "Hard Drive")
 
 ---@return table
 function Harddrive.GetReadWriteSpeeds()
@@ -21,26 +21,6 @@ end
 ---@return table
 function Harddrive.GetStorageCapacities()
     return copyTable(StorageCapacities)
-end
-
----@return string
-function Harddrive:getName()
-    return self.name
-end
-
----@return string
-function Harddrive:getType()
-    return Harddrive.Type
-end
-
----@return Harddrive
-function Harddrive:getClass()
-    return Harddrive
-end
-
----@return string
-function Harddrive:getItemFullType()
-    return "Computer.Harddrive"
 end
 
 ---@return string
@@ -59,8 +39,8 @@ function Harddrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
         local modData = item:getModData()
-        modData.type = self:getType()
-        modData.name = self:getName()
+        modData.type = self.Type
+        modData.name = self.name
         modData.specs = self.specs
         modData.files = self.files
         modData.games = self.games
@@ -194,7 +174,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Harddrive
 function Harddrive:new(...)
-    local o = ISBaseObject:new()
+    local o = BaseHardware:new()
     setmetatable(o, self)
     self.__index = self
 
@@ -224,7 +204,7 @@ function Harddrive:new(...)
         local item = args[1]
 
         local modData = item:getModData()
-        o.type = o:getType()
+        o.type = o.Type
         o.name = item:getName()
         o.specs = modData.specs or {}
         o.files = modData.files or {}
@@ -232,7 +212,7 @@ function Harddrive:new(...)
         o.softwares = modData.softwares or {}
 
     elseif type(args[1]) == "table" then
-        o.type = o:getType()
+        o.type = o.Type
         o.name = args[1].name
         o.specs = args[1].specs or {}
         o.files = args[1].files or {}

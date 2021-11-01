@@ -1,27 +1,7 @@
-require("ISBaseObject")
+require("Computer/BaseHardware")
 
 ---@class Floppydrive
-local Floppydrive = ISBaseObject:derive("Floppydrive")
-
----@return string
-function Floppydrive:getName()
-    return self.name
-end
-
----@return string
-function Floppydrive:getType()
-    return Floppydrive.Type
-end
-
----@return Floppydrive
-function Floppydrive:getClass()
-    return Floppydrive
-end
-
----@return string
-function Floppydrive:getItemFullType()
-    return "Computer.Floppydrive"
-end
+local Floppydrive = BaseHardware:derive("Floppydrive", "Floppy Drive")
 
 ---@return string
 function Floppydrive:getTooltipDescription()
@@ -35,8 +15,8 @@ function Floppydrive:createItem(inventory)
     if inventory then
         local item = inventory:AddItem(self:getItemFullType())
         local modData = item:getModData()
-        modData.type = self:getType()
-        modData.name = self:getName()
+        modData.type = self.Type
+        modData.name = self.name
         item:setName(modData.name)
         return item
     end
@@ -45,7 +25,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Floppydrive
 function Floppydrive:new(...)
-    local o = ISBaseObject:new()
+    local o = BaseHardware:new()
     setmetatable(o, self)
     self.__index = self
 
@@ -71,11 +51,11 @@ function Floppydrive:new(...)
         local item = args[1]
 
         local modData = item:getModData() --TODO: unused local variable?
-        o.type = o:getType()
+        o.type = o.Type
         o.name = item:getName()
 
     elseif type(args[1]) == "table" then
-        o.type = o:getType()
+        o.type = o.Type
         o.name = args[1].name
     end
 
