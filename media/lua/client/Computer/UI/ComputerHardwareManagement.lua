@@ -203,7 +203,7 @@ end
 ---@param y number
 ---@param item table
 ---@return number
-function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param? unsure.
+function ComputerHardwareManagement:doDrawItem(y, item, alt)
     -- NOTE: Draws background box of item if selected/hovered and not a category
     if not item.item or item.item.listCategory ~= true then
         if item.itemindex == self.selected then
@@ -213,7 +213,8 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt) -- TODO: alt param?
         end
     end
 
-    y = y + 10
+    -- Add some space before the title
+    y = y + 5
 
     -- Category
     if item.item and item.item.listCategory == true then
@@ -248,7 +249,7 @@ end
 function ComputerHardwareManagement:updateLayout()
     self.listbox:setWidth(self.listWidth)
     self.drivelist:setWidth(self.listWidth)
-    self.drivelist:setX(self.listbox:getRight() + 20)
+    self.drivelist:setX(self.listbox:getRight() + 5)
 end
 
 ---@return void
@@ -259,7 +260,7 @@ function ComputerHardwareManagement:initParts()
     self.drivelist:clear();
 
     local scrollbarWidth = self.listbox.vscroll:getWidth()
-    local maxWidth = 385;
+    local maxWidth = 392.5;
 
     self.drivelist:addItem("Drive Bays", {listCategory = true});
 
@@ -279,12 +280,15 @@ end
 function ComputerHardwareManagement:createChildren()
     ISCollapsableWindow.createChildren(self);
     if self.resizeWidget then self.resizeWidget.yonly = true end
+
+    self.resizeWidget:setVisible(false)
     self:setInfo(" <CENTRE> <SIZE:medium> This is the Hardware Management Panel. <LINE> <LINE> <SIZE:small> <LEFT> Welcome to the computer Hardware Management menu! <LINE> <LINE> Here you can find informations about your current computer hardwares. If you have a screwdriver, right click a bay to install or remove hardware. <LINE> <LINE> Left click to get more detailed informations from each installed hardware. <LINE> <LINE> The hardware menu can only be accessed while the computer is off. <LINE> <LINE> ");
 
-    local rh = self.resizeable and self:resizeWidgetHeight() or 0;
+    --local rh = self.resizeable and self:resizeWidgetHeight() or 0;
+    local rh = 0;
     local y = self:titleBarHeight() + 25 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * 6
 
-    self.listbox = ISScrollingListBox:new(5, y, 220, self.height-rh-10-y);
+    self.listbox = ISScrollingListBox:new(5, y, 400, self.height-rh-5-y);
     self.listbox:initialise();
     self.listbox:instantiate();
     self.listbox:setAnchorLeft(true);
@@ -300,7 +304,7 @@ function ComputerHardwareManagement:createChildren()
     self.listbox.parent = self;
     self:addChild(self.listbox);
 
-    self.drivelist = ISScrollingListBox:new(5 + self.listbox.width + 20, y, 220, self.height-rh-10-y);
+    self.drivelist = ISScrollingListBox:new(10 + self.listbox.width, y, 400, self.height-rh-5-y);
     self.drivelist:initialise();
     self.drivelist:instantiate();
     self.drivelist:setAnchorLeft(true);
@@ -325,8 +329,10 @@ end
 function ComputerHardwareManagement:new(player, computer)
     local width = 800;
     local height = 600;
-    local x = (getCore():getScreenWidth() / 2) - (width / 2);
-    local y = (getCore():getScreenHeight() / 2) - (height / 2);
+
+    --Start in corner
+    local x = (getCore():getScreenWidth()) - (width);
+    local y = (getCore():getScreenHeight()) - (height);
 
     local o = ISCollapsableWindow:new(x, y, width, height);
     setmetatable(o, self);
