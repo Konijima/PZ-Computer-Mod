@@ -1,8 +1,8 @@
-local BaseHardware = require("Computer/Classes/BaseHardware")
+local BaseDrive = require("Computer/Classes/BaseDrive")
 
 ---@class Discdrive
-local Discdrive = BaseHardware:derive("Discdrive", {
-    { name = "discId", type = "string" },
+local Discdrive = BaseDrive:derive("Discdrive", {
+    { name = "disc", type = "string" }
 })
 
 ---@return string
@@ -14,7 +14,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Discdrive
 function Discdrive:new(...)
-    local o = BaseHardware:new()
+    local o = BaseDrive:new()
     setmetatable(o, self)
     self.__index = self
     o:init(...)

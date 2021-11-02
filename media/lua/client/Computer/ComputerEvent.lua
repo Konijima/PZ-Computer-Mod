@@ -1,4 +1,5 @@
 require("ISBaseObject")
+require("Computer/ComputerUtils")
 
 ---@class ComputerEvent
 local ComputerEvent = ISBaseObject:derive("ComputerEvent")
@@ -23,7 +24,7 @@ function ComputerEvent:trigger(eventName, ...)
     local args = {...}
 
     for i, param in ipairs(self.paramTypes) do
-        if param ~= "any" and (args[i] == nil or (type(args[i]) == param or instanceof(args[i], param) or (getmetatable(args[i]) ~= nil and (getmetatable(args[i]).Type == param or getmetatable(getmetatable(args[i])).Type == param))) == false) then
+        if param ~= "any" and (args[i] == nil or (type(args[i]) == param or instanceof(args[i], param) or ComputerUtils.isClassChildOf(args[i], param)) == false) then
             error("ComputerEvent Trigger Error: Argument["..i.."] expected to be "..param..".", 2);
             return;
         end

@@ -1,7 +1,9 @@
-local BaseHardware = require("Computer/Classes/BaseHardware")
+local BaseDrive = require("Computer/Classes/BaseDrive")
 
 ---@class Floppydrive
-local Floppydrive = BaseHardware:derive("Floppydrive", "Floppy Drive")
+local Floppydrive = BaseDrive:derive("Floppydrive", {
+    { name = "floppy", type = "string" }
+})
 
 ---@return string
 function Floppydrive:getTooltipDescription()
@@ -12,7 +14,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Floppydrive
 function Floppydrive:new(...)
-    local o = BaseHardware:new()
+    local o = BaseDrive:new()
     setmetatable(o, self)
     self.__index = self
     o:init(...)

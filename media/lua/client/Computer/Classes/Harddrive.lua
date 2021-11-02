@@ -1,4 +1,4 @@
-local BaseHardware = require("Computer/Classes/BaseHardware")
+local BaseDrive = require("Computer/Classes/BaseDrive")
 
 local File = require("Computer/Classes/File")
 local Game = require("Computer/Classes/Game")
@@ -8,9 +8,7 @@ local ReadWriteSpeeds = {1, 2, 3, 4}
 local StorageCapacities = {64, 128, 256, 512}
 
 ---@class Harddrive
-local Harddrive = BaseHardware:derive("Harddrive", {
-    {name = "type",         type = "string"},
-    {name = "name",         type = "string"},
+local Harddrive = BaseDrive:derive("Harddrive", {
     {name = "specs",        type = "table"},
     {name = "files",        type = "table"},
     {name = "games",        type = "table"},
@@ -161,7 +159,7 @@ end
 ---@vararg string|table|InventoryItem
 ---@return Harddrive
 function Harddrive:new(...)
-    local o = BaseHardware:new()
+    local o = BaseDrive:new()
     setmetatable(o, self)
     self.__index = self
     o:init(...)

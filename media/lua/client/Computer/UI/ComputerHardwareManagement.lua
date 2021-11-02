@@ -151,14 +151,18 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                 local hardwareType = ComputerMod.GetHardwareType(itemType)
                 if hardwareType then
 
+                    local driveType = ComputerMod.GetDriveType(itemType)
+                    local isDrive = ComputerUtils.isClassChildOf(hardwareType, "BaseDrive")
+
                     -- Check if item fit into this slot type
-                    if selectedItem.type == "Drive" and  ComputerMod.GetDriveType(itemType) or selectedItem.type == itemType then
+                    if selectedItem.type == "Drive" and  isDrive or selectedItem.type == itemType then
 
                         -- Get an instance of the hardware class
                         local hardware = hardwareType:new(item)
                         if hardware then
                             table.insert(validItems, {
                                 item = item,
+                                isDrive = isDrive,
                                 hardware = hardware,
                             })
                         end
@@ -179,7 +183,11 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                     local tooltip = ISToolTip:new()
                     tooltip.name = "Install " .. validItem.item:getDisplayName()
                     if screwdriverItems:size() > 0 then
-                        installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
+                        if validItem.isDrive then
+                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
+                        else -- TODO: install hardware
+                            --installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
+                        end
                         tooltip.description = validItem.hardware:getTooltipDescription()
                         tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
                     else
@@ -188,7 +196,7 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                         tooltip.description = "Needs:"
                         tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> " .. neededDescription .. " 0/1";
                     end
-                    installOption.toolTip = tooltip
+                    if installOption then installOption.toolTip = tooltip; end
                 end
             end
         end
@@ -199,7 +207,11 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
         local tooltip = ISToolTip:new()
         tooltip.name = "Uninstall " .. bayDrive.name
         if screwdriverItems:size() > 0 then
-            uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            if ComputerUtils.isClassChildOf(bayDrive, "BaseDrive") then
+                uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            else -- TODO: Uninstall hardware
+                uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            end
             tooltip.description = bayDrive:getTooltipDescription()
             tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> (Click to uninstall drive)"
         else
@@ -208,7 +220,7 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
             tooltip.description = "Needs:"
             tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> "..neededDescription.." 0/1"
         end
-        uninstallOption.toolTip = tooltip
+        if uninstallOption then uninstallOption.toolTip = tooltip; end
     end
 end
 

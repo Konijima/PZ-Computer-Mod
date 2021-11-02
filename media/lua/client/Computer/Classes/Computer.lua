@@ -288,14 +288,13 @@ end
 ---@param bayIndex number
 ---@return Harddrive|Discdrive|Floppydrive
 function Computer:getDriveInBayIndex(bayIndex)
-    local drives = self:getAllDrives()
-    local drive = drives[bayIndex]
-    if type(drive) == "table" and getmetatable(drive) == nil then
-        if drive.type == "Harddrive" then drive = Harddrive:new(drive) end
-        if drive.type == "Discdrive" then drive = Discdrive:new(drive) end
-        if drive.type == "Floppydrive" then drive = Floppydrive:new(drive) end
+    local driveData = self:getData().drives[bayIndex]
+    if driveData then
+        local driveType = ComputerMod.GetDriveType(driveData.hardwareType)
+        if driveType then
+            return driveType:new(driveData)
+        end
     end
-    return drive
 end
 
 ---@return table<Harddrive>
@@ -304,7 +303,7 @@ function Computer:getAllHarddrives()
     local harddrives = {}
     for i=1, drives.count do
         local drive = self:getDriveInBayIndex(i)
-        if drive and drive.type == "Harddrive" then
+        if drive and drive.hardwareType == "Harddrive" then
             table.insert(harddrives, drive)
         end
     end
@@ -317,7 +316,7 @@ function Computer:getAllDiscdrives()
     local discdrives = {}
     for i=1, drives.count do
         local drive = self:getDriveInBayIndex(i)
-        if drive and drive.type == "Discdrive" then
+        if drive and drive.hardwareType == "Discdrive" then
             table.insert(discdrives, drive)
         end
     end
@@ -330,43 +329,48 @@ function Computer:getAllFloppydrives()
     local floppydrives = {}
     for i=1, drives.count do
         local drive = self:getDriveInBayIndex(i)
-        if drive and drive.type == "Floppydrive" then
+        if drive and drive.hardwareType == "Floppydrive" then
             table.insert(floppydrives, drive)
         end
     end
     return floppydrives
 end
 
+-- TODO: To-do
+function Computer.installHardwareItemInSlot()
+
+end
+
+-- TODO: To-do
+function Computer.uninstallHardwareItemFromSlot()
+
+end
+
 ---@param inventory ItemContainer
 ---@param item InventoryItem
 ---@param bayIndex number
+---@return boolean
 function Computer:installDriveItemInBayIndex(inventory, item, bayIndex)
-    local drive
-
     if item then
+        local driveType = ComputerMod.GetDriveType(item:getType())
+        if driveType then
+            local drive = driveType:new(item)
 
-        local itemType = item:getType()
-        if itemType == "Harddrive" then
-            drive = Harddrive:new(item)
-        elseif itemType == "Discdrive" then
-            drive = Discdrive:new(item)
-        elseif itemType == "Floppydrive" then
-            drive = Floppydrive:new(item)
+            if drive then
+                local drives = self:getAllDrives()
+                drives[bayIndex] = drive
+                inventory:Remove(item)
+                print("Installed "..drive.name.." into bay " .. bayIndex)
+                ComputerMod.TriggerEvent("OnComputerDriveInstalled", self, drive, bayIndex)
+                return true
+            end
         end
-
-        if drive then
-            local drives = self:getAllDrives()
-            drives[bayIndex] = drive
-            inventory:Remove(item)
-            print("Installed "..drive.type.." into bay " .. bayIndex)
-            ComputerMod.TriggerEvent("OnComputerHardwareInstalled", self, drive, bayIndex)
-        end
-
     end
 end
 
 ---@param inventory ItemContainer
 ---@param bayIndex number
+---@return boolean
 function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
     local drives = self:getAllDrives()
     local drive = self:getDriveInBayIndex(bayIndex)
@@ -374,8 +378,9 @@ function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
         local item = drive:createItem(inventory)
         if item then
             drives[bayIndex] = nil
-            print("Uninstalled "..drive.type.." from bay " .. bayIndex)
-            ComputerMod.TriggerEvent("OnComputerHardwareUninstalled", self, drive, bayIndex)
+            print("Uninstalled "..drive.name.." from bay " .. bayIndex)
+            ComputerMod.TriggerEvent("OnComputerDriveUninstalled", self, drive, bayIndex)
+            return true
         end
     end
 end
