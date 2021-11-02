@@ -359,14 +359,7 @@ function Computer:installDriveItemInBayIndex(inventory, item, bayIndex)
             drives[bayIndex] = drive
             inventory:Remove(item)
             print("Installed "..drive.type.." into bay " .. bayIndex)
-
-            if drive.type == "Harddrive" then -- TODO: Merging of the events to "OnComputerDriveInstalled" ?
-                ComputerMod.TriggerEvent("OnComputerHarddriveInstalled", self, drive, bayIndex)
-            elseif drive.type == "Discdrive" then
-                ComputerMod.TriggerEvent("OnComputerDiscdriveInstalled", self, drive, bayIndex)
-            elseif drive.type == "Floppydrive" then
-                ComputerMod.TriggerEvent("OnComputerFloppydriveInstalled", self, drive, bayIndex)
-            end
+            ComputerMod.TriggerEvent("OnComputerHardwareInstalled", self, drive, bayIndex)
         end
 
     end
@@ -382,13 +375,7 @@ function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
         if item then
             drives[bayIndex] = nil
             print("Uninstalled "..drive.type.." from bay " .. bayIndex)
-            if drive.type == "Harddrive" then -- TODO: Merging of the events to "OnComputerDriveUninstalled" ?
-                ComputerMod.TriggerEvent("OnComputerHarddriveUninstalled",self, drive, bayIndex)
-            elseif drive.type == "Discdrive" then
-                ComputerMod.TriggerEvent("OnComputerDiscdriveUninstalled", self, drive, bayIndex)
-            elseif drive.type == "Floppydrive" then
-                ComputerMod.TriggerEvent("OnComputerFloppydriveUninstalled", self, drive, bayIndex)
-            end
+            ComputerMod.TriggerEvent("OnComputerHardwareUninstalled", self, drive, bayIndex)
         end
     end
 end
