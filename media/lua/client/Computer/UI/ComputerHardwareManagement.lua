@@ -336,7 +336,7 @@ function ComputerHardwareManagement:createChildren()
     if self.resizeWidget then self.resizeWidget.yonly = true end
 
     self.resizeWidget:setVisible(false)
-    self:setInfo(" <CENTRE> <SIZE:medium> This is the Hardware Management Panel. <LINE> <LINE> <SIZE:small> <LEFT> Welcome to the computer Hardware Management menu! <LINE> <LINE> Here you can find informations about your current computer hardwares. If you have a screwdriver, right click a bay to install or remove hardware. <LINE> <LINE> Left click to get more detailed informations from each installed hardware. <LINE> <LINE> The hardware menu can only be accessed while the computer is off. <LINE> <LINE> ");
+    self:setInfo(" <CENTRE> <SIZE:medium> This is the Computer Hardware Panel. <LINE> <LINE> <SIZE:small> <LEFT> Welcome to the Computer Hardware menu! <LINE> <LINE> Here you can find informations about your current computer hardwares. If you have a screwdriver, right click a bay to install or remove hardware. <LINE> <LINE> Left click to get more detailed informations from each installed hardware. <LINE> <LINE> The hardware menu can only be accessed while the computer is off. <LINE> <LINE> ");
 
     --local rh = self.resizeable and self:resizeWidgetHeight() or 0;
     local rh = 0;
@@ -408,7 +408,7 @@ function ComputerHardwareManagement:new(player, computer)
     o.partRGB =    {r=0.8, g=0.8, b=0.8, a=1}; -- Part Existing Color
     o.partReqRGB = {r=1, g=0, b=0, a=1}; --       Part Missing & Required Color
     o.partOptRGB = {r=0.8, g=0.5, b=0.5, a=1}; -- Part Missing & Optional Color
-    o.title = "Hardware Management";
+    o.title = "Computer Hardware";
     o.clearStentil = false;
     o.leftListHasFocus = true
     o:setWantKeyEvents(true)
