@@ -957,14 +957,8 @@ CreateEvent("OnComputerAfterBoot", { "Computer" })
 CreateEvent("OnComputerBeforeShutDown", { "Computer" })
 CreateEvent("OnComputerShutDown", { "Computer" })
 
-CreateEvent("OnComputerHarddriveInstalled", { "Computer", "Harddrive", "number" })
-CreateEvent("OnComputerHarddriveUninstalled", { "Computer", "Harddrive", "number" })
-
-CreateEvent("OnComputerDiscdriveInstalled", { "Computer", "Discdrive", "number" })
-CreateEvent("OnComputerDiscdriveUninstalled", { "Computer", "Discdrive", "number" })
-
-CreateEvent("OnComputerFloppydriveInstalled", { "Computer", "Floppydrive", "number" })
-CreateEvent("OnComputerFloppydriveUninstalled", { "Computer", "Floppydrive", "number" })
+CreateEvent("OnComputerHardwareInstalled", { "Computer", "BaseHardware", "number" })
+CreateEvent("OnComputerHardwareUninstalled", { "Computer", "BaseHardware", "number" })
 
 CreateEvent("OnComputerDiscInserted", { "Computer", "Discdrive", "Disc" })
 CreateEvent("OnComputerDiscEjected", { "Computer", "Discdrive", "Disc" })
