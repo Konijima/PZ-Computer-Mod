@@ -1,6 +1,9 @@
 require "Items/SuburbsDistributions"
 require "Items/ProceduralDistributions"
 
+--- Set all odds to 100 for testing
+local test = true
+
 --- ProceduralDistributions
 
 local distributionTable = {
@@ -229,32 +232,48 @@ local function add(location, item, odd)
     end
 end
 
+---@param table table
+---@param location table
+local function process_location(table, location)
+    if location then
+        for e=1, #table.items do
+            local item = table.items[e][1]
+            local odd = table.items[e][2]
+
+            if test then
+                odd = 100
+            end
+
+            if not add(location, item, odd) then
+                error("ComputerMod: Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
+            else
+                print("ComputerMod: Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
+            end
+        end
+    else
+        error("ComputerMod: Error distribution invalid location at '"..table.location.."'!")
+    end
+end
+
+---@return number
 local function process()
+    local errorCount = 0
     for t=1, #distributionTable do
         local table = distributionTable[t]
         local locationParts = split(table.location)
         local location = getLocation(locationParts)
 
-        if location then
-            for e=1, #table.items do
-                local item = table.items[e][1]
-                local odd = table.items[e][2]
-
-                if not add(location, item, odd) then
-                    error("ComputerMod: Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
-                else
-                    print("ComputerMod: Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
-                end
-            end
-        else
-            error("ComputerMod: Error distribution invalid location at '"..table.location.."'!")
+        if not pcall(process_location, table, location) then
+            errorCount = errorCount + 1
         end
     end
+    return errorCount
 end
 
---- process
-if pcall(process) then
-    print("ComputerMod: Adding to the distribution table completed!")
+-- Start Processing
+local errorCount = process()
+if errorCount == 0 then
+    print("ComputerMod: Adding to the distribution table process completed!")
 else
-    print("ComputerMod: Adding to the distribution table completed with errors!")
+    print("ComputerMod: Adding to the distribution table process completed with "..errorCount.." error(s)!")
 end
