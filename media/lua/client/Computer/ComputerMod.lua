@@ -435,17 +435,22 @@ local function ValidateAddon(addon)
     end
 end
 
----@param addon ComputerAddon|string
+---@param addonName string
 ---@return boolean
-local function RemoveAddon(addon)
-    if type(addon) == "string" or getmetatable(addon) == Classes.ComputerAddon then
+local function RemoveAddonByName(addonName)
+    if type(addonName) == "string" then
+        local addon
         for i=0, ComputerAddons:size()-1 do
             local checkAddon = ComputerAddons:get(i)
-            if type(addon) == "string" and checkAddon.name == addon or type(addon) == "table" and checkAddon.name == addon.name then
-                ComputerAddons:remove(checkAddon)
-                print("ComputerMod: Removing addon '"..checkAddon.name.."'!")
-                return true
+            if checkAddon.name == addonName then
+                addon = checkAddon
+                break
             end
+        end
+        if addon then
+            ComputerAddons:remove(addon)
+            print("ComputerMod: Removed addon '"..addon.name.."'!")
+            return true
         end
     end
 end
@@ -457,7 +462,7 @@ local function AddAddon(addon)
         print("ComputerMod: Addon '"..addon.name.."' has been validated!")
 
         -- Check if an addon has the same name
-        RemoveAddon(addon)
+        RemoveAddonByName(addon.name)
 
         ComputerAddons:add(addon)
         print("ComputerMod: Added addon '"..addon.name.."' successfully!")
@@ -471,49 +476,51 @@ end
 ---@param addon ComputerAddon
 local function RunAddon(addon)
 
-    if addon.ComputerEvents then
+    if addon.ComputerEvents and #addon.ComputerEvents > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.ComputerEvents.." ComputerEvents!")
         for i=1, #addon.ComputerEvents do
             CreateEvent(addon.ComputerEvents[i][1], addon.ComputerEvents[i][2])
         end
     end
 
-    if addon.BiosSettings then
+    if addon.BiosSettings and #addon.BiosSettings > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.BiosSettings.." BiosSettings!")
         for i=1, #addon.BiosSettings do
             AddBiosSetting(addon.BiosSettings[i])
         end
     end
 
-    if addon.SoftwareTypes then
+    if addon.SoftwareTypes and #addon.SoftwareTypes > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.SoftwareTypes.." SoftwareTypes!")
         for i=1, #addon.SoftwareTypes do
             AddSoftwareType(addon.SoftwareTypes[i])
         end
     end
 
-    if addon.FilePack then
+    if addon.FilePack and #addon.FilePack > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.FilePack.." Files!")
         for i=1, #addon.FilePack do
             AddFile(addon.FilePack[i])
         end
     end
 
-    if addon.GamePack then
+    if addon.GamePack and #addon.GamePack > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.GamePack.." Games!")
         for i=1, #addon.GamePack do
             AddGame(addon.GamePack[i])
         end
     end
 
-    if addon.SoftwarePack then
+    if addon.SoftwarePack and #addon.SoftwarePack > 0 then
+        print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.SoftwarePack.." Softwares!")
         for i=1, #addon.SoftwarePack do
             AddSoftware(addon.SoftwarePack[i])
         end
     end
 
     if type(addon.Start) == "function" then
-        print("ComputerMod: Running addon "..addon.name.." Start()...")
-
-        if not pcall(addon.Start, addon) then
-            RemoveAddon(addon)
-            error("ComputerMod: Addon "..addon.name.." error in Start()!", 3)
-        end
+        print("ComputerMod: Executing addon "..addon.name.." Start()...")
+        addon:Start()
     end
 end
 
@@ -521,7 +528,10 @@ local function RunAllAddons()
     for i=0, ComputerAddons:size()-1 do
         local addon = ComputerAddons:get(i)
         print("ComputerMod: Addon '"..addon.name.."' is starting...")
-        if pcall(RunAddon, addon) then
+        if not pcall(RunAddon, addon) then
+            RemoveAddonByName(addon.name)
+            print("ComputerMod: Addon "..addon.name.." error in Start(), addon has been disabled!")
+        else
             print("ComputerMod: Addon '"..addon.name.."' has started successfully!")
         end
     end
@@ -538,8 +548,8 @@ local function UpdateAllAddons()
                 ---print("ComputerMod: Running addon "..addon.name.." Update()...")
 
                 if not pcall(addon.Update, addon) then
-                    RemoveAddon(addon)
-                    error("ComputerMod: Addon "..addon.name.." error in Update()!", 3)
+                    RemoveAddonByName(addon.name)
+                    print("ComputerMod: Addon "..addon.name.." error in Update(), addon has been disabled!")
                 end
             end
         end
