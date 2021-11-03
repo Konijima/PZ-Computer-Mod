@@ -10,7 +10,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.CrateCompactDiscs.items",
         items = {
             {"Computer.Disc_Game", 10},
+            {"Computer.Disc_Software", 10},
+            {"Computer.Disc_Learning", 10},
             {"Computer.Floppy", 10},
+            {"Computer.Floppy_Game", 10},
+            {"Computer.Floppy_Software", 10},
+            {"Computer.Floppy_Learning", 10},
         },
     },
 
@@ -19,7 +24,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.DeskGeneric.items",
         items = {
             {"Computer.Disc_Game", 5},
+            {"Computer.Disc_Software", 5},
+            {"Computer.Disc_Learning", 5},
             {"Computer.Floppy", 5},
+            {"Computer.Floppy_Game", 5},
+            {"Computer.Floppy_Software", 5},
+            {"Computer.Floppy_Learning", 5},
         },
     },
 
@@ -28,7 +38,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.DresserGeneric.junk.items",
         items = {
             {"Computer.Disc_Game", 1},
+            {"Computer.Disc_Software", 1},
+            {"Computer.Disc_Learning", 1},
             {"Computer.Floppy", 1},
+            {"Computer.Floppy_Game", 1},
+            {"Computer.Floppy_Software", 1},
+            {"Computer.Floppy_Learning", 1},
         },
     },
 
@@ -37,7 +52,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.LivingRoomShelf.items",
         items = {
             {"Computer.Disc_Game", 2},
+            {"Computer.Disc_Software", 2},
+            {"Computer.Disc_Learning", 2},
             {"Computer.Floppy", 2},
+            {"Computer.Floppy_Game", 2},
+            {"Computer.Floppy_Software", 2},
+            {"Computer.Floppy_Learning", 2},
         },
     },
 
@@ -46,7 +66,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.LivingRoomShelfNoTapes.items",
         items = {
             {"Computer.Disc_Game", 2},
+            {"Computer.Disc_Software", 2},
+            {"Computer.Disc_Learning", 2},
             {"Computer.Floppy", 2},
+            {"Computer.Floppy_Game", 2},
+            {"Computer.Floppy_Software", 2},
+            {"Computer.Floppy_Learning", 2},
         },
     },
 
@@ -55,7 +80,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.Locker.items",
         items = {
             {"Computer.Disc_Game", 1},
+            {"Computer.Disc_Software", 1},
+            {"Computer.Disc_Learning", 1},
             {"Computer.Floppy", 1},
+            {"Computer.Floppy_Game", 1},
+            {"Computer.Floppy_Software", 1},
+            {"Computer.Floppy_Learning", 1},
         },
     },
 
@@ -64,7 +94,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.LockerClassy.items",
         items = {
             {"Computer.Disc_Game", 1},
+            {"Computer.Disc_Software", 1},
+            {"Computer.Disc_Learning", 1},
             {"Computer.Floppy", 1},
+            {"Computer.Floppy_Game", 1},
+            {"Computer.Floppy_Software", 1},
+            {"Computer.Floppy_Learning", 1},
         },
     },
 
@@ -73,7 +108,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.SchoolLockers.items",
         items = {
             {"Computer.Disc_Game", 3},
+            {"Computer.Disc_Software", 3},
+            {"Computer.Disc_Learning", 3},
             {"Computer.Floppy", 3},
+            {"Computer.Floppy_Game", 3},
+            {"Computer.Floppy_Software", 3},
+            {"Computer.Floppy_Learning", 3},
         },
     },
 
@@ -82,7 +122,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.ShelfGeneric.items",
         items = {
             {"Computer.Disc_Game", 1},
+            {"Computer.Disc_Software", 1},
+            {"Computer.Disc_Learning", 1},
             {"Computer.Floppy", 1},
+            {"Computer.Floppy_Game", 1},
+            {"Computer.Floppy_Software", 1},
+            {"Computer.Floppy_Learning", 1},
         },
     },
 
@@ -91,7 +136,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.WardrobeChild.junk.items",
         items = {
             {"Computer.Disc_Game", 3},
+            {"Computer.Disc_Software", 3},
+            {"Computer.Disc_Learning", 3},
             {"Computer.Floppy", 3},
+            {"Computer.Floppy_Game", 3},
+            {"Computer.Floppy_Software", 3},
+            {"Computer.Floppy_Learning", 3},
         },
     },
 
@@ -100,7 +150,12 @@ local distributionTable = {
         location = "ProceduralDistributions.list.WardrobeMan.junk.items",
         items = {
             {"Computer.Disc_Game", 1},
+            {"Computer.Disc_Software", 1},
+            {"Computer.Disc_Learning", 1},
             {"Computer.Floppy", 1},
+            {"Computer.Floppy_Game", 1},
+            {"Computer.Floppy_Software", 1},
+            {"Computer.Floppy_Learning", 1},
         },
     },
 
@@ -109,25 +164,32 @@ local distributionTable = {
         location = "SuburbsDistributions.all.postbox.items",
         items = {
             {"Computer.Disc_Game", 10},
+            {"Computer.Disc_Software", 10},
+            {"Computer.Disc_Learning", 10},
             {"Computer.Floppy", 10},
+            {"Computer.Floppy_Game", 10},
+            {"Computer.Floppy_Software", 10},
+            {"Computer.Floppy_Learning", 10},
         },
     },
 }
 
 ------------------------------------------------------------------------------------------------------
 
---- split string by character
-local function split(s) --TODO: switch to luautils.split instead of our own?
-    result = {}
-    for i in string.gmatch(s, "[^%.]+") do
-        table.insert(result, i)
+---@param s string
+local function split(s)
+    if type(s) == "string" then
+        local result = {}
+        for i in string.gmatch(s, "[^%.]+") do
+            table.insert(result, i)
+        end
+        return result
     end
-    return result
 end
 
---- getLocation function
+---@param locationParts table<string>
 local function getLocation(locationParts)
-    if locationParts then
+    if type(locationParts) == "table" then
         local partCount = #locationParts
         --local location = _G[locationParts[1]]; TODO: Fix to this?
         local location = ProceduralDistributions
@@ -155,30 +217,44 @@ local function getLocation(locationParts)
     end
 end
 
---- add function
+---@param location table
+---@param item string
+---@param odd number
+---@return boolean
 local function add(location, item, odd)
-    table.insert(location, item)
-    table.insert(location, odd)
+    if type(location) == "table" then
+        table.insert(location, item)
+        table.insert(location, odd)
+        return true
+    end
+end
+
+local function process()
+    for t=1, #distributionTable do
+        local table = distributionTable[t]
+        local locationParts = split(table.location)
+        local location = getLocation(locationParts)
+
+        if location then
+            for e=1, #table.items do
+                local item = table.items[e][1]
+                local odd = table.items[e][2]
+
+                if not add(location, item, odd) then
+                    error("ComputerMod: Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
+                else
+                    print("ComputerMod: Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
+                end
+            end
+        else
+            error("ComputerMod: Error distribution invalid location at '"..table.location.."'!")
+        end
+    end
 end
 
 --- process
-for t=1, #distributionTable do
-    local table = distributionTable[t]
-    local locationParts = split(table.location)
-    local location = getLocation(locationParts)
-
-    if location then
-        for e=1, #table.items do
-            local item = table.items[e][1]
-            local odd = table.items[e][2]
-    
-            if not pcall(add, location, item, odd) then
-                print("ComputerMod: Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
-            else
-                print("ComputerMod: Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
-            end
-        end
-    else
-        print("ComputerMod: Error distribution invalid location at '"..table.location.."'!")
-    end
+if pcall(process) then
+    print("ComputerMod: Adding to the distribution table completed!")
+else
+    print("ComputerMod: Adding to the distribution table completed with errors!")
 end
