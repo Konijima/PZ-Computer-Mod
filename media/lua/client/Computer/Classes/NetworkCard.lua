@@ -2,6 +2,8 @@ local BaseHardware = require("Computer/Classes/BaseHardware")
 
 ---@class NetworkCard
 local NetworkCard = BaseHardware:derive("NetworkCard", {})
+NetworkCard.SlotName = "Network Card";
+NetworkCard.SlotRequired = false;
 
 ---@return string
 function NetworkCard:getTooltipDescription()

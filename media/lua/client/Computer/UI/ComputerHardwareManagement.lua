@@ -73,7 +73,34 @@ function ComputerHardwareManagement:onListMouseDown(x, y)
     end
 end
 
----@param self ComputerHardwareManagement
+---@param bayIndex number
+---@param driveItem InventoryItem
+---@param screwdriver InventoryItem
+function ComputerHardwareManagement:optionInstallHardware(driveItem, slotKey, screwdriver)
+    if screwdriver then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
+        if self.character:getPrimaryHandItem() ~= screwdriver then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
+        end
+        if self.character:getSecondaryHandItem() ~= item then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, driveItem, 20, false, false))
+        end
+        ISTimedActionQueue.add(Computer_Action_InstallHardware:new(self.player, self.computer, driveItem, slotKey, screwdriver, 300))
+    end
+end
+
+---@param bayIndex number
+---@param screwdriver InventoryItem
+function ComputerHardwareManagement:optionUninstallHardware(slotKey, screwdriver)
+    if screwdriver then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
+        if self.character:getPrimaryHandItem() ~= screwdriver then
+            ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
+        end
+        ISTimedActionQueue.add(Computer_Action_UninstallHardware:new(self.player, self.computer, slotKey, screwdriver, 300))
+    end
+end
+
 ---@param bayIndex number
 ---@param driveItem InventoryItem
 ---@param screwdriver InventoryItem
@@ -86,11 +113,10 @@ function ComputerHardwareManagement:optionInstallDrive(driveItem, bayIndex, scre
         if self.character:getSecondaryHandItem() ~= item then
             ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, driveItem, 20, false, false))
         end
-        ISTimedActionQueue.add(Computer_Action_InstallHardware:new(self.player, self.computer, driveItem, bayIndex, screwdriver, 200))
+        ISTimedActionQueue.add(Computer_Action_InstallDrive:new(self.player, self.computer, driveItem, bayIndex, screwdriver, 200))
     end
 end
 
----@param self ComputerHardwareManagement
 ---@param bayIndex number
 ---@param screwdriver InventoryItem
 function ComputerHardwareManagement:optionUninstallDrive(bayIndex, screwdriver)
@@ -99,7 +125,7 @@ function ComputerHardwareManagement:optionUninstallDrive(bayIndex, screwdriver)
         if self.character:getPrimaryHandItem() ~= screwdriver then
             ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, screwdriver, 40, true, false))
         end
-        ISTimedActionQueue.add(Computer_Action_UninstallHardware:new(self.player, self.computer, bayIndex, screwdriver, 200))
+        ISTimedActionQueue.add(Computer_Action_UninstallDrive:new(self.player, self.computer, bayIndex, screwdriver, 200))
     end
 end
 
@@ -111,17 +137,24 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
     if UIManager.getSpeedControls():getCurrentGameSpeed() == 0 then return; end
     self.context = ISContextMenu.get(self.player, x + self:getAbsoluteX(), y + self:getAbsoluteY());
 
-    ---@type number
-    local bayIndex = selectedItem.index
-
     ---@type ArrayList
     local screwdriverItems = ComputerUtils.findAllByTag(self.inventory, "Screwdriver");
 
     ---@type ArrayList
     local hardwareItems = ComputerUtils.findAllByTag(self.inventory, "ComputerHardware");
 
+    local isDrive
     ---@type BaseHardware
-    local bayDrive = self.computer:getDriveInBayIndex(bayIndex)
+    local currentHardware = nil
+    if type(selectedItem.indexOrKey) == "number" then
+        isDrive = true
+        currentHardware = self.computer:getDriveInBayIndex(selectedItem.indexOrKey)
+    elseif type(selectedItem.indexOrKey) == "string" then
+        isDrive = false
+        currentHardware = self.computer:getHardwareInSlotKey(selectedItem.indexOrKey)
+    end
+
+    print("currentHardware: ", selectedItem.indexOrKey, " ", type(currentHardware))
 
     -- get valid screwdrivers
     local validScrewdriverItems = getScriptManager():getItemsTag("Screwdriver");
@@ -136,7 +169,7 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
     end
 
     -- Empty Bay
-    if not bayDrive then
+    if currentHardware == nil then
 
         -- We have some hardware in inventory
         if hardwareItems:size() > 0 then
@@ -147,25 +180,21 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                 local item = hardwareItems:get(i);
                 local itemType = item:getType()
 
-                -- Get the hardware class
-                local hardwareType = ComputerMod.GetHardwareType(itemType)
-                if hardwareType then
-
-                    local driveType = ComputerMod.GetDriveType(itemType)
-                    local isDrive = ComputerUtils.isClassChildOf(hardwareType, "BaseDrive")
-
-                    -- Check if item fit into this slot type
-                    if selectedItem.type == "Drive" and  isDrive or selectedItem.type == itemType then
-
-                        -- Get an instance of the hardware class
-                        local hardware = hardwareType:new(item)
-                        if hardware then
-                            table.insert(validItems, {
-                                item = item,
-                                isDrive = isDrive,
-                                hardware = hardware,
-                            })
-                        end
+                -- Get the drive/hardware class
+                local hardwareType
+                if isDrive then
+                    hardwareType = ComputerMod.GetDriveType(itemType)
+                else
+                    hardwareType = ComputerMod.GetHardwareType(itemType)
+                end
+                if hardwareType and selectedItem.type == "Drive" and isDrive or selectedItem.type == itemType  then
+                    -- Get an instance of the drive/hardware class
+                    local hardware = hardwareType:new(item)
+                    if hardware then
+                        table.insert(validItems, {
+                            item = item,
+                            hardware = hardware,
+                        })
                     end
                 end
             end
@@ -183,13 +212,13 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                     local tooltip = ISToolTip:new()
                     tooltip.name = "Install " .. validItem.item:getDisplayName()
                     if screwdriverItems:size() > 0 then
-                        if validItem.isDrive then
-                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
-                        else -- TODO: install hardware
-                            --installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, bayIndex, screwdriverItems:get(0))
+                        if isDrive then
+                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, selectedItem.indexOrKey, screwdriverItems:get(0))
+                        else
+                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallHardware, validItem.item, selectedItem.indexOrKey, screwdriverItems:get(0))
                         end
                         tooltip.description = validItem.hardware:getTooltipDescription()
-                        tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install drive)"
+                        tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install)"
                     else
                         installOption = bayContext:addOption(validItem.item:getDisplayName())
                         installOption.notAvailable = true
@@ -205,17 +234,17 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
     else
         local uninstallOption
         local tooltip = ISToolTip:new()
-        tooltip.name = "Uninstall " .. bayDrive.name
+        tooltip.name = "Uninstall " .. currentHardware.name
         if screwdriverItems:size() > 0 then
-            if ComputerUtils.isClassChildOf(bayDrive, "BaseDrive") then
-                uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
-            else -- TODO: Uninstall hardware
-                uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name, self, self.optionUninstallDrive, bayIndex, screwdriverItems:get(0));
+            if isDrive then
+                uninstallOption = self.context:addOption("Uninstall " .. currentHardware.name, self, self.optionUninstallDrive, selectedItem.indexOrKey, screwdriverItems:get(0));
+            else
+                uninstallOption = self.context:addOption("Uninstall " .. currentHardware.name, self, self.optionUninstallHardware, selectedItem.indexOrKey, screwdriverItems:get(0));
             end
-            tooltip.description = bayDrive:getTooltipDescription()
-            tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> (Click to uninstall drive)"
+            tooltip.description = currentHardware:getTooltipDescription()
+            tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> (Click to uninstall)"
         else
-            uninstallOption = self.context:addOption("Uninstall " .. bayDrive.name)
+            uninstallOption = self.context:addOption("Uninstall " .. currentHardware.name)
             uninstallOption.notAvailable = true
             tooltip.description = "Needs:"
             tooltip.description = tooltip.description .. " <LINE> <RGB:1,0,0> "..neededDescription.." 0/1"
@@ -262,7 +291,7 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
         local reqCol = self.parent.partReqRGB;
 
         ---@type drive
-        local drive = self.parent.drives[item.item.index]
+        local drive = self.parent.drives[item.item.indexOrKey]
 
         if drive then -- Existing Part
             local driveNameWidth = getTextManager():MeasureStringX(UIFont.Small, drive.name)
@@ -305,25 +334,27 @@ function ComputerHardwareManagement:initParts()
 
     self.mainlist:addItem("Hardware Slots", { listCategory = true});
 
-    self.mainlist:addItem("Processor", { type = "Processor", required = true });
-    self.mainlist:addItem("Graphic Card", { type = "GraphicCard", required = true });
-    self.mainlist:addItem("Power Supply", { type = "PowerSupply", required = true });
-    self.mainlist:addItem("Network Card", { type = "NetworkCard", });
-    self.mainlist:addItem("Sound Card", { type = "SoundCard", });
-    self.mainlist:addItem("Car Battery", { type = "Battery", });
+    local slots = {}
+    local allHardwareTypes = ComputerMod.GetAllHardwareTypes()
+    for _, hardwareClass in pairs(allHardwareTypes) do
+        table.insert(slots, hardwareClass)
+    end
+    for i=1, #slots do
+        local slot = slots[i]
+        self.mainlist:addItem(slot.SlotName, {
+            indexOrKey = slot.Type,
+            type = slot.Type,
+            required = slot.SlotRequired,
+        });
+    end
 
     self.mainlist:addItem("Drive Bays", {listCategory = true});
 
-    for index = 1, self.drives.count do
-        if self.drives[i] then self.hasOneDrive = true; end
-        local tempConditionValue = ZombRand(0, 100)
-        self.mainlist:addItem("Drive Bay "..tostring(index), {
-            index = index,
+    for bayIndex = 1, self.drives.count do
+        --if self.drives[i] then self.hasOneDrive = true; end
+        self.mainlist:addItem("Drive Bay "..tostring(bayIndex), {
+            indexOrKey = bayIndex,
             type = "Drive",
-            condition = {
-                color = self.getConditionRGB(tempConditionValue),
-                value = tempConditionValue.."%"
-            },
         });
     end
 
@@ -401,6 +432,7 @@ function ComputerHardwareManagement:new(player, computer)
     o.inventory = o.character:getInventory();
     o.computer = computer;
     o.square = computer:getSquareInFront();
+    o.hardwares = computer:getAllHardwares();
     o.drives = computer:getAllDrives();
     o.hasOneDrive = false;
 

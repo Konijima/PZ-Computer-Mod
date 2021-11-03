@@ -278,6 +278,48 @@ function Computer:isBiosActive()
     return self:isOn() and self:getFlag("bios_active")
 end
 
+--- HARDWARES
+
+---@return moddata
+function Computer:getAllHardwares()
+    return self:getData().hardwares
+end
+
+---@param slotKey number
+---@return BaseHardware|nil
+function Computer:getHardwareInSlotKey(slotKey)
+    local hardwareData = self:getData().hardwares[slotKey]
+    if hardwareData then
+        local hardwareType = ComputerMod.GetHardwareType(hardwareData.hardwareType)
+        if hardwareType then
+            return hardwareType:new(hardwareData)
+        end
+    end
+end
+
+---@param inventory ItemContainer
+---@param item InventoryItem
+---@param slotKey string
+---@return boolean
+function Computer.installHardwareItemInSlot(inventory, item, slotKey)
+    if instanceof(inventory, "ItemContainer") and instanceof(item, "InventoryItem") then
+        local hardwareType = ComputerMod.GetHardwareType(item:getType())
+        if hardwareType then
+            local hardware = hardwareType:new(item)
+            if hardware then
+
+            end
+        end
+    end
+end
+
+---@param inventory ItemContainer
+---@param slotKey string
+---@return boolean
+function Computer.uninstallHardwareItemFromSlot(inventory, slotKey)
+
+end
+
 --- DRIVES
 
 ---@return moddata
@@ -286,7 +328,7 @@ function Computer:getAllDrives()
 end
 
 ---@param bayIndex number
----@return Harddrive|Discdrive|Floppydrive
+---@return BaseDrive|nil
 function Computer:getDriveInBayIndex(bayIndex)
     local driveData = self:getData().drives[bayIndex]
     if driveData then
@@ -336,22 +378,12 @@ function Computer:getAllFloppydrives()
     return floppydrives
 end
 
--- TODO: To-do
-function Computer.installHardwareItemInSlot()
-
-end
-
--- TODO: To-do
-function Computer.uninstallHardwareItemFromSlot()
-
-end
-
 ---@param inventory ItemContainer
 ---@param item InventoryItem
 ---@param bayIndex number
 ---@return boolean
 function Computer:installDriveItemInBayIndex(inventory, item, bayIndex)
-    if item then
+    if instanceof(inventory, "ItemContainer") and instanceof(item, "InventoryItem") then
         local driveType = ComputerMod.GetDriveType(item:getType())
         if driveType then
             local drive = driveType:new(item)
@@ -372,11 +404,11 @@ end
 ---@param bayIndex number
 ---@return boolean
 function Computer:uninstallDriveFromBayIndex(inventory, bayIndex)
-    local drives = self:getAllDrives()
     local drive = self:getDriveInBayIndex(bayIndex)
-    if drive then
+    if instanceof(inventory, "ItemContainer") and drive then
         local item = drive:createItem(inventory)
         if item then
+            local drives = self:getAllDrives()
             drives[bayIndex] = nil
             print("Uninstalled "..drive.name.." from bay " .. bayIndex)
             ComputerMod.TriggerEvent("OnComputerDriveUninstalled", self, drive, bayIndex)

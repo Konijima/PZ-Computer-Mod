@@ -29,20 +29,17 @@ local Classes = {
 }
 
 local HardwareTypes = {
-    Discdrive = Classes.Discdrive,
-    Floppydrive = Classes.Floppydrive,
-    GraphicCard = Classes.GraphicCard,
-    Harddrive = Classes.Harddrive,
-    NetworkCard = Classes.NetworkCard,
-    PowerSupply = Classes.PowerSupply,
     Processor = Classes.Processor,
+    GraphicCard = Classes.GraphicCard,
+    PowerSupply = Classes.PowerSupply,
+    NetworkCard = Classes.NetworkCard,
     SoundCard = Classes.SoundCard,
 }
 
 local DriveTypes = {
+    Harddrive = Classes.Harddrive,
     Discdrive = Classes.Discdrive,
     Floppydrive = Classes.Floppydrive,
-    Harddrive = Classes.Harddrive,
 }
 
 --- Global ModData Object

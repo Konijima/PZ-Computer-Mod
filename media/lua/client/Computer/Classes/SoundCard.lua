@@ -2,6 +2,8 @@ local BaseHardware = require("Computer/Classes/BaseHardware")
 
 ---@class SoundCard
 local SoundCard = BaseHardware:derive("SoundCard", {})
+SoundCard.SlotName = "Sound Card";
+SoundCard.SlotRequired = false;
 
 ---@return string
 function SoundCard:getTooltipDescription()

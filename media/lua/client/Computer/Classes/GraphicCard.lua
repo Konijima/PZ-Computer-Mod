@@ -2,6 +2,8 @@ local BaseHardware = require("Computer/Classes/BaseHardware")
 
 ---@class GraphicCard
 local GraphicCard = BaseHardware:derive("GraphicCard", {})
+GraphicCard.SlotName = "Graphic Card";
+GraphicCard.SlotRequired = true;
 
 ---@return string
 function GraphicCard:getTooltipDescription()

@@ -46,8 +46,8 @@ function Computer_Action_InstallHardware:perform()
 
     self.character:setSecondaryHandItem(nil)
 
-    self.computer:installDriveItemInBayIndex(self.inventory, self.item, self.bayIndex)
-    self.character:getXp():AddXP(Perks.Electricity, 3)
+    self.computer:installHardwareItemInSlot(self.inventory, self.item, self.bayIndex)
+    self.character:getXp():AddXP(Perks.Electricity, 2)
 
     -- needed to remove from queue / start next.
     ISBaseTimedAction.perform(self)

@@ -2,6 +2,8 @@ local BaseHardware = require("Computer/Classes/BaseHardware")
 
 ---@class Processor
 local Processor = BaseHardware:derive("Processor", {})
+Processor.SlotName = "Processor";
+Processor.SlotRequired = true;
 
 ---@return string
 function Processor:getTooltipDescription()

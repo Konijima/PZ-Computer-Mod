@@ -2,6 +2,8 @@ local BaseHardware = require("Computer/Classes/BaseHardware")
 
 ---@class PowerSupply
 local PowerSupply = BaseHardware:derive("PowerSupply", {})
+PowerSupply.SlotName = "Power Supply";
+PowerSupply.SlotRequired = true;
 
 ---@return string
 function PowerSupply:getTooltipDescription()
