@@ -955,8 +955,8 @@ CreateEvent("OnComputerAfterBoot", { "Computer" })
 CreateEvent("OnComputerBeforeShutDown", { "Computer" })
 CreateEvent("OnComputerShutDown", { "Computer" })
 
-CreateEvent("OnComputerHardwareInstalled", { "Computer", "BaseHardware", "number" })
-CreateEvent("OnComputerHardwareUninstalled", { "Computer", "BaseHardware", "number" })
+CreateEvent("OnComputerHardwareInstalled", { "Computer", "BaseHardware", "string" })
+CreateEvent("OnComputerHardwareUninstalled", { "Computer", "BaseHardware", "string" })
 
 CreateEvent("OnComputerDriveInstalled", { "Computer", "BaseDrive", "number" })
 CreateEvent("OnComputerDriveUninstalled", { "Computer", "BaseDrive", "number" })

@@ -76,7 +76,7 @@ end
 ---@param bayIndex number
 ---@param driveItem InventoryItem
 ---@param screwdriver InventoryItem
-function ComputerHardwareManagement:optionInstallHardware(driveItem, slotKey, screwdriver)
+function ComputerHardwareManagement:optionInstallHardware(driveItem, screwdriver)
     if screwdriver then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(self.character, self.square))
         if self.character:getPrimaryHandItem() ~= screwdriver then
@@ -85,7 +85,7 @@ function ComputerHardwareManagement:optionInstallHardware(driveItem, slotKey, sc
         if self.character:getSecondaryHandItem() ~= item then
             ISTimedActionQueue.add(ISEquipWeaponAction:new(self.character, driveItem, 20, false, false))
         end
-        ISTimedActionQueue.add(Computer_Action_InstallHardware:new(self.player, self.computer, driveItem, slotKey, screwdriver, 300))
+        ISTimedActionQueue.add(Computer_Action_InstallHardware:new(self.player, self.computer, driveItem, screwdriver, 300))
     end
 end
 
@@ -215,7 +215,7 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
                         if isDrive then
                             installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallDrive, validItem.item, selectedItem.indexOrKey, screwdriverItems:get(0))
                         else
-                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallHardware, validItem.item, selectedItem.indexOrKey, screwdriverItems:get(0))
+                            installOption = bayContext:addOption(validItem.item:getDisplayName(), self, self.optionInstallHardware, validItem.item, screwdriverItems:get(0))
                         end
                         tooltip.description = validItem.hardware:getTooltipDescription()
                         tooltip.description = tooltip.description .. " <LINE> <RGB:0,1,0> (Click to install)"
@@ -290,17 +290,22 @@ function ComputerHardwareManagement:doDrawItem(y, item, alt)
         local optCol = self.parent.partOptRGB;
         local reqCol = self.parent.partReqRGB;
 
-        ---@type drive
-        local drive = self.parent.drives[item.item.indexOrKey]
+        ---@type BaseHardware
+        local hardware = nil
+        if item.item.type == "Drive" then
+            hardware = self.parent.drives[item.item.indexOrKey]
+        else
+            hardware = self.parent.hardwares[item.item.indexOrKey]
+        end
 
-        if drive then -- Existing Part
-            local driveNameWidth = getTextManager():MeasureStringX(UIFont.Small, drive.name)
+        if hardware ~= nil then -- Existing Part
+            local driveNameWidth = getTextManager():MeasureStringX(UIFont.Small, hardware.name)
             self:drawText(item.text, 20, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
-            self:drawText(drive.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
+            self:drawText(hardware.name, 120, y - 2, self.parent.partRGB.r, self.parent.partRGB.g, self.parent.partRGB.b, self.parent.partRGB.a, UIFont.Small);
 
-            if item.item.condition ~= nil then
-                self:drawText(" ("..item.item.condition.value..")", 120 + driveNameWidth, y - 2, item.item.condition.color.r, item.item.condition.color.g, item.item.condition.color.b, 1, UIFont.Small);
-            end
+            --if item.item.condition ~= nil then
+            --    self:drawText(" ("..item.item.condition.value..")", 120 + driveNameWidth, y - 2, item.item.condition.color.r, item.item.condition.color.g, item.item.condition.color.b, 1, UIFont.Small);
+            --end
         else
             local curText = "None";
             local curColor = optCol;

@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_UninstallHardware = ISBaseTimedAction:derive("Computer_Action_UninstallHardware");
 
 function Computer_Action_UninstallHardware:isValid()
-    return self.computer ~= nil and self.tool ~= nil and self.drives[self.bayIndex] ~= nil
+    return self.computer ~= nil and self.tool ~= nil and self.hardwares[self.slotKey] ~= nil
 end
 
 function Computer_Action_UninstallHardware:update()
@@ -41,7 +41,7 @@ function Computer_Action_UninstallHardware:perform()
 
     --self.tool:setJobDelta(0.0)
 
-    self.computer:uninstallHardwareItemFromSlot(self.inventory, self.bayIndex)
+    self.computer:uninstallHardwareItemFromSlot(self.inventory, self.slotKey)
     self.character:getXp():AddXP(Perks.Electricity, 2)
 
     -- needed to remove from queue / start next.
@@ -50,10 +50,10 @@ end
 
 ---@param player number
 ---@param computer Computer
----@param bayIndex number
+---@param slotKey string
 ---@param tool InventoryItem
 ---@param time number
-function Computer_Action_UninstallHardware:new(player, computer, bayIndex, tool, time)
+function Computer_Action_UninstallHardware:new(player, computer, slotKey, tool, time)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -68,8 +68,8 @@ function Computer_Action_UninstallHardware:new(player, computer, bayIndex, tool,
     o.sound = "ComputerInstallDrive"
     o.audio = 0
     o.computer = computer
-    o.bayIndex = bayIndex
+    o.slotKey = slotKey
     o.tool = tool
-    o.drives = computer:getAllDrives()
+    o.hardwares = computer:getAllHardwares()
     return o;
 end

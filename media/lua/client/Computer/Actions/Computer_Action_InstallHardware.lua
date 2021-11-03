@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InstallHardware = ISBaseTimedAction:derive("Computer_Action_InstallHardware");
 
 function Computer_Action_InstallHardware:isValid()
-    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.drives[self.bayIndex] == nil
+    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.hardwares[self.slotKey] == nil
 end
 
 function Computer_Action_InstallHardware:update()
@@ -46,7 +46,7 @@ function Computer_Action_InstallHardware:perform()
 
     self.character:setSecondaryHandItem(nil)
 
-    self.computer:installHardwareItemInSlot(self.inventory, self.item, self.bayIndex)
+    self.computer:installHardwareItemInSlot(self.inventory, self.item)
     self.character:getXp():AddXP(Perks.Electricity, 2)
 
     -- needed to remove from queue / start next.
@@ -56,10 +56,9 @@ end
 ---@param player number
 ---@param computer Computer
 ---@param item InventoryItem
----@param bayIndex number
 ---@param tool InventoryItem
 ---@param time number
-function Computer_Action_InstallHardware:new(player, computer, item, bayIndex, tool, time)
+function Computer_Action_InstallHardware:new(player, computer, item, tool, time)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -75,8 +74,8 @@ function Computer_Action_InstallHardware:new(player, computer, item, bayIndex, t
     o.audio = 0
     o.computer = computer
     o.item = item
-    o.bayIndex = bayIndex
+    o.slotKey = item:getType()
     o.tool = tool
-    o.drives = computer:getAllDrives()
+    o.hardwares = computer:getAllHardwares()
     return o;
 end

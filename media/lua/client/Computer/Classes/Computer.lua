@@ -299,15 +299,21 @@ end
 
 ---@param inventory ItemContainer
 ---@param item InventoryItem
----@param slotKey string
 ---@return boolean
-function Computer.installHardwareItemInSlot(inventory, item, slotKey)
+function Computer:installHardwareItemInSlot(inventory, item)
     if instanceof(inventory, "ItemContainer") and instanceof(item, "InventoryItem") then
+        print("correct input types")
         local hardwareType = ComputerMod.GetHardwareType(item:getType())
         if hardwareType then
+            print("found the hardwware class")
             local hardware = hardwareType:new(item)
             if hardware then
-
+                local hardwares = self:getAllHardwares()
+                hardwares[hardware.Type] = hardware
+                inventory:Remove(item)
+                print("Installed "..hardware.name.." into slot " .. hardware.Type)
+                ComputerMod.TriggerEvent("OnComputerHardwareInstalled", self, hardware, hardware.Type)
+                return true
             end
         end
     end
@@ -316,8 +322,18 @@ end
 ---@param inventory ItemContainer
 ---@param slotKey string
 ---@return boolean
-function Computer.uninstallHardwareItemFromSlot(inventory, slotKey)
-
+function Computer:uninstallHardwareItemFromSlot(inventory, slotKey)
+    local hardware = self:getHardwareInSlotKey(slotKey)
+    if instanceof(inventory, "ItemContainer") and hardware then
+        local item = hardware:createItem(inventory)
+        if item then
+            local hardwares = self:getAllHardwares()
+            hardwares[slotKey] = nil
+            print("Uninstalled "..hardware.name.." from bay " .. hardware.Type)
+            ComputerMod.TriggerEvent("OnComputerHardwareUninstalled", self, hardware, hardware.Type)
+            return true
+        end
+    end
 end
 
 --- DRIVES
@@ -387,7 +403,6 @@ function Computer:installDriveItemInBayIndex(inventory, item, bayIndex)
         local driveType = ComputerMod.GetDriveType(item:getType())
         if driveType then
             local drive = driveType:new(item)
-
             if drive then
                 local drives = self:getAllDrives()
                 drives[bayIndex] = drive
