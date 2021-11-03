@@ -81,11 +81,13 @@ local ComputerEvents = {}
 
 -------------------------------------------------------------------------------------------------------
 
+---@return table<string, BaseHardware>
 local function GetAllHardwareTypes()
     return HardwareTypes
 end
 
 ---@param type string
+---@return BaseHardware
 local function GetHardwareType(type)
     return HardwareTypes[type]
 end
@@ -675,21 +677,32 @@ local function ComputerPowerManagementMenu(player, computerContext, computer)
     if computer:hasElectricity() then
         local option = computerContext:addOption("Power Management")
         local context = ISContextMenu:getNew(computerContext)
-        computerContext:addSubMenu(option, context)
 
         local function optionToggleComputer(inBios)
             ISTimedActionQueue.add(ISWalkToTimedAction:new(character, square))
             ISTimedActionQueue.add(Computer_Action_ToggleComputer:new(player, computer, inBios, 20))
         end
 
-        TriggerEvent("OnBeforeComputerPowerManagementContextMenu", player, context, computer)
-        if computer:isOn() then
-            context:addOption("Turn off", nil, optionToggleComputer)
+        if computer:canBoot() then
+            computerContext:addSubMenu(option, context)
+
+            TriggerEvent("OnBeforeComputerPowerManagementContextMenu", player, context, computer)
+            if computer:isOn() then
+                context:addOption("Turn off", nil, optionToggleComputer)
+            else
+                context:addOption("Turn on", false, optionToggleComputer)
+                context:addOption("Turn on into BIOS", true, optionToggleComputer)
+            end
+            TriggerEvent("OnAfterComputerPowerManagementContextMenu", player, context, computer)
         else
-            context:addOption("Turn on", false, optionToggleComputer)
-            context:addOption("Turn on into BIOS", true, optionToggleComputer)
+            if computer:isOn() then
+                computer:toggleState(false, false)
+            end
+            option.notAvailable = true
+            option.toolTip = ISToolTip:new()
+            option.toolTip.name = "Missing Hardware"
+            option.toolTip.description = "<RGB:1,0,0> All key hardware must be installed to start the computer!"
         end
-        TriggerEvent("OnAfterComputerPowerManagementContextMenu", player, context, computer)
     else
         local option = computerContext:addOption("Power Management")
         option.notAvailable = true
@@ -741,7 +754,7 @@ end
 ---@param computerContext ISContextMenu
 ---@param computer Computer
 local function ComputerHardDriveManagementMenu(player, computerContext, computer)
-    local harddrives = computer:getAllHarddrives()
+    local harddrives = computer:getAllDriveOfType(Classes.Harddrive.Type)
 
     local option = computerContext:addOption("Hard Drives")
 
@@ -765,7 +778,7 @@ end
 ---@param computerContext ISContextMenu
 ---@param computer Computer
 local function ComputerDiscDriveManagementMenu(player, computerContext, computer)
-    local discdrives = computer:getAllDiscdrives()
+    local discdrives = computer:getAllDriveOfType(Classes.Discdrive.Type)
 
     local option = computerContext:addOption("Disc Drives")
 
@@ -789,7 +802,7 @@ end
 ---@param computerContext ISContextMenu
 ---@param computer Computer
 local function ComputerFloppyDriveManagementMenu(player, computerContext, computer)
-    local floppydrives = computer:getAllFloppydrives()
+    local floppydrives = computer:getAllDriveOfType(Classes.Floppydrive.Type)
 
     local option = computerContext:addOption("Floppy Drives")
 
@@ -946,7 +959,7 @@ local function UpdateComputers()
                 print("ComputerMod: Computer at x:", position.x, " y:", position.y, " z:", position.z, " shut down no power!")
 
                 -- Handle computer auto restart
-            elseif computer and computer:isOff() and computer:isAutoRestarting() and computer:hasElectricity() then
+            elseif computer and computer:isOff() and computer:isAutoRestarting() and computer:canBoot() then
                 computer:toggleState()
                 print("ComputerMod: Computer at x:", position.x, " y:", position.y, " z:", position.z, " auto restarted!")
             end
