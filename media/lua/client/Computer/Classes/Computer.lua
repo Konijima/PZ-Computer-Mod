@@ -1,9 +1,9 @@
 require("ISBaseObject")
 require("Computer/Audio/SoundManager")
 
-local Harddrive = require("Computer/Classes/Harddrive")
-local Discdrive = require("Computer/Classes/Discdrive")
-local Floppydrive = require("Computer/Classes/Floppydrive")
+local Harddrive = require("Computer/Classes/Drives/Harddrive")
+local Discdrive = require("Computer/Classes/Drives/Discdrive")
+local Floppydrive = require("Computer/Classes/Drives/Floppydrive")
 
 local ComputerSprites = {
     On = {

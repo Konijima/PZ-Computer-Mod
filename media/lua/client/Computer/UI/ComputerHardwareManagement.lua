@@ -1,10 +1,10 @@
 require "ISUI/ISCollapsableWindow"
 require "Computer/ComputerUtils"
 
-local Processor = require("Computer/Classes/Processor")
-local Harddrive = require("Computer/Classes/Harddrive")
-local Discdrive = require("Computer/Classes/Discdrive")
-local Floppydrive = require("Computer/Classes/Floppydrive")
+local Processor = require("Computer/Classes/Hardwares/Processor")
+local Harddrive = require("Computer/Classes/Drives/Harddrive")
+local Discdrive = require("Computer/Classes/Drives/Discdrive")
+local Floppydrive = require("Computer/Classes/Drives/Floppydrive")
 
 ---@alias drive Harddrive|Discdrive|Floppydrive
 

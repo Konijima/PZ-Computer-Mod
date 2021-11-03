@@ -8,24 +8,25 @@ local Classes = {
     ComputerAddon = require("Computer/ComputerAddon"),
     ComputerEvent = require("Computer/ComputerEvent"),
 
-    --- Computer Objects
     BaseDrive = require("Computer/Classes/BaseDrive"),
     BaseHardware = require("Computer/Classes/BaseHardware"),
     BiosSetting = require("Computer/Classes/BiosSetting"),
     Computer = require("Computer/Classes/Computer"),
     Disc = require("Computer/Classes/Disc"),
-    Discdrive = require("Computer/Classes/Discdrive"),
     File = require("Computer/Classes/File"),
     Floppy = require("Computer/Classes/Floppy"),
-    Floppydrive = require("Computer/Classes/Floppydrive"),
     Game = require("Computer/Classes/Game"),
-    GraphicCard = require("Computer/Classes/GraphicCard"),
-    Harddrive = require("Computer/Classes/Harddrive"),
-    NetworkCard = require("Computer/Classes/NetworkCard"),
-    PowerSupply = require("Computer/Classes/PowerSupply"),
-    Processor = require("Computer/Classes/Processor"),
     Software = require("Computer/Classes/Software"),
-    SoundCard = require("Computer/Classes/SoundCard"),
+
+    Discdrive = require("Computer/Classes/Drives/Discdrive"),
+    Floppydrive = require("Computer/Classes/Drives/Floppydrive"),
+    Harddrive = require("Computer/Classes/Drives/Harddrive"),
+
+    GraphicCard = require("Computer/Classes/Hardwares/GraphicCard"),
+    NetworkCard = require("Computer/Classes/Hardwares/NetworkCard"),
+    PowerSupply = require("Computer/Classes/Hardwares/PowerSupply"),
+    Processor = require("Computer/Classes/Hardwares/Processor"),
+    SoundCard = require("Computer/Classes/Hardwares/SoundCard"),
 }
 
 local HardwareTypes = {
