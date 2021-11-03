@@ -2,7 +2,7 @@ require "Items/SuburbsDistributions"
 require "Items/ProceduralDistributions"
 
 --- Set all odds to 100 for testing
-local test = true
+local test = false
 
 --- ProceduralDistributions
 
