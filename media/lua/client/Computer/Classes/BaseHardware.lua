@@ -69,13 +69,10 @@ end
 
 ---@vararg string|number|table|InventoryItem
 function BaseHardware:init(...)
-    print("Init class ", self.Type)
-
     local args = {...}
 
     -- Check if passing an InventoryItem
     if instanceof(args[1], "InventoryItem") and args[1]:getFullType() == self:getItemFullType() then
-        print("Passing an item ", self.Type)
         local item = args[1]
 
         local modData = item:getModData() -- unused local, what for?
@@ -91,7 +88,6 @@ function BaseHardware:init(...)
 
     -- Check if passing arguments
     elseif #args > 1 then
-        print("Passing a args ", self.Type)
         for i = 1, #args do
             if type(args[i]) ~= self.Params[i].type then
                 error("Error calling "..self.Type..":new - argument "..i.." ("..self.Params[i].name..") expected to be of type "..self.Params[i].type.." but was "..type(args[i])..".", 2);
@@ -102,7 +98,6 @@ function BaseHardware:init(...)
 
     -- Check if passing a key table
     elseif type(args[1]) == "table" then
-        print("Passing a table ", self.Type)
         for i = 1, #self.Params do
             local classParam = self.Params[i]
             self[classParam.name] = args[1][classParam.name]
