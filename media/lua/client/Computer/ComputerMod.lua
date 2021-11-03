@@ -419,19 +419,52 @@ local function ValidateAddon(addon)
             end
         end
 
-        -- Validate OnStart
-        if addon.OnStart and type(addon.OnStart) ~= "function" then
-            error("ComputerMod: Addon '"..addon.name.."' OnStart must be a function!", 1);
+        -- Validate Start
+        if addon.Start and type(addon.Start) ~= "function" then
+            error("ComputerMod: Addon '"..addon.name.."' .Start must be a function!", 1);
         end
 
-        -- Validate OnUpdate
-        if addon.OnUpdate and type(addon.OnUpdate) ~= "function" then
-            error("ComputerMod: Addon '"..addon.name.."' OnUpdate must be a function!", 1);
+        -- Validate Update
+        if addon.Update and type(addon.Update) ~= "function" then
+            error("ComputerMod: Addon '"..addon.name.."' .Update must be a function!", 1);
         end
 
         return true
     else
         error("ComputerMod: Addon is not of class ComputerAddon!", 1);
+    end
+end
+
+---@param addon ComputerAddon|string
+---@return boolean
+local function RemoveAddon(addon)
+    if type(addon) == "string" or getmetatable(addon) == Classes.ComputerAddon then
+        for i=0, ComputerAddons:size()-1 do
+            local checkAddon = ComputerAddons:get(i)
+            if type(addon) == "string" and checkAddon.name == addon or type(addon) == "table" and checkAddon.name == addon.name then
+                ComputerAddons:remove(checkAddon)
+                print("ComputerMod: Removing addon '"..checkAddon.name.."'!")
+                return true
+            end
+        end
+    end
+end
+
+---@param addon ComputerAddon
+local function AddAddon(addon)
+    --- Validate
+    if pcall(ValidateAddon, addon) then
+        print("ComputerMod: Addon '"..addon.name.."' has been validated!")
+
+        -- Check if an addon has the same name
+        RemoveAddon(addon)
+
+        ComputerAddons:add(addon)
+        print("ComputerMod: Added addon '"..addon.name.."' successfully!")
+
+        --if not pcall(RunAddon, addon) then
+        --    print("ComputerMod: There was a problem running addon '"..addon.name.."'!")
+        --end
     end
 end
 
@@ -474,44 +507,38 @@ local function RunAddon(addon)
         end
     end
 
-    if type(addon.OnStart) == "function" then
-        print("ComputerMod: Running addon "..addon.name.." OnStart...")
+    if type(addon.Start) == "function" then
+        print("ComputerMod: Running addon "..addon.name.." Start()...")
 
-        if not pcall(addon.OnStart) then
-            error("ComputerMod: Addon "..addon.name.." error in OnStart!", 3)
+        if not pcall(addon.Start, addon) then
+            RemoveAddon(addon)
+            error("ComputerMod: Addon "..addon.name.." error in Start()!", 3)
         end
     end
 end
 
----@param addon ComputerAddon|string
----@return boolean
-local function RemoveAddon(addon)
-    if type(addon) == "string" or getmetatable(addon) == Classes.ComputerAddon then
+local function RunAllAddons()
+    for i=0, ComputerAddons:size()-1 do
+        local addon = ComputerAddons:get(i)
+        pcall(RunAddon, addon)
+    end
+end
+
+local AddonTicks = 0
+local function UpdateAllAddons()
+    AddonTicks = AddonTicks + 1
+    if AddonTicks > 60 then
+        AddonTicks = 0
         for i=0, ComputerAddons:size()-1 do
-            local checkAddon = ComputerAddons:get(i)
-            if type(addon) == "string" and checkAddon.name == addon or type(addon) == "table" and checkAddon.name == addon.name then
-                ComputerAddons:remove(checkAddon)
-                print("ComputerMod: Removing addon '"..checkAddon.name.."'!")
-                return true
+            local addon = ComputerAddons:get(i)
+            if type(addon.Update) == "function" then
+                ---print("ComputerMod: Running addon "..addon.name.." Update()...")
+
+                if not pcall(addon.Update, addon) then
+                    RemoveAddon(addon)
+                    error("ComputerMod: Addon "..addon.name.." error in Update()!", 3)
+                end
             end
-        end
-    end
-end
-
----@param addon ComputerAddon
-local function AddAddon(addon)
-    --- Validate
-    if pcall(ValidateAddon, addon) then
-        print("ComputerMod: Addon '"..addon.name.."' has been validated!")
-
-        -- Check if an addon has the same name
-        RemoveAddon(addon)
-
-        if not pcall(RunAddon, addon) then
-            print("ComputerMod: There was a problem running addon '"..addon.name.."'!")
-        else
-            ComputerAddons:add(addon)
-            print("ComputerMod: Added addon '"..addon.name.."'!")
         end
     end
 end
@@ -939,10 +966,15 @@ end
 Events.OnGameStart.Add(AddTagsToBaseItems)
 Events.OnGameStart.Add(LoadGlobalModData)
 Events.OnGameStart.Add(InitializeComputers)
+Events.OnGameStart.Add(RunAllAddons)
 Events.OnTick.Add(UpdateComputers)
+Events.OnTick.Add(UpdateAllAddons)
 Events.OnPreFillWorldObjectContextMenu.Add(OnPreFillWorldObjectContextMenu)
 
 --- COMPUTER EVENTS
+
+CreateEvent("OnAddonAdded", { "ComputerAddon" })
+CreateEvent("OnAddonRemoved", { "ComputerAddon" })
 
 CreateEvent("OnComputerPickedUp", { "InventoryItem", "IsoGridSquare" })
 CreateEvent("OnComputerPlacedDown", { "Computer" })
