@@ -1,10 +1,6 @@
 require("ISBaseObject")
 require("Computer/Audio/SoundManager")
 
-local Harddrive = require("Computer/Classes/Drives/Harddrive")
-local Discdrive = require("Computer/Classes/Drives/Discdrive")
-local Floppydrive = require("Computer/Classes/Drives/Floppydrive")
-
 local ComputerSprites = {
     On = {
         S = "appliances_com_01_76",
@@ -97,6 +93,20 @@ function Computer:getFacing()
     end
 end
 
+---@return boolean
+function Computer:canBoot()
+    local hardwareTypes = ComputerMod.GetAllHardwareTypes()
+    for _, hardwareType in pairs(hardwareTypes) do
+        if hardwareType.SlotRequired then
+            if not self:getHardwareInSlotKey(hardwareType.Type) then
+                print("Missing a ", hardwareType.Type);
+                return false
+            end
+        end
+    end
+    return self:hasElectricity()
+end
+
 ---@param inBios boolean
 ---@param autoRestart boolean
 function Computer:toggleState(inBios, autoRestart)
@@ -118,7 +128,7 @@ function Computer:toggleState(inBios, autoRestart)
         ComputerMod.TriggerEvent("OnComputerShutDown", self)
 
     -- power on
-    elseif (self:hasElectricity()) then
+    elseif self:canBoot() then
         ComputerMod.TriggerEvent("OnComputerBeforeBoot", self, inBios)
         self:setFlag("bios_active", inBios)
         self:setFlag("auto_restart", false)
@@ -169,6 +179,9 @@ function Computer:reset()
     if not self.isoObject then return end
     local modData = self.isoObject:getModData()
     modData.data = nil
+    if self:isOn() then
+        self:toggleState(false, false)
+    end
     print("Computer has been resetted!")
 end
 
@@ -429,7 +442,7 @@ end
 
 ---@return boolean
 function Computer:isAudioDisabled()
-    return not self:getBiosValue("enable_audio")
+    return not self:getBiosValue("enable_audio") and not self:getHardwareInSlotKey("SoundCard")
 end
 
 ---@return EmitterInstance
