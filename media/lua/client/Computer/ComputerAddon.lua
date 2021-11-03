@@ -3,6 +3,14 @@ require("ISBaseObject")
 ---@class ComputerAddon
 local ComputerAddon = ISBaseObject:derive("ComputerAddon")
 
+function ComputerAddon:Start()
+
+end
+
+function ComputerAddon:Update()
+
+end
+
 ---@param name string
 ---@return ComputerAddon
 function ComputerAddon:new(name)
@@ -18,9 +26,6 @@ function ComputerAddon:new(name)
     o.FilePack = {}
     o.GamePack = {}
     o.SoftwarePack = {}
-
-    o.OnStart = nil
-    o.OnUpdate = nil
 
     return o
 end
