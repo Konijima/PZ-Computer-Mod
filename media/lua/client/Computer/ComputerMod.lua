@@ -520,7 +520,10 @@ end
 local function RunAllAddons()
     for i=0, ComputerAddons:size()-1 do
         local addon = ComputerAddons:get(i)
-        pcall(RunAddon, addon)
+        print("ComputerMod: Addon '"..addon.name.."' is starting...")
+        if pcall(RunAddon, addon) then
+            print("ComputerMod: Addon '"..addon.name.."' has started successfully!")
+        end
     end
 end
 
