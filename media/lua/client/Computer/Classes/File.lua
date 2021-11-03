@@ -29,7 +29,7 @@ end
 
 ---@return number
 function File:calcSize()
-    return 0 --TODO: calcSize
+    return string.len(self.title) + string.len(self.content)
 end
 
 ---@vararg string|table
