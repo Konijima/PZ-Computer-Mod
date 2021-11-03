@@ -41,9 +41,19 @@ function BaseHardware:derive(classType, classParams)
         { name = "hardwareType", type = "string" },
         { name = "name", type = "string" },
     }
-    if classParams and type(classParams) == "table" then -- TODO: validate params
-        for i, v in ipairs(classParams) do
-            table.insert(o.Params, v);
+    if classParams and type(classParams) == "table" then
+        for i, _ in ipairs(classParams) do
+            local entry = classParams[i]
+            if type(entry) ~= "table" then
+                error("ComputerMod: Derive '"..classType.."' error param["..i.."] must be a table!")
+            end
+            if type(entry["name"]) ~= "string" then
+                error("ComputerMod: Derive '"..classType.."' error param["..i.."] .name must be a string!")
+            end
+            if type(entry["type"]) ~= "string" then
+                error("ComputerMod: Derive '"..classType.."' error param["..i.."] .type must be a string!")
+            end
+            table.insert(o.Params, entry);
         end
     end
     return o
