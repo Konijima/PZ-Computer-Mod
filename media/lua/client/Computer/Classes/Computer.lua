@@ -297,6 +297,19 @@ function Computer:getHardwareInSlotKey(slotKey)
     end
 end
 
+---@param hardwareType string
+---@return table
+function Computer:getAllHardwareOfType(hardwareType)
+    local foundHardwares = {}
+    for k, _ in pairs(self:getAllHardwares()) do
+        local hardware = self:getHardwareInSlotKey(k)
+        if hardware and hardware.Type == hardwareType then
+            table.insert(foundHardwares, hardware)
+        end
+    end
+    return foundHardwares
+end
+
 ---@param inventory ItemContainer
 ---@param item InventoryItem
 ---@return boolean
@@ -355,43 +368,18 @@ function Computer:getDriveInBayIndex(bayIndex)
     end
 end
 
----@return table<Harddrive>
-function Computer:getAllHarddrives()
+---@param driveType string
+---@return table
+function Computer:getAllDriveOfType(driveType)
+    local foundDrives = {}
     local drives = self:getAllDrives()
-    local harddrives = {}
     for i=1, drives.count do
         local drive = self:getDriveInBayIndex(i)
-        if drive and drive.hardwareType == "Harddrive" then
-            table.insert(harddrives, drive)
+        if drive and drive.Type == driveType then
+            table.insert(foundDrives, drive)
         end
     end
-    return harddrives
-end
-
----@return table<Discdrive>
-function Computer:getAllDiscdrives()
-    local drives = self:getAllDrives()
-    local discdrives = {}
-    for i=1, drives.count do
-        local drive = self:getDriveInBayIndex(i)
-        if drive and drive.hardwareType == "Discdrive" then
-            table.insert(discdrives, drive)
-        end
-    end
-    return discdrives
-end
-
----@return table<number, Floppydrive>
-function Computer:getAllFloppydrives()
-    local drives = self:getAllDrives()
-    local floppydrives = {}
-    for i=1, drives.count do
-        local drive = self:getDriveInBayIndex(i)
-        if drive and drive.hardwareType == "Floppydrive" then
-            table.insert(floppydrives, drive)
-        end
-    end
-    return floppydrives
+    return foundDrives
 end
 
 ---@param inventory ItemContainer
