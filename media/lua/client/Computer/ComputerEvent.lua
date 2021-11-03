@@ -25,7 +25,7 @@ function ComputerEvent:trigger(eventName, ...)
 
     for i, param in ipairs(self.paramTypes) do
         if param ~= "any" and (args[i] == nil or (type(args[i]) == param or instanceof(args[i], param) or ComputerUtils.isClassChildOf(args[i], param)) == false) then
-            error("ComputerEvent Trigger Error: Argument["..i.."] expected to be "..param..".", 2);
+            error("ComputerMod: Error in ComputerEvent["..eventName.."] Argument["..i.."] expected to be "..param..".", 2);
             return;
         end
     end
@@ -34,7 +34,7 @@ function ComputerEvent:trigger(eventName, ...)
         local handler = self.handlers:get(i)
         if not pcall(handler, ...) then
             self:remove(handler)
-            print("ComputerEvent Error: Function removed from "..eventName.." due to error.");
+            print("ComputerMod: Error in ComputerEvent["..eventName.."], handler removed to prevent further error.");
         end
     end
 end
