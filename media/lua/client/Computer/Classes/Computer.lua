@@ -315,10 +315,8 @@ end
 ---@return boolean
 function Computer:installHardwareItemInSlot(inventory, item)
     if instanceof(inventory, "ItemContainer") and instanceof(item, "InventoryItem") then
-        print("correct input types")
         local hardwareType = ComputerMod.GetHardwareType(item:getType())
         if hardwareType then
-            print("found the hardwware class")
             local hardware = hardwareType:new(item)
             if hardware then
                 local hardwares = self:getAllHardwares()
