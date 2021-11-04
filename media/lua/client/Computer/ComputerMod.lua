@@ -990,6 +990,22 @@ local function OnPreFillWorldObjectContextMenu(player, context, _, test)
     end
 end
 
+--- Find all ComputerMedium in container when loot is spawning
+---@param containerName string
+---@param containerType string
+---@param container ItemContainer
+local function OnFillContainer(containerName, containerType, container)
+    if instanceof(container, "ItemContainer") then
+        local ComputerMediums = ComputerUtils.findAllByTag(container, "ComputerMedium")
+        if ComputerMediums and ComputerMediums:size() > 0 then
+            for i=0, ComputerMediums:size()-1 do
+                local item = ComputerMediums:get(i)
+                print(oname, " ", otype, " ", item:getType())
+            end
+        end
+    end
+end
+
 Events.OnGameStart.Add(AddTagsToBaseItems)
 Events.OnGameStart.Add(LoadGlobalModData)
 Events.OnGameStart.Add(InitializeComputers)
@@ -997,6 +1013,7 @@ Events.OnGameStart.Add(RunAllAddons)
 Events.OnTick.Add(UpdateComputers)
 Events.OnTick.Add(UpdateAllAddons)
 Events.OnPreFillWorldObjectContextMenu.Add(OnPreFillWorldObjectContextMenu)
+Events.OnFillContainer.Add(OnFillContainer)
 
 --- COMPUTER EVENTS
 
