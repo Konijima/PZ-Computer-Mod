@@ -14,9 +14,27 @@ print("Test Reloaded!");
 
 
 
-
-
-
+---- Check a java object class fields
+--local player = getPlayer()
+--local fieldNum = getNumClassFields(player)
+--for i=1, fieldNum-1 do
+--    print(getClassField(player, i))
+--end
+--
+---- Check a java object class functions
+--local funcNum = getNumClassFunctions(player)
+--for i=1, funcNum-1 do
+--    print(getClassFunction(player, i))
+--end
+--
+--function causeErrorButDontStopExecution(param1, param2)
+--    error("Error!!!")
+--end
+--
+--local hasError = pcall(causeErrorButDontStopExecution, "param1", "param2")
+--if hasError then
+--    print("There was an error running causeErrorButDontStopExecution() but this still got printed !")
+--end
 
 ----- Find all ComputerMedium in container when loot is spawning
 -----@param name string
