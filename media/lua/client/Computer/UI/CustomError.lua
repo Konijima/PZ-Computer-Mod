@@ -1,3 +1,4 @@
+-- TODO: Add options and finalize the system
 function CustomError(_text, _requireAction, _centered, _width, _height, _posX, _posY)
     local coroutine = getCurrentCoroutine();
     local count = getCoroutineTop(coroutine);

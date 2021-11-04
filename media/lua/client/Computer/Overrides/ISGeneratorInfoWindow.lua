@@ -1,4 +1,4 @@
-
+-- TODO: Add fuel consumption and Generator UI informations
 -- local original_ISGeneratorInfoWindow_update = ISGeneratorInfoWindow.update
 -- function ISGeneratorInfoWindow:update()
 --     original_ISGeneratorInfoWindow_update()

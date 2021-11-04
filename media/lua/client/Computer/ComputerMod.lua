@@ -104,6 +104,8 @@ local ComputerEvents = {}
 
 -------------------------------------------------------------------------------------------------------
 
+-- TODO: AddHardwareType
+
 ---@return table<string, BaseHardware>
 local function GetAllHardwareTypes()
     return HardwareTypes
@@ -115,6 +117,8 @@ local function GetHardwareType(type)
     return HardwareTypes[type]
 end
 
+-- TODO: AddDriveType
+
 local function GetAllDriveTypes()
     return DriveTypes
 end
@@ -123,6 +127,8 @@ end
 local function GetDriveType(type)
     return DriveTypes[type]
 end
+
+-- TODO: AddMediumType
 
 local function GetAllMediumTypes()
     return MediumTypes

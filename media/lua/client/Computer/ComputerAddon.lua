@@ -12,6 +12,9 @@ function ComputerAddon:new(name)
 
     o.name = name
 
+    -- TODO: Add custom hardware classes
+    -- TODO: Add custom drive classes
+    -- TODO: Add custom medium classes
     o.ComputerEvents = {}
     o.BiosSettings = {}
     o.SoftwareTypes = {}

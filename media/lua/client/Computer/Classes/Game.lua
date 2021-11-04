@@ -4,6 +4,8 @@ require("Computer/ComputerUtils")
 ---@class Game
 local Game = ISBaseObject:derive("Game")
 
+-- TODO: Create item based on the medium class instead of hardcoded
+
 ---@param inventory ItemContainer
 ---@return InventoryItem|nil
 function Game:createDiscItem(inventory)

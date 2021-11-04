@@ -424,6 +424,11 @@ function ComputerHardwareManagement:new(player, computer)
     local width = 400;
     local height = 450;
 
+    -- TODO: Add informations about the computer on the setAnchorTop
+    -- TODO: Add informations about the selected hardware and drive
+
+    -- TODO: Edit size of the UI if more hardware slots and drive bays are available
+
     --Start in corner
     local x = getCore():getScreenWidth() - (width + 100);
     local y = getCore():getScreenHeight() - (height + 100);
