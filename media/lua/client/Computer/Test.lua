@@ -3,6 +3,62 @@
 --- TESTING
 ----------------------------------------
 
+print("Test Reloaded!");
+
+--- Find all ComputerMedium in container when loot is spawning
+---@param name string
+---@param type string
+---@param container ItemContainer
+Events.OnFillContainer.Add(function(oname, otype, container)
+    if instanceof(container, "ItemContainer") then
+        local ComputerMediums = ComputerUtils.findAllByTag(container, "ComputerMedium")
+        if ComputerMediums and ComputerMediums:size() > 0 then
+            for i=0, ComputerMediums:size()-1 do
+                local item = ComputerMediums:get(i)
+                print(oname, " ", otype, " ", item:getType())
+            end
+        end
+    end
+end)
+
+--local gameStarted = false
+--local totalObjectAdded = 0
+--local totalObjectRemoved = 0
+--local totalSquareLoaded = 0
+--
+-----@param isoObject IsoObject
+--Events.OnObjectAdded.Add(function(isoObject)
+--    totalObjectAdded = totalObjectAdded + 1
+--    if instanceof(isoObject, "IsoObject") then print("#-------IsoObject added ", isoObject:getName())
+--    elseif instanceof(isoObject, "InventoryItem") then print("#-------InventoryItem added ", isoObject:getName())
+--    else print("#-------Object added ", isoObject:getName()) end
+--end)
+--
+-----@param isoObject IsoObject
+--Events.OnObjectAboutToBeRemoved.Add(function(isoObject)
+--    totalObjectRemoved = totalObjectRemoved + 1
+--    print("#-------Object remove ", isoObject:getName())
+--end)
+--
+-----@param square IsoGridSquare
+--Events.LoadGridsquare.Add(function(square)
+--    totalSquareLoaded = totalSquareLoaded + 1
+--end)
+--
+--Events.OnPlayerMove.Add(function()
+--    ---print("#-------OnPlayerMove")
+--end)
+
+--Events.OnGameStart.Add(function()
+--    if gameStarted then return end
+--    gameStarted = true
+--    print("#-------Total Object Added: ", totalObjectAdded);
+--    print("#-------Total Object Removed: ", totalObjectRemoved);
+--    print("#-------Total Square Loaded: ", totalSquareLoaded);
+--end)
+
+----------------------------------------
+
 --local BaseDrive = ISBaseObject:derive("BaseDrive")
 --local Harddrive = BaseDrive:derive("Harddrive")
 --local newHarddrive = Harddrive:new()
