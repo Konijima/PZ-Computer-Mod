@@ -40,8 +40,8 @@ module Computer
         Weight           = 0.1,
         Type             = Normal,
         DisplayName      = Floppy,
-        Icon             = Floppy,
-        WorldStaticModel = Floppy,
+        Icon             = FloppyRed,
+        WorldStaticModel = Floppy_Red,
         Tags             = ComputerMedium;ComputerFloppy,
     }
 
@@ -50,8 +50,8 @@ module Computer
         Weight           = 0.1,
         Type             = Normal,
         DisplayName      = Game Floppy,
-        Icon             = Floppy,
-        WorldStaticModel = Floppy,
+        Icon             = FloppyBlue,
+        WorldStaticModel = Floppy_Blue,
         Tags             = ComputerMedium;ComputerFloppy,
     }
 
@@ -60,8 +60,8 @@ module Computer
         Weight           = 0.1,
         Type             = Normal,
         DisplayName      = Software Floppy,
-        Icon             = Floppy,
-        WorldStaticModel = Floppy,
+        Icon             = FloppyGreen,
+        WorldStaticModel = Floppy_Green,
         Tags             = ComputerMedium;ComputerFloppy,
     }
 
@@ -70,8 +70,8 @@ module Computer
         Weight           = 0.1,
         Type             = Normal,
         DisplayName      = Learning Floppy,
-        Icon             = Floppy,
-        WorldStaticModel = Floppy,
+        Icon             = FloppyYellow,
+        WorldStaticModel = Floppy_Yellow,
         Tags             = ComputerMedium;ComputerFloppy,
     }
 
