@@ -6,6 +6,8 @@ local test = false
 
 --- ProceduralDistributions
 
+local addonDistributionTable = {}
+
 local distributionTable = {
 
     --- CrateCompactDiscs
@@ -179,9 +181,6 @@ local distributionTable = {
 
 ------------------------------------------------------------------------------------------------------
 
---- Distribution table for addons
-local addonDistributionTable = {}
-
 ---@param s string
 local function split(s)
     if type(s) == "string" then
@@ -235,9 +234,10 @@ local function add(location, item, odd)
     end
 end
 
+---@param addonName string
 ---@param table table
 ---@param location table
-local function process_location(table, location)
+local function process_location(addonName, table, location)
     if location then
         for e=1, #table.items do
             local item = table.items[e][1]
@@ -248,26 +248,27 @@ local function process_location(table, location)
             end
 
             if not add(location, item, odd) then
-                error("ComputerMod: Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
+                error(addonName..": Error distribution adding table '"..item.."':'"..odd.."' at '"..table.location.."'!")
             else
-                print("ComputerMod: Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
+                print(addonName..": Distribution added '"..item.."':'"..odd.."' to table '"..table.location.."'!")
             end
         end
     else
-        error("ComputerMod: Error distribution invalid location at '"..table.location.."'!")
+        error(addonName..": Error distribution invalid location at '"..table.location.."'!")
     end
 end
 
----@param table table the distribution table to process 'distributionTable | addonDistributionTable'
+---@param addonName string
+---@param distributionToProcess table the distribution table to process 'distributionTable | addonDistributionTable'
 ---@return number
-local function process(table)
+local function process(addonName, distributionToProcess)
     local errorCount = 0
-    for t=1, #distributionTable do
-        local table = distributionTable[t]
+    for t=1, #distributionToProcess do
+        local table = distributionToProcess[t]
         local locationParts = split(table.location)
         local location = getLocation(locationParts)
 
-        if not pcall(process_location, table, location) then
+        if not pcall(process_location, addonName, table, location) then
             errorCount = errorCount + 1
         end
     end
@@ -275,39 +276,73 @@ local function process(table)
 end
 
 -- Start Processing
-local errorCount = process(distributionTable)
+print("---------------------------------------------------------------------------------------")
+local errorCount = process("ComputerMod", distributionTable)
 if errorCount == 0 then
     print("ComputerMod: Adding to the distribution table process completed!")
 else
     print("ComputerMod: Adding to the distribution table process completed with "..errorCount.." error(s)!")
 end
+print("---------------------------------------------------------------------------------------")
+
 
 --- ADDONS
 
-local function addLocation(location, items)
-    if type(location) ~= "string" then
-        error("ComputerAddDistributionLocation: error 'location' must be a string, got a " .. type(location) .. "!", 3)
+
+
+---@param addonName string
+---@param locationEntry table
+local function addLocation(addonName, locationEntry)
+    if type(locationEntry) ~= "table" then
+        error(addonName..": ComputerAddDistributionLocations error a Location Entry must be a table, got a " .. type(locationEntry) .. "!", 3)
     end
-    if type(items) ~= "table" then
-        error("ComputerAddDistributionLocation: error 'items' must be a table, got a " .. type(items) .. "!", 3)
+    if type(locationEntry.location) ~= "string" then
+        error(addonName..": ComputerAddDistributionLocations error 'location' must be a string, got a " .. type(locationEntry.location) .. "!", 3)
+    end
+    if type(locationEntry.items) ~= "table" then
+        error(addonName..": ComputerAddDistributionLocations error 'items' must be a table, got a " .. type(locationEntry.items) .. "!", 3)
     end
 
-    -- TODO: Do logic here, maybe more validation too!
+    -- TODO: More validation per entry
+    -- Verify location is correct
+    -- Verify items are in the right format
+
+    table.insert(addonDistributionTable, locationEntry)
 end
 
---- Function
----@param location string
----@param items table
-function ComputerAddDistributionLocation(location, items)
-    if not pcall(addLocation, location, items) then
-        print("ComputerAddDistributionLocation: There was an error trying to add distribution location!")
-    else
-        local errorCount = process(addonDistributionTable)
-        if errorCount == 0 then
-            print("ComputerAddDistributionLocation: Adding to the distribution table process completed!")
-        else
-            print("ComputerAddDistributionLocation: Adding to the distribution table process completed with "..errorCount.." error(s)!")
+---@param addonName string
+---@param locationsTable table
+local function addLocations(addonName, locationsTable)
+    if type(locationsTable) == "table" then
+        for i=1, #locationsTable do
+            addLocation(addonName, locationsTable[i])
         end
-        addonDistributionTable = {} -- reset
+    else
+        print(addonName..": ComputerAddDistributionLocations did not receive a locations table!")
+    end
+end
+
+--- Add locations table
+---@param addonName string
+---@param locationsTable table
+function ComputerAddDistributionLocations(addonName, locationsTable)
+    if type(addonName) ~= "string" then
+        print("ComputerAddDistributionLocations: An addon didn't specify a name using the method ComputerAddDistributionLocations!")
+        return
+    end
+    if not pcall(addLocations, addonName, locationsTable) then
+        print(addonName..": There was an error trying to add distribution locations!")
+    else
+        if #locationsTable > 0 then
+            print("---------------------------------------------------------------------------------------")
+            local errorCount = process(addonName, addonDistributionTable)
+            if errorCount == 0 then
+                print(addonName..": Adding to the distribution table process completed!")
+            else
+                print(addonName..": Adding to the distribution table process completed with "..errorCount.." error(s)!")
+            end
+            print("---------------------------------------------------------------------------------------")
+            addonDistributionTable = {} -- reset
+        end
     end
 end
