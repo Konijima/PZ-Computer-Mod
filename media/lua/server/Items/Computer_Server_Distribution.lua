@@ -166,18 +166,21 @@ local distributionTable = {
     {
         location = "SuburbsDistributions.all.postbox.items",
         items = {
-            {"Computer.Disc_Game", 10},
-            {"Computer.Disc_Software", 10},
-            {"Computer.Disc_Learning", 10},
-            {"Computer.Floppy", 10},
-            {"Computer.Floppy_Game", 10},
-            {"Computer.Floppy_Software", 10},
-            {"Computer.Floppy_Learning", 10},
+            {"Computer.Disc_Game", 2},
+            {"Computer.Disc_Software", 2},
+            {"Computer.Disc_Learning", 2},
+            {"Computer.Floppy", 2},
+            {"Computer.Floppy_Game", 2},
+            {"Computer.Floppy_Software", 2},
+            {"Computer.Floppy_Learning", 2},
         },
     },
 }
 
 ------------------------------------------------------------------------------------------------------
+
+--- Distribution table for addons
+local addonDistributionTable = {}
 
 ---@param s string
 local function split(s)
@@ -255,8 +258,9 @@ local function process_location(table, location)
     end
 end
 
+---@param table table the distribution table to process 'distributionTable | addonDistributionTable'
 ---@return number
-local function process()
+local function process(table)
     local errorCount = 0
     for t=1, #distributionTable do
         local table = distributionTable[t]
@@ -271,9 +275,39 @@ local function process()
 end
 
 -- Start Processing
-local errorCount = process()
+local errorCount = process(distributionTable)
 if errorCount == 0 then
     print("ComputerMod: Adding to the distribution table process completed!")
 else
     print("ComputerMod: Adding to the distribution table process completed with "..errorCount.." error(s)!")
+end
+
+--- ADDONS
+
+local function addLocation(location, items)
+    if type(location) ~= "string" then
+        error("ComputerAddDistributionLocation: error 'location' must be a string, got a " .. type(location) .. "!", 3)
+    end
+    if type(items) ~= "table" then
+        error("ComputerAddDistributionLocation: error 'items' must be a table, got a " .. type(items) .. "!", 3)
+    end
+
+    -- TODO: Do logic here, maybe more validation too!
+end
+
+--- Function
+---@param location string
+---@param items table
+function ComputerAddDistributionLocation(location, items)
+    if not pcall(addLocation, location, items) then
+        print("ComputerAddDistributionLocation: There was an error trying to add distribution location!")
+    else
+        local errorCount = process(addonDistributionTable)
+        if errorCount == 0 then
+            print("ComputerAddDistributionLocation: Adding to the distribution table process completed!")
+        else
+            print("ComputerAddDistributionLocation: Adding to the distribution table process completed with "..errorCount.." error(s)!")
+        end
+        addonDistributionTable = {} -- reset
+    end
 end
