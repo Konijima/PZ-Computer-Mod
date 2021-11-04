@@ -3,30 +3,6 @@ require("ISBaseObject")
 ---@class File
 local File = ISBaseObject:derive("File")
 
----@param inventory ItemContainer
----@return InventoryItem|nil
-function File:createDiscItem(inventory)
-    if inventory then
-        local item = inventory:AddItem("Base.Disc")
-        item:setName(item:getDisplayName() .. ": " .. self.title)
-        item:getModData().title = self.title
-        item:getModData().content = self.content
-        return item
-    end
-end
-
----@param inventory ItemContainer
----@return InventoryItem|nil
-function File:createFloppyItem(inventory)
-    if inventory then
-        local item = inventory:AddItem("Computer.Floppy")
-        item:setName(item:getDisplayName() .. ": " .. self.title)
-        item:getModData().title = self.title
-        item:getModData().content = self.content
-        return item
-    end
-end
-
 ---@return number
 function File:calcSize()
     return string.len(self.title) + string.len(self.content)
