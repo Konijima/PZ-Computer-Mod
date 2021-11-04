@@ -10,7 +10,6 @@ end
 function EmitterInstance:stop()
     if self.emitter then
         self.emitter:stopAll()
-        --print("Emitter "..self.name.." has stopped at x:"..self.position.x.." y:"..self.position.y.." z:"..self.position.z.."!")
     end
 end
 
@@ -26,7 +25,6 @@ function EmitterInstance:tick()
             self.audio = self.emitter:playSound(self.soundList[self.index])
         else
             self.completed = true
-            --print("Emitter "..self.name.." has completed at x:"..self.position.x.." y:"..self.position.y.." z:"..self.position.z.."!")
         end
     end
 end
@@ -53,9 +51,6 @@ function EmitterInstance:new(name, soundList, x, y, z)
     o.index = 0
     o.audio = nil
     o.completed = false
-    --o.position = { x=x, y=y, z=z }
-
-    --print("Emitter "..name.." was created at x:"..x.." y:"..y.." z:"..z.."!")
 
     return o
 end
