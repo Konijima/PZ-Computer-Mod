@@ -11,10 +11,11 @@
 ## How to setup
 1) Install [IntelliJ Community](https://www.jetbrains.com/idea/download)
 2) Create new project in `C:\Users\<your-username>\Zomboid\mods`
-3) Use Java SDK 15
-4) Setup [Capsid](https://github.com/pzstorm/capsid) into the project
-5) Clone Computer repository somewhere
-6) Copy/Paste the content of the clone into your project and replace existing files
+3) Select Gradle with Groovy
+4) Use Java SDK 15
+5) Setup [Capsid](https://github.com/pzstorm/capsid) into the project
+6) Clone Computer repository somewhere
+7) Copy/Paste the content of the clone into your project and replace existing files
   
 ### Links:
 [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2635550102)  
