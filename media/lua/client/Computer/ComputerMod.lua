@@ -10,13 +10,24 @@ local Classes = {
 
     BaseDrive = require("Computer/Classes/BaseDrive"),
     BaseHardware = require("Computer/Classes/BaseHardware"),
+    BaseMedium = require("Computer/Classes/BaseMedium"),
     BiosSetting = require("Computer/Classes/BiosSetting"),
     Computer = require("Computer/Classes/Computer"),
-    Disc = require("Computer/Classes/Disc"),
+
     File = require("Computer/Classes/File"),
-    Floppy = require("Computer/Classes/Floppy"),
     Game = require("Computer/Classes/Game"),
     Software = require("Computer/Classes/Software"),
+
+    Disc = require("Computer/Classes/Mediums/Disc"),
+    Disc_Game = require("Computer/Classes/Mediums/Disc_Game"),
+    Disc_Learning = require("Computer/Classes/Mediums/Disc_Learning"),
+    Disc_Retail = require("Computer/Classes/Mediums/Disc_Retail"),
+    Disc_Software = require("Computer/Classes/Mediums/Disc_Software"),
+
+    Floppy = require("Computer/Classes/Mediums/Floppy"),
+    Floppy_Game = require("Computer/Classes/Mediums/Floppy_Game"),
+    Floppy_Learning = require("Computer/Classes/Mediums/Floppy_Learning"),
+    Floppy_Software = require("Computer/Classes/Mediums/Floppy_Software"),
 
     Discdrive = require("Computer/Classes/Drives/Discdrive"),
     Floppydrive = require("Computer/Classes/Drives/Floppydrive"),
@@ -41,6 +52,18 @@ local DriveTypes = {
     Harddrive = Classes.Harddrive,
     Discdrive = Classes.Discdrive,
     Floppydrive = Classes.Floppydrive,
+}
+
+local MediumTypes = {
+    Disc = Classes.Disc,
+    Disc_Game = Classes.Disc_Game,
+    Disc_Learning = Classes.Disc_Learning,
+    Disc_Retail = Classes.Disc_Retail,
+    Disc_Software = Classes.Disc_Software,
+    Floppy = Classes.Floppy,
+    Floppy_Game = Classes.Floppy_Game,
+    Floppy_Learning = Classes.Floppy_Learning,
+    Floppy_Software = Classes.Floppy_Software,
 }
 
 --- Global ModData Object
@@ -99,6 +122,15 @@ end
 ---@param type string
 local function GetDriveType(type)
     return DriveTypes[type]
+end
+
+local function GetAllMediumTypes()
+    return MediumTypes
+end
+
+---@param type string
+local function GetMediumType(type)
+    return MediumTypes[type]
 end
 
 --- EVENTS
@@ -1125,6 +1157,9 @@ ComputerMod.GetHardwareType = GetHardwareType
 
 ComputerMod.GetAllDriveTypes = GetAllDriveTypes
 ComputerMod.GetDriveType = GetDriveType
+
+ComputerMod.GetAllMediumTypes = GetAllMediumTypes
+ComputerMod.GetMediumType = GetMediumType
 
 ComputerMod.CreateAddon = CreateAddon
 ComputerMod.AddAddon = AddAddon
