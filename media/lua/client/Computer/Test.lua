@@ -5,21 +5,34 @@
 
 print("Test Reloaded!");
 
---- Find all ComputerMedium in container when loot is spawning
----@param name string
----@param type string
----@param container ItemContainer
-Events.OnFillContainer.Add(function(oname, otype, container)
-    if instanceof(container, "ItemContainer") then
-        local ComputerMediums = ComputerUtils.findAllByTag(container, "ComputerMedium")
-        if ComputerMediums and ComputerMediums:size() > 0 then
-            for i=0, ComputerMediums:size()-1 do
-                local item = ComputerMediums:get(i)
-                print(oname, " ", otype, " ", item:getType())
-            end
-        end
-    end
-end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+----- Find all ComputerMedium in container when loot is spawning
+-----@param name string
+-----@param type string
+-----@param container ItemContainer
+--Events.OnFillContainer.Add(function(oname, otype, container)
+--    if instanceof(container, "ItemContainer") then
+--        local ComputerMediums = ComputerUtils.findAllByTag(container, "ComputerMedium")
+--        if ComputerMediums and ComputerMediums:size() > 0 then
+--            for i=0, ComputerMediums:size()-1 do
+--                local item = ComputerMediums:get(i)
+--                print(oname, " ", otype, " ", item:getType())
+--            end
+--        end
+--    end
+--end)
 
 --local gameStarted = false
 --local totalObjectAdded = 0
