@@ -48,6 +48,47 @@ function Computer.IsSpriteComputer(spriteName)
     return Computer.IsSpriteOn(spriteName) or Computer.IsSpriteOff(spriteName)
 end
 
+---@param square IsoGridSquare
+---@param direction string
+---@return IsoObject|nil
+function Computer.CreateComputer(square, direction)
+    -- Check if there is a table
+    local currentHeight = 0
+    local obj = ISMoveableSpriteProps:getTopTable(square)
+    if not obj then
+        currentHeight = 0
+    else
+        local props = obj:getSprite():getProperties()
+        currentHeight = obj:getRenderYOffset() + tonumber(props:Val("Surface"))
+    end
+
+    -- create the object
+    local spriteName = ComputerSprites.Off[direction]
+    local sprite = getSprite(spriteName)
+    local props = sprite:getProperties()
+    local isoObject = IsoObject.new(getCell(), square, sprite)
+    if isoObject then
+        isoObject:setRenderYOffset(currentHeight - tonumber(props:Val("Surface")))
+        square:AddSpecialObject(isoObject, square:getObjects():size());
+        if isClient() then isoObject:transmitCompleteItemToServer(); end
+        triggerEvent("OnObjectAdded", isoObject)
+        getTileOverlays():fixTableTopOverlays(square);
+        square:RecalcProperties();
+        square:RecalcAllWithNeighbours(true);
+        print("Computer created!")
+        return isoObject
+    end
+end
+
+---@param direction string
+function Computer:rotate(direction)
+    if self:isOn() then
+        self.isoObject:setSpriteFromName(ComputerSprites.On[direction])
+    else
+        self.isoObject:setSpriteFromName(ComputerSprites.Off[direction])
+    end
+end
+
 ---@return table<string, number>
 function Computer:getPosition()
     return { x = self.square:getX(), y = self.square:getY(), z = self.square:getZ() }
