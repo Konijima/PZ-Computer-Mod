@@ -1,5 +1,5 @@
 ---@class ComputerUtils
-ComputerUtils = ComputerUtils or {}
+ComputerUtils = {}
 
 ---@param table table
 ---@param value any
