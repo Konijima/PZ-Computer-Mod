@@ -1,19 +1,19 @@
 require("ISBaseObject")
 
----@class EmitterInstance
-local EmitterInstance = ISBaseObject:derive("EmitterInstance")
+---@class SoundInstance
+local SoundInstance = ISBaseObject:derive("SoundInstance")
 
-function EmitterInstance:isPlaying()
+function SoundInstance:isPlaying()
     return self.audio ~= nil and self.emitter:isPlaying(self.audio)
 end
 
-function EmitterInstance:stop()
+function SoundInstance:stop()
     if self.emitter then
         self.emitter:stopAll()
     end
 end
 
-function EmitterInstance:tick()
+function SoundInstance:tick()
     if self.completed then return; end
 
     self.emitter:tick()
@@ -34,7 +34,8 @@ end
 ---@param x number
 ---@param y number
 ---@param z number
-function EmitterInstance:new(name, soundList, x, y, z)
+---@return SoundInstance
+function SoundInstance:new(name, soundList, x, y, z)
     local o = ISBaseObject:new()
     setmetatable(o, self)
     self.__index = self
@@ -55,4 +56,4 @@ function EmitterInstance:new(name, soundList, x, y, z)
     return o
 end
 
-return EmitterInstance
+return SoundInstance
