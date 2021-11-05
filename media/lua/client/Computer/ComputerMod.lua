@@ -885,10 +885,6 @@ local function ComputerHardwareManagementMenu(player, computerContext, computer)
     else
         computerContext:addOption("Hardware Management", nil, optionOpenUi)
     end
-
-    if isDebugEnabled() then
-        computerContext:addOption("[DEBUG] Reset Computer", nil, optionResetComputer)
-    end
 end
 
 ---@param player number
@@ -1028,6 +1024,84 @@ local function OnPreFillWorldObjectContextMenu(player, context, _, test)
     end
 end
 
+--- Computer Debug Context
+---@param player number
+---@param context ISContextMenu
+local function OnFillWorldObjectContextMenu(player, context, _, test)
+    if test == true then return end
+
+    if clickedSquare == nil then return end
+
+    ---@type IsoPlayer
+    local character = getSpecificPlayer(player)
+
+    ---@type ItemContainer
+    local inventory = character:getInventory()
+
+    if isDebugEnabled() then
+
+        local debugOption = context:addOption("[DEBUG] ComputerMod")
+        local debugContext = ISContextMenu:getNew(context)
+        context:addSubMenu(debugOption, debugContext)
+
+        local computer = GetComputerOnSquare(clickedSquare)
+        if computer then
+
+            local rotateComputerOption = debugContext:addOption("Rotate computer")
+            local rotateComputerContext = ISContextMenu:getNew(debugContext)
+            debugContext:addSubMenu(rotateComputerOption, rotateComputerContext)
+            function rotateComputer(direction)
+                computer:rotate(direction)
+            end
+            rotateComputerContext:addOption("North", "N", rotateComputer)
+            rotateComputerContext:addOption("East", "E", rotateComputer)
+            rotateComputerContext:addOption("South", "S", rotateComputer)
+            rotateComputerContext:addOption("West", "W", rotateComputer)
+
+            -- Remove All Hardwares & Drives
+            local removeAllHardwares = debugContext:addOption("Remove hardwares & drives", nil, function()
+                if computer:isOn() then
+                    computer:toggleState()
+                end
+
+                for slotKey, hardware in pairs(computer:getAllHardwares()) do
+                    if hardware then
+                        computer:uninstallHardwareItemFromSlot(inventory, slotKey)
+                    end
+                end
+
+                local drives = computer:getAllDrives()
+                for i=1, drives.count do
+                    computer:uninstallDriveFromBayIndex(inventory, i)
+                end
+            end)
+
+            local resetComputerOption = debugContext:addOption("Reset computer", nil, function()
+                computer:reset()
+            end)
+
+            local deleteComputerOption = debugContext:addOption("Delete computer", nil, function()
+                triggerEvent("OnObjectAboutToBeRemoved", computer.isoObject)
+                clickedSquare:transmitRemoveItemFromSquare(computer.isoObject)
+                RemoveComputerLocation(clickedSquare:getX(), clickedSquare:getY(), clickedSquare:getZ())
+            end)
+
+        else
+            local createComputerOption = debugContext:addOption("Create computer on square")
+            local createComputerContext = ISContextMenu:getNew(debugContext)
+            debugContext:addSubMenu(createComputerOption, createComputerContext)
+            function createComputer(direction)
+                Classes.Computer.CreateComputer(clickedSquare, direction)
+            end
+            createComputerContext:addOption("North", "N", createComputer)
+            createComputerContext:addOption("East", "E", createComputer)
+            createComputerContext:addOption("South", "S", createComputer)
+            createComputerContext:addOption("West", "W", createComputer)
+        end
+
+    end
+end
+
 --- Find all ComputerMedium in container when loot is spawning
 ---@param containerName string
 ---@param containerType string
@@ -1051,6 +1125,7 @@ Events.OnGameStart.Add(RunAllAddons)
 Events.OnTick.Add(UpdateComputers)
 Events.OnTick.Add(UpdateAllAddons)
 Events.OnPreFillWorldObjectContextMenu.Add(OnPreFillWorldObjectContextMenu)
+Events.OnFillWorldObjectContextMenu.Add(OnFillWorldObjectContextMenu)
 Events.OnFillContainer.Add(OnFillContainer)
 
 --- COMPUTER EVENTS
