@@ -1,7 +1,7 @@
 require("ISBaseObject")
 require("Computer/ComputerUtils")
-require("Computer/Audio/SoundManager")
-require("Computer/Light/LightManager")
+require("Computer/Managers/SoundManager")
+require("Computer/Managers/LightManager")
 
 -------------------------------------------------------------------------------------------------------
 

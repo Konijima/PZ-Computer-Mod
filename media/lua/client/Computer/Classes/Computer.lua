@@ -1,6 +1,6 @@
 require("ISBaseObject")
-require("Computer/Audio/SoundManager")
-require("Computer/Light/LightManager")
+require("Computer/Managers/SoundManager")
+require("Computer/Managers/LightManager")
 
 local ComputerSprites = {
     On = {

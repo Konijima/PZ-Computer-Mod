@@ -1,6 +1,6 @@
 require("Computer/ComputerUtils")
 
-local SoundInstance = require("Computer/Audio/SoundInstance")
+local SoundInstance = require("Computer/Managers/SoundInstance")
 
 local Sounds = {}
 

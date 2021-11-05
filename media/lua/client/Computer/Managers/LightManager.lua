@@ -1,6 +1,6 @@
 require("Computer/ComputerUtils")
 
-local LightInstance = require("Computer/Light/LightInstance")
+local LightInstance = require("Computer/Managers/LightInstance")
 
 local Lights = {}
 
