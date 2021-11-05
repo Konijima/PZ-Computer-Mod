@@ -205,7 +205,8 @@ end
 
 ---@return boolean
 function Computer:exist()
-    return ComputerMod.GetComputerAtPosition(self.position.x, self.position.y, self.position.z) ~= nil
+    return self.square ~= nil and self.square:getObjects():contains(self.isoObject) or false
+    --return ComputerMod.GetComputerAtPosition(self.position.x, self.position.y, self.position.z) ~= nil
 end
 
 function Computer:setLightState(state)
