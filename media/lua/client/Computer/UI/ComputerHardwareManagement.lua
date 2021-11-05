@@ -1,13 +1,6 @@
 require "ISUI/ISCollapsableWindow"
 require "Computer/ComputerUtils"
 
-local Processor = require("Computer/Classes/Hardwares/Processor")
-local Harddrive = require("Computer/Classes/Drives/Harddrive")
-local Discdrive = require("Computer/Classes/Drives/Discdrive")
-local Floppydrive = require("Computer/Classes/Drives/Floppydrive")
-
----@alias drive Harddrive|Discdrive|Floppydrive
-
 ---@class ComputerHardwareManagement
 ComputerHardwareManagement = ISCollapsableWindow:derive("ComputerMechanics");
 ComputerHardwareManagement.alphaOverlay = 1;
@@ -23,13 +16,23 @@ function ComputerHardwareManagement:initialise()
     ISCollapsableWindow.initialise(self);
 end
 
+function ComputerHardwareManagement:close()
+    self:setVisible(false);
+    self:removeFromUIManager();
+    ComputerHardwareManagement.instance = nil;
+end
+
 ---@return void
 function ComputerHardwareManagement:update()
-    if self.computer:isOn() then
+    if self.computer then
+        print(self.computer:exist())
+    end
+
+    if self.computer and (not self.computer:exist() or self.computer:isOn()) then
         self:close();
         return;
     end
-    if self.computer and self.character and self.character:getSquare() ~= self.square then
+    if self.character:getSquare() ~= self.square then
         self:close();
         return;
     end
@@ -457,7 +460,6 @@ function ComputerHardwareManagement:new(player, computer)
 
     if ComputerHardwareManagement.instance then
         ComputerHardwareManagement.instance:close()
-        ComputerHardwareManagement.instance = nil
     end
 
     ComputerHardwareManagement.instance = o
