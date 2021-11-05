@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_ToggleBiosSetting = ISBaseTimedAction:derive("Computer_Action_ToggleBiosSetting");
 
 function Computer_Action_ToggleBiosSetting:isValid()
-    return self.computer:isBiosActive()
+    return self.computer:exist() and self.computer:isBiosActive()
 end
 
 function Computer_Action_ToggleBiosSetting:update()

@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InstallHardware = ISBaseTimedAction:derive("Computer_Action_InstallHardware");
 
 function Computer_Action_InstallHardware:isValid()
-    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.hardwares[self.slotKey] == nil
+    return self.computer:exist() and self.item ~= nil and self.tool ~= nil and self.hardwares[self.slotKey] == nil
 end
 
 function Computer_Action_InstallHardware:update()

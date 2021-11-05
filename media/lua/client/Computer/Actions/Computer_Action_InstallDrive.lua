@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InstallDrive = ISBaseTimedAction:derive("Computer_Action_InstallDrive");
 
 function Computer_Action_InstallDrive:isValid()
-    return self.computer ~= nil and self.item ~= nil and self.tool ~= nil and self.drives[self.bayIndex] == nil
+    return self.computer:exist() and self.item ~= nil and self.tool ~= nil and self.drives[self.bayIndex] == nil
 end
 
 function Computer_Action_InstallDrive:update()

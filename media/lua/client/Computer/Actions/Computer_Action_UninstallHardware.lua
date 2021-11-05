@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_UninstallHardware = ISBaseTimedAction:derive("Computer_Action_UninstallHardware");
 
 function Computer_Action_UninstallHardware:isValid()
-    return self.computer ~= nil and self.tool ~= nil and self.hardwares[self.slotKey] ~= nil
+    return self.computer:exist() and self.tool ~= nil and self.hardwares[self.slotKey] ~= nil
 end
 
 function Computer_Action_UninstallHardware:update()

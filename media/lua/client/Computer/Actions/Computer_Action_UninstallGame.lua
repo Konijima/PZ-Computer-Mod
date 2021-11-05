@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_UninstallGame = ISBaseTimedAction:derive("Computer_Action_UninstallGame");
 
 function Computer_Action_UninstallGame:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_UninstallGame:update()

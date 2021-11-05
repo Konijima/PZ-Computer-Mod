@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InsertFloppy = ISBaseTimedAction:derive("Computer_Action_InsertFloppy");
 
 function Computer_Action_InsertFloppy:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_InsertFloppy:update()

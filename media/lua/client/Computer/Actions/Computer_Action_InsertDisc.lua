@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InsertDisc = ISBaseTimedAction:derive("Computer_Action_InsertDisc");
 
 function Computer_Action_InsertDisc:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_InsertDisc:update()

@@ -4,7 +4,7 @@ require("Computer/UI/ComputerHardwareManagement")
 Computer_Action_HardwareManagement = ISBaseTimedAction:derive("Computer_Action_HardwareManagement");
 
 function Computer_Action_HardwareManagement:isValid()
-    return self.computer ~= nil
+    return self.computer:exist()
 end
 
 function Computer_Action_HardwareManagement:update()

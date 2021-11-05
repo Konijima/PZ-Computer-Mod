@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_EjectFloppy = ISBaseTimedAction:derive("Computer_Action_EjectFloppy");
 
 function Computer_Action_EjectFloppy:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_EjectFloppy:update()

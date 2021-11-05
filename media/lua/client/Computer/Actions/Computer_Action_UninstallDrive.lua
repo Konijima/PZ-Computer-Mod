@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_UninstallDrive = ISBaseTimedAction:derive("Computer_Action_UninstallDrive");
 
 function Computer_Action_UninstallDrive:isValid()
-    return self.computer ~= nil and self.tool ~= nil and self.drives[self.bayIndex] ~= nil
+    return self.computer:exist() and self.tool ~= nil and self.drives[self.bayIndex] ~= nil
 end
 
 function Computer_Action_UninstallDrive:update()

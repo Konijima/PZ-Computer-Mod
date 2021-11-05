@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_EjectDisc = ISBaseTimedAction:derive("Computer_Action_EjectDisc");
 
 function Computer_Action_EjectDisc:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_EjectDisc:update()

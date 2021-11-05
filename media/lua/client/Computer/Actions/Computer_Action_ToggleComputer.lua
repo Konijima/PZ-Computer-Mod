@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_ToggleComputer = ISBaseTimedAction:derive("Computer_Action_ToggleComputer");
 
 function Computer_Action_ToggleComputer:isValid()
-    return self.computer ~= nil and self.computer:hasElectricity()
+    return self.computer:exist() and self.computer:hasElectricity()
 end
 
 function Computer_Action_ToggleComputer:update()

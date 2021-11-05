@@ -3,7 +3,7 @@ require "TimedActions/ISBaseTimedAction"
 Computer_Action_InstallGame = ISBaseTimedAction:derive("Computer_Action_InstallGame");
 
 function Computer_Action_InstallGame:isValid()
-    return true
+    return self.computer:exist()
 end
 
 function Computer_Action_InstallGame:update()
