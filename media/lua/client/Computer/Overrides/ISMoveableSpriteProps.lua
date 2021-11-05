@@ -3,6 +3,8 @@ local Computer = require("Computer/Classes/Computer")
 
 ------------------------------------------------------------------------------------------------------------------------
 
+-- Handle computer pick up
+
 local original_ISMoveableSpriteProps_pickUpMoveableInternal = ISMoveableSpriteProps.pickUpMoveableInternal
 
 ---@param _character IsoPlayer
@@ -43,6 +45,8 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
+-- Handle computer placement
+
 local original_ISMoveableSpriteProps_placeMoveableInternal = ISMoveableSpriteProps.placeMoveableInternal
 
 ---@param _square IsoGridSquare
@@ -75,6 +79,46 @@ function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName
         return ret; -- we return original return.
     else -- please always return original, just in case anything changes
         return original_ISMoveableSpriteProps_placeMoveableInternal(self, _square, _item, _spriteName, ...)
+    end
+
+end
+
+------------------------------------------------------------------------------------------------------------------------
+
+-- Handle computer dismantle
+
+local original_ISMoveableSpriteProps_scrapObjectInternal = ISMoveableSpriteProps.scrapObjectInternal
+
+function ISMoveableSpriteProps:scrapObjectInternal( _character, _scrapDef, _square, _object, _scrapResult, _chance, _perkName )
+
+    local computer
+    local sprite = _object:getSprite()
+    if sprite then
+        local spriteName = sprite:getName()
+        if Computer.IsSpriteOff(spriteName) then
+            computer = Computer:new(_object)
+        end
+    end
+
+    original_ISMoveableSpriteProps_scrapObjectInternal(self, _character, _scrapDef, _square, _object, _scrapResult, _chance, _perkName)
+
+    -- Has been dismantled and was a computer
+    if computer then
+        -- Give back all hardwares
+        local inventory = _character:getInventory()
+        for slotKey, hardware in pairs(computer:getAllHardwares()) do
+            if hardware then
+                computer:uninstallHardwareItemFromSlot(inventory, slotKey)
+            end
+        end
+
+        -- Give back all drives
+        local drives = computer:getAllDrives()
+        for i=1, drives.count do
+            computer:uninstallDriveFromBayIndex(inventory, i)
+        end
+
+        print("Computer was dismantled!")
     end
 
 end
