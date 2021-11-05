@@ -1032,13 +1032,13 @@ local function OnFillWorldObjectContextMenu(player, context, _, test)
 
     if clickedSquare == nil then return end
 
-    ---@type IsoPlayer
-    local character = getSpecificPlayer(player)
-
-    ---@type ItemContainer
-    local inventory = character:getInventory()
-
     if isDebugEnabled() then
+        
+        ---@type IsoPlayer
+        local character = getSpecificPlayer(player)
+
+        ---@type ItemContainer
+        local inventory = character:getInventory()
 
         local debugOption = context:addOption("[DEBUG] ComputerMod")
         local debugContext = ISContextMenu:getNew(context)
@@ -1059,7 +1059,7 @@ local function OnFillWorldObjectContextMenu(player, context, _, test)
             rotateComputerContext:addOption("West", "W", rotateComputer)
 
             -- Remove All Hardwares & Drives
-            local removeAllHardwares = debugContext:addOption("Remove hardwares & drives", nil, function()
+            debugContext:addOption("Remove hardwares & drives", nil, function()
                 if computer:isOn() then
                     computer:toggleState()
                 end
@@ -1076,13 +1076,14 @@ local function OnFillWorldObjectContextMenu(player, context, _, test)
                 end
             end)
 
-            local resetComputerOption = debugContext:addOption("Reset computer", nil, function()
+            debugContext:addOption("Reset computer", nil, function()
                 computer:reset()
             end)
 
-            local deleteComputerOption = debugContext:addOption("Delete computer", nil, function()
+            debugContext:addOption("Delete computer", nil, function()
                 triggerEvent("OnObjectAboutToBeRemoved", computer.isoObject)
                 clickedSquare:transmitRemoveItemFromSquare(computer.isoObject)
+                SetComputerStateOnSquare(clickedSquare, nil)
                 RemoveComputerLocation(clickedSquare:getX(), clickedSquare:getY(), clickedSquare:getZ())
             end)
 
