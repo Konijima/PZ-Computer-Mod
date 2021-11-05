@@ -9,6 +9,7 @@ end
 
 function LightInstance:remove()
     if self.lightSource ~= nil then
+        self.lightSource:setActive(false)
         getCell():removeLamppost(self.lightSource)
         self.lightSource = nil
         print("Light Instance removed at x:", self.x, " y:", self.y, " z:", self.z)
@@ -30,13 +31,13 @@ end
 function LightInstance:update()
     local square = getCell():getGridSquare(self.x, self.y, self.z)
     if square == nil and self.lightSource then
-        getCell():removeLamppost(self.lightSource)
-        self.lightSource = nil
+        self:remove()
     end
 
     if square and self.lightSource == nil then
         self.lightSource = IsoLightSource.new(self.x, self.y, self.z, 0.0, 0.0, 1.0, self.radius)
         self.lightWasRemoved = true
+        print("Light Instance added at x:", self.x, " y:", self.y, " z:", self.z)
     end
 
     if self.lightWasRemoved then
@@ -46,7 +47,6 @@ function LightInstance:update()
     end
 
     if self.lightSource ~= nil then
-        IsoGridSquare.RecalcLightTime = -1
         self.lightSource:setRadius(self.radius)
         self.lightSource:setR(self.color.r)
         self.lightSource:setG(self.color.g)
