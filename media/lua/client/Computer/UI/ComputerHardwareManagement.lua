@@ -24,10 +24,6 @@ end
 
 ---@return void
 function ComputerHardwareManagement:update()
-    if self.computer then
-        print(self.computer:exist())
-    end
-
     if self.computer and (not self.computer:exist() or self.computer:isOn()) then
         self:close();
         return;
