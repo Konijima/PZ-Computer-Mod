@@ -19,7 +19,13 @@ function Computer_Action_InstallDrive:start()
         self.audio = self.character:getEmitter():playSound(self.sound)
     end
 
-    self:setActionAnim("VehicleWorkOnMid")
+    self:setActionAnim("Loot")
+    if self.computer:isOnGround() then
+        self.character:SetVariable("LootPosition", "Low")
+    else
+        self.character:SetVariable("LootPosition", "Mid")
+    end
+
     self.item:setJobType(self.jotText)
     self.item:setJobDelta(0.0)
     --self.tool:setJobType(self.jotText)

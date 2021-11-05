@@ -21,7 +21,12 @@ function Computer_Action_UninstallHardware:start()
     --self.tool:setJobType(self.jotText)
     --self.tool:setJobDelta(0.0)
 
-    self:setActionAnim("VehicleWorkOnMid")
+    self:setActionAnim("Loot")
+    if self.computer:isOnGround() then
+        self.character:SetVariable("LootPosition", "Low")
+    else
+        self.character:SetVariable("LootPosition", "Mid")
+    end
 end
 
 function Computer_Action_UninstallHardware:stop()
