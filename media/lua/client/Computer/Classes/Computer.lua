@@ -1,5 +1,6 @@
 require("ISBaseObject")
 require("Computer/Audio/SoundManager")
+require("Computer/Light/LightManager")
 
 local ComputerSprites = {
     On = {
@@ -165,6 +166,7 @@ function Computer:toggleState(inBios, autoRestart)
 
         self:stopAudioEmitter()
         self:playAudio("ComputerBootEnd", "ComputerBootEnd", true)
+        self:setLightState(false)
 
         ComputerMod.TriggerEvent("OnComputerShutDown", self)
 
@@ -178,6 +180,7 @@ function Computer:toggleState(inBios, autoRestart)
         self:playAudio({"ComputerBootStart", "ComputerHum"}, true)
 
         self.isoObject:setSpriteFromName(ComputerSprites.On[facing])
+        self:setLightState(true)
 
         if self:getFlag("bios_active") then
             ComputerMod.TriggerEvent("OnComputerBootInBios", self)
@@ -203,6 +206,14 @@ end
 ---@return boolean
 function Computer:exist()
     return ComputerMod.GetComputerAtPosition(self.position.x, self.position.y, self.position.z) ~= nil
+end
+
+function Computer:setLightState(state)
+    if state then
+        LightManager.AddLightAt("computer", self.position.x, self.position.y, self.position.z, 2)
+    else
+        LightManager.RemoveLightAt("computer", self.position.x, self.position.y, self.position.z)
+    end
 end
 
 ---@return IsoGridSquare
@@ -496,9 +507,9 @@ function Computer:isAudioDisabled()
     return not self:getBiosValue("enable_audio") and not self:getHardwareInSlotKey("SoundCard")
 end
 
----@return EmitterInstance
+---@return SoundInstance
 function Computer:getAudioEmitter()
-    return SoundManager.GetEmitterAt("computer", self.position.x, self.position.y, self.position.z)
+    return SoundManager.GetSoundAt("computer", self.position.x, self.position.y, self.position.z)
 end
 
 ---@param audioName string
@@ -512,14 +523,14 @@ end
 
 ---@param soundList string|table<string>
 ---@param isAmbiant boolean
----@return EmitterInstance|nil
+---@return SoundInstance|nil
 function Computer:playAudio(soundList, isAmbiant)
     if not isAmbiant and self:isAudioDisabled() then return end
     return SoundManager.PlaySoundAt("computer", soundList, self.position.x, self.position.y, self.position.z)
 end
 
 function Computer:stopAudioEmitter()
-    SoundManager.StopEmitterAt("computer", self.position.x, self.position.y, self.position.z)
+    SoundManager.StopSoundAt("computer", self.position.x, self.position.y, self.position.z)
 end
 
 --- CONSTRUCTOR

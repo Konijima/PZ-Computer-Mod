@@ -1,5 +1,7 @@
 require("ISBaseObject")
 require("Computer/ComputerUtils")
+require("Computer/Audio/SoundManager")
+require("Computer/Light/LightManager")
 
 -------------------------------------------------------------------------------------------------------
 
@@ -965,6 +967,7 @@ local function InitializeComputers()
 
         -- Handle computer audio
         if GetComputerStateAtPosition(position.x, position.y, position.z) then
+            LightManager.AddLightAt("computer", position.x, position.y, position.z, 2)
             SoundManager.PlaySoundAt("computer", "ComputerHum", position.x, position.y, position.z)
         end
     end
@@ -1033,7 +1036,7 @@ local function OnFillWorldObjectContextMenu(player, context, _, test)
     if clickedSquare == nil then return end
 
     if isDebugEnabled() then
-        
+
         ---@type IsoPlayer
         local character = getSpecificPlayer(player)
 
