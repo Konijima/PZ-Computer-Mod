@@ -154,6 +154,11 @@ function Computer:hasElectricity()
     return self.square:haveElectricity()
 end
 
+---@return boolean
+function Computer:isOnGround()
+    return self.isoObject:getRenderYOffset() < 0
+end
+
 ---@return IsoGridSquare
 function Computer:getSquareInFront()
     local frontSquare
