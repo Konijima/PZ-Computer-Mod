@@ -74,7 +74,7 @@ end
 local ticks = 0
 local function Tick()
     ticks = ticks + 1
-    if ticks > 4 then
+    if ticks > 10 then
         ticks = 0
         for _, position in pairs(Lights) do
             for _, light in pairs(position) do
