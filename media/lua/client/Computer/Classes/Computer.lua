@@ -151,12 +151,17 @@ end
 
 ---@return boolean
 function Computer:hasElectricity()
-    return self.square:haveElectricity()
+    return self.square ~= nil and self.square:haveElectricity() == true
 end
 
 ---@return boolean
 function Computer:isOnGround()
-    return self.isoObject:getRenderYOffset() < 0
+    return self.isoObject ~= nil and self.isoObject:getRenderYOffset() < 0
+end
+
+---@return boolean
+function Computer:exist()
+    return ComputerMod.GetComputerAtPosition(self.position.x, self.position.y, self.position.z) ~= nil
 end
 
 ---@return IsoGridSquare
