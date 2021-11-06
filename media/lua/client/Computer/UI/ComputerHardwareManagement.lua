@@ -39,6 +39,33 @@ function ComputerHardwareManagement:prerender()
     self:updateLayout()
 end
 
+function ComputerHardwareManagement:renderPart(part)
+    local x = 5;
+    local y = self:titleBarHeight() + FNT_HGT_MEDIUM + 15;
+    -- TODO: Part info render
+end
+
+function ComputerHardwareManagement:render()
+    ISCollapsableWindow.render(self);
+    if self.isCollapsed then return end
+
+    local x = 5;
+    local y = self:titleBarHeight() + 10;
+    local lineHgt = FNT_HGT_SMALL;
+    local rectWidth = self:getWidth()-10;
+    local rectHgt = 5 + FNT_HGT_MEDIUM + FNT_HGT_SMALL * (5+1); -- +1 for the progressbar
+
+    local lines = {}; -- TODO add Text and whatnot
+
+    self:drawRectBorder(x, y, rectWidth, rectHgt, 1, self.borderColor.r, self.borderColor.g, self.borderColor.b);
+    x = x + 5;
+    y = y + 5;
+
+    self:drawTextCentre("Computer", x + rectWidth/2, y, self.partCatRGB.r, self.partCatRGB.g, self.partCatRGB.b, self.partCatRGB.a, UIFont.Medium);
+    y = y + FNT_HGT_MEDIUM;
+    self:drawText("This is a test!", x, y, self.partCatRGB.r, self.partCatRGB.g, self.partCatRGB.b, self.partCatRGB.a, UIFont.Small);
+end
+
 ---@param x number
 ---@param y number
 function ComputerHardwareManagement:getMouseOverPart(x, y)
@@ -371,6 +398,7 @@ function ComputerHardwareManagement:createChildren()
     if self.resizeWidget then self.resizeWidget.yonly = true end
 
     self.resizeWidget:setVisible(false)
+    --TODO: change setInfo to a custom translation (for easier edits when other mods, or this mod implements another translation)
     self:setInfo(" <CENTRE> <SIZE:medium> This is the Computer Hardware Panel. <LINE> <LINE> <SIZE:small> <LEFT> Welcome to the Computer Hardware menu! <LINE> <LINE> Here you can find informations about your current computer hardwares. If you have a screwdriver, right click a bay to install or remove hardware. <LINE> <LINE> Left click to get more detailed informations from each installed hardware. <LINE> <LINE> The hardware menu can only be accessed while the computer is off. <LINE> <LINE> ");
 
     --local rh = self.resizeable and self:resizeWidgetHeight() or 0;
