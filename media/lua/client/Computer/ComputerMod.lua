@@ -492,6 +492,7 @@ local function RemoveAddonByName(addonName)
         end
         if addon then
             ComputerAddons:remove(addon)
+            TriggerEvent("OnAddonRemoved", addon.name)
             print("ComputerMod: Removed addon '"..addon.name.."'!")
             return true
         end
@@ -508,6 +509,7 @@ local function AddAddon(addon)
         RemoveAddonByName(addon.name)
 
         ComputerAddons:add(addon)
+        TriggerEvent("OnAddonAdded", addon.name)
         print("ComputerMod: Added addon '"..addon.name.."' successfully!")
 
         --if not pcall(RunAddon, addon) then
@@ -975,7 +977,6 @@ end
 
 ---@type number
 local ticks = 0;
-
 local function UpdateComputers()
     ticks = ticks + 1
     if ticks > 10 then
@@ -1134,8 +1135,8 @@ Events.OnFillContainer.Add(OnFillContainer)
 
 --- COMPUTER EVENTS
 
-CreateEvent("OnAddonAdded", { "ComputerAddon" })
-CreateEvent("OnAddonRemoved", { "ComputerAddon" })
+CreateEvent("OnAddonAdded", { "string" })
+CreateEvent("OnAddonRemoved", { "string" })
 
 CreateEvent("OnComputerPickedUp", { "InventoryItem", "IsoGridSquare" })
 CreateEvent("OnComputerPlacedDown", { "Computer" })
