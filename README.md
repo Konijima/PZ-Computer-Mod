@@ -6,7 +6,7 @@
 [Download IntelliJ Community](https://www.jetbrains.com/idea/download)  
 [Capsid Github Page](https://github.com/pzstorm/capsid)  
 [EmmyLua Documentation](https://emmylua.github.io/)  
-[Project Zomboid Documentation](https://projectzomboid.com/modding/)  
+[Latest PZ Documentation](https://quarantin.github.io/zomboid-javadoc/41.56/)  
   
 ## How to setup
 1) Install [IntelliJ Community](https://www.jetbrains.com/idea/download)
