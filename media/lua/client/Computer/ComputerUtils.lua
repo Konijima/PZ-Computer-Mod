@@ -116,3 +116,27 @@ function ComputerUtils.isClassChildOf(object, class)
     end
     return false
 end
+
+---@param current number
+---@param max number
+function ComputerUtils.getVariableRGB(current, max)
+    if current < 1 and current > 0 then
+        current = current * 100
+        max = max * 100
+    end
+    local r = ((max - current) / max)
+    local g = (current / max)
+    return {r = r, g = g, b = 0}
+end
+
+---@param current number
+---@param max number
+function ComputerUtils.getVariableReversedRGB(current, max)
+    if current < 1 and current > 0 then
+        current = current * 100
+        max = max * 100
+    end
+    local g = ((max - current) / max)
+    local r = (current / max)
+    return {r = r, g = g, b = 0}
+end
