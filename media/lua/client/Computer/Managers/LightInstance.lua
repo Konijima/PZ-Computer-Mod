@@ -3,10 +3,6 @@ require("ISBaseObject")
 ---@class LightInstance
 local LightInstance = ISBaseObject:derive("LightInstance")
 
-function LightInstance:getSquare()
-    return getCell():getGridSquare(self.x, self.y, self.z)
-end
-
 function LightInstance:remove()
     if self.lightSource ~= nil then
         self.lightSource:setActive(false)
@@ -22,9 +18,9 @@ function LightInstance:setRadius(radius)
 end
 
 function LightInstance:setColor(r, g, b)
-    if type(r) ~= "number" then r = 0.33 end
-    if type(g) ~= "number" then g = 0.33 end
-    if type(b) ~= "number" then b = 0.33 end
+    if type(r) ~= "number" then r = 0.20 end
+    if type(g) ~= "number" then g = 0.30 end
+    if type(b) ~= "number" then b = 0.20 end
     self.color = { r = r, g = g, b = b }
 end
 
@@ -32,6 +28,7 @@ function LightInstance:update()
     local square = getCell():getGridSquare(self.x, self.y, self.z)
     if square == nil and self.lightSource then
         self:remove()
+        return false
     end
 
     if square and self.lightSource == nil then
@@ -51,6 +48,7 @@ function LightInstance:update()
         self.lightSource:setR(self.color.r)
         self.lightSource:setG(self.color.g)
         self.lightSource:setB(self.color.b)
+        return true
     end
 end
 
