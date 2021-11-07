@@ -82,7 +82,11 @@ local ComputerBiosSettings = {}
 
 --- Game Formats Database
 ---@type table<string>
-local GameFormats = {}
+local GameFormats = {
+    "All",
+    "Disc_Game",
+    "Floppy_Game",
+}
 
 --- Software Types Database
 ---@type table<string>
@@ -520,6 +524,10 @@ end
 
 ---@param addon ComputerAddon
 local function RunAddon(addon)
+
+    -- TODO: add custom hardware
+    -- TODO: add custom drives
+    -- TODO: add custom mediums
 
     if addon.ComputerEvents and #addon.ComputerEvents > 0 then
         print("ComputerMod: Addon '"..addon.name.."' is adding "..#addon.ComputerEvents.." ComputerEvents!")
@@ -1216,12 +1224,6 @@ AddEvent("OnComputerPlacedDown", OnComputerPlacedDown)
 
 AddBiosSetting("power_recovery", "Power Recovery", "Will not automatically restart when power becomes available.", "Will automatically restart when power becomes available.", false)
 AddBiosSetting("enable_audio", "Audio", "Disable all computer audio.", "Enable all computer audio.", true)
-
---- GAME FORMATS
-
-AddGameFormat("all")
-AddGameFormat("disc")
-AddGameFormat("floppy")
 
 --- SOFTWARE TYPES
 
