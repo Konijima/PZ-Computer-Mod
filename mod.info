@@ -1,8 +1,8 @@
 name=Computer
 poster=poster.png
-description=Computer System. (Make sure to subscribe to the required API's)
+description=Computer System
 author=Konijima
 id=Computer
 modversion=2.0
 pzversion=41.56-IWBUMS
-require=DistributionAPI,ItemTooltipAPI
+require=CommunityAPI
