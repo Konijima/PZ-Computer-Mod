@@ -1,4 +1,4 @@
-require "DistributionAPI"
+require "CommunityAPI"
 
 local distributionTable = {
 
@@ -171,4 +171,4 @@ local distributionTable = {
     },
 }
 
-AddDistributionTable("ComputerMod", distributionTable)
+CommunityAPI.Server.Distribution.Add("ComputerMod", distributionTable)
