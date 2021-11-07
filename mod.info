@@ -1,8 +1,8 @@
 name=Computer
 poster=poster.png
-description=Computer system. No game included! (Install one or more Game Pack)
+description=Computer System. (Make sure to subscribe to the required API's)
 author=Konijima
 id=Computer
 modversion=2.0
 pzversion=41.56-IWBUMS
-require=DistributionAPI
+require=DistributionAPI,ItemTooltipAPI

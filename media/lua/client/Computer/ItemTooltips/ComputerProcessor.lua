@@ -1,5 +1,4 @@
-require("Computer/ComputerUtils")
-require("Computer/Managers/InventoryTooltipManager")
+require("ItemTooltipAPI")
 
 local function typeField(result, item)
     result.value = item:getType()
@@ -7,12 +6,12 @@ end
 
 local function conditionProgress(result, item)
     result.value = 0.25
-    result.color = ComputerUtils.getVariableRGB(result.value, 1)
+    result.color = ItemTooltipAPI.GetRGB(result.value, 1)
 end
 
 local function capacityProgress(result, item)
     result.value = 0.75
-    result.color = ComputerUtils.getVariableReversedRGB(result.value, 1)
+    result.color = ItemTooltipAPI.GetReversedRGB(result.value, 1)
 end
 
 local function dynamicLabel(result, item)
@@ -20,7 +19,7 @@ local function dynamicLabel(result, item)
     result.labelColor = { r=1, g=0, b=0.5, a=1 }
 end
 
-local Processor = InventoryTooltipManager:CreateToolTip("Computer.Processor")
+local Processor = ItemTooltipAPI.CreateToolTip("Computer.Processor")
 
 Processor:addField("Hardware", typeField)
 Processor:addField("Cores", "1 core / 1 thread")
