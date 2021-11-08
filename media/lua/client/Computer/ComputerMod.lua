@@ -1,7 +1,8 @@
+require("CommunityAPI")
 require("ISBaseObject")
 require("Computer/ComputerUtils")
 require("Computer/Managers/SoundManager")
-require("Computer/Managers/LightManager")
+
 
 -------------------------------------------------------------------------------------------------------
 
@@ -977,7 +978,7 @@ local function InitializeComputers()
 
         -- Handle computer audio
         if GetComputerStateAtPosition(position.x, position.y, position.z) then
-            LightManager.AddLightAt("computer", position.x, position.y, position.z, 2)
+            CommunityAPI.Client.Light.AddLightAt("computer_screen", position.x, position.y, position.z, 2, { r=0.20, g=0.30, b=0.20 })
             SoundManager.PlaySoundAt("computer", "ComputerHum", position.x, position.y, position.z)
         end
     end

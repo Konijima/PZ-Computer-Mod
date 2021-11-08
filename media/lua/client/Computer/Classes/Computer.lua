@@ -1,6 +1,6 @@
+require("CommunityAPI")
 require("ISBaseObject")
 require("Computer/Managers/SoundManager")
-require("Computer/Managers/LightManager")
 
 local ComputerSprites = {
     On = {
@@ -211,9 +211,9 @@ end
 
 function Computer:setLightState(state)
     if state then
-        LightManager.AddLightAt("computer", self.position.x, self.position.y, self.position.z, 2)
+        CommunityAPI.Client.Light.AddLightAt("computer_screen", self.position.x, self.position.y, self.position.z, 2, { r=0.20, g=0.30, b=0.20 })
     else
-        LightManager.RemoveLightAt("computer", self.position.x, self.position.y, self.position.z)
+        CommunityAPI.Client.Light.RemoveLightAt("computer_screen", self.position.x, self.position.y, self.position.z)
     end
 end
 
