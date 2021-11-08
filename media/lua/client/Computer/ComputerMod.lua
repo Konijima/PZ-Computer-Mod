@@ -979,7 +979,7 @@ local function InitializeComputers()
         -- Handle computer audio
         if GetComputerStateAtPosition(position.x, position.y, position.z) then
             CommunityAPI.Client.Light.AddLightAt("computer_screen", position.x, position.y, position.z, 2, { r=0.20, g=0.30, b=0.20 })
-            SoundManager.PlaySoundAt("computer", "ComputerHum", position.x, position.y, position.z)
+            CommunityAPI.Client.WorldSound.AddSoundAt("computer_ambiant", position.x, position.y, position.z, "ComputerHum")
         end
     end
 end

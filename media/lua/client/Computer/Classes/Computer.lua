@@ -164,8 +164,8 @@ function Computer:toggleState(inBios, autoRestart)
 
         self.isoObject:setSpriteFromName(ComputerSprites.Off[facing])
 
-        self:stopAudioEmitter()
-        self:playAudio("ComputerBootEnd", "ComputerBootEnd", true)
+        self:stopAllAudio()
+        self:playAudio("computer_ambiant", "ComputerBootEnd", "ComputerBootEnd", true)
         self:setLightState(false)
 
         ComputerMod.TriggerEvent("OnComputerShutDown", self)
@@ -176,8 +176,8 @@ function Computer:toggleState(inBios, autoRestart)
         self:setFlag("bios_active", inBios)
         self:setFlag("auto_restart", false)
 
-        self:stopAudioEmitter()
-        self:playAudio({"ComputerBootStart", "ComputerHum"}, true)
+        self:stopAllAudio()
+        self:playAudio("computer_ambiant", {"ComputerBootStart", "ComputerHum"}, true)
 
         self.isoObject:setSpriteFromName(ComputerSprites.On[facing])
         self:setLightState(true)
@@ -185,7 +185,6 @@ function Computer:toggleState(inBios, autoRestart)
         if self:getFlag("bios_active") then
             ComputerMod.TriggerEvent("OnComputerBootInBios", self)
         else
-            --self:playAudio("ComputerStartupMusic", false, false)
             ComputerMod.TriggerEvent("OnComputerBoot", self)
         end
 
@@ -508,30 +507,19 @@ function Computer:isAudioDisabled()
     return not self:getBiosValue("enable_audio") and not self:getHardwareInSlotKey("SoundCard")
 end
 
----@return SoundInstance
-function Computer:getAudioEmitter()
-    return SoundManager.GetSoundAt("computer", self.position.x, self.position.y, self.position.z)
-end
-
----@param audioName string
----@return boolean
-function Computer:isAudioPlaying(audioName)
-    local sound = SoundManager.GetSoundAt(audioName, self.position.x, self.position.y, self.position.z)
-    if sound then
-        return sound:isPlaying()
-    end
-end
-
 ---@param soundList string|table<string>
 ---@param isAmbiant boolean
----@return SoundInstance|nil
-function Computer:playAudio(soundList, isAmbiant)
+function Computer:playAudio(name, soundList, isAmbiant)
     if not isAmbiant and self:isAudioDisabled() then return end
-    return SoundManager.PlaySoundAt("computer", soundList, self.position.x, self.position.y, self.position.z)
+    CommunityAPI.Client.WorldSound.AddSoundAt(name, self.position.x, self.position.y, self.position.z, soundList)
 end
 
-function Computer:stopAudioEmitter()
-    SoundManager.StopSoundAt("computer", self.position.x, self.position.y, self.position.z)
+function Computer:stopAudio(name)
+    CommunityAPI.Client.WorldSound.RemoveSoundAt(name, self.position.x, self.position.y, self.position.z)
+end
+
+function Computer:stopAllAudio()
+    CommunityAPI.Client.WorldSound.RemoveAllSoundAt(self.position.x, self.position.y, self.position.z)
 end
 
 --- CONSTRUCTOR
