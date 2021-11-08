@@ -1,4 +1,4 @@
-require "CommunityAPI"
+require("CommunityAPI")
 
 local distributionTable = {
 
