@@ -1,5 +1,5 @@
-require "ISUI/ISCollapsableWindow"
-require "Computer/ComputerUtils"
+require("CommunityAPI")
+require("ISUI/ISCollapsableWindow")
 
 ---@class ComputerHardwareManagement
 ComputerHardwareManagement = ISCollapsableWindow:derive("ComputerMechanics");
@@ -164,10 +164,10 @@ function ComputerHardwareManagement:doPartContextMenu(selectedItem, x, y)
     self.context = ISContextMenu.get(self.player, x + self:getAbsoluteX(), y + self:getAbsoluteY());
 
     ---@type ArrayList
-    local screwdriverItems = ComputerUtils.findAllByTag(self.inventory, "Screwdriver");
+    local screwdriverItems = CommunityAPI.Utils.Inventory.FindAllItemInInventoryByTag(self.inventory, "Screwdriver");
 
     ---@type ArrayList
-    local hardwareItems = ComputerUtils.findAllByTag(self.inventory, "ComputerHardware");
+    local hardwareItems = CommunityAPI.Utils.Inventory.FindAllItemInInventoryByTag(self.inventory, "ComputerHardware");
 
     local isDrive
     ---@type BaseHardware

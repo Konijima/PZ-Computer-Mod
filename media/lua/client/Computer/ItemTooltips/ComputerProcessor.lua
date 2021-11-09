@@ -8,12 +8,12 @@ end
 
 local function conditionProgress(result, item)
     result.value = 0.25
-    result.color = ItemTooltipAPI.GetRGB(result.value, 1)
+    result.color = CommunityAPI.Utils.Color.GetColorFromCurrentMax(result.value, 1)
 end
 
 local function capacityProgress(result, item)
     result.value = 0.75
-    result.color = ItemTooltipAPI.GetReversedRGB(result.value, 1)
+    result.color = CommunityAPI.Utils.Color.GetReversedColorFromCurrentMax(result.value, 1)
 end
 
 local function dynamicLabel(result, item)

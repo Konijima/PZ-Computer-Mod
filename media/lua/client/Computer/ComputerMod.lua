@@ -1,6 +1,5 @@
 require("CommunityAPI")
 require("ISBaseObject")
-require("Computer/ComputerUtils")
 require("Computer/Managers/SoundManager")
 
 
@@ -219,7 +218,7 @@ end
 ---@param gameFormat string
 local function AddGameFormat(gameFormat)
     if type(gameFormat) == "string" then
-        if ComputerUtils.tableContains(GameFormats, string.lower(gameFormat)) then
+        if CommunityAPI.Utils.Table.TableContains(GameFormats, string.lower(gameFormat)) then
             print("ComputerMod: GameFormat '" .. gameFormat .. "' already exist in database!")
             return
         end
@@ -240,7 +239,7 @@ end
 ---@param softwareType string
 local function AddSoftwareType(softwareType)
     if type(softwareType) == "string" then
-        if ComputerUtils.tableContains(SoftwareTypes, string.lower(softwareType)) then
+        if CommunityAPI.Utils.Table.TableContains(SoftwareTypes, string.lower(softwareType)) then
             print("ComputerMod: SoftwareType '" .. softwareType .. "' already exist in database!")
             return
         end
@@ -652,7 +651,7 @@ end
 ---@param z number
 ---@return boolean
 local function GetComputerStateAtPosition(x, y, z)
-    local id = ComputerUtils.positionToId(x, y, z)
+    local id = CommunityAPI.Utils.String.PositionToId(x, y, z)
     if id and GlobalModData.computerStateLocations then
         return GlobalModData.computerStateLocations[id]
     end
@@ -664,7 +663,7 @@ end
 ---@param z number
 ---@param state boolean
 local function SetComputerStateAtPosition(x, y, z, state)
-    local id = ComputerUtils.positionToId(x, y, z)
+    local id = CommunityAPI.Utils.String.PositionToId(x, y, z)
     if id and GlobalModData.computerStateLocations then
         GlobalModData.computerStateLocations[id] = state
     end
@@ -674,7 +673,7 @@ end
 ---@param square IsoGridSquare
 ---@return boolean
 local function GetComputerStateOnSquare(square)
-    local id = ComputerUtils.squareToId(square)
+    local id = CommunityAPI.Utils.String.SquareToId(square)
     if id and GlobalModData.computerStateLocations then
         return GlobalModData.computerStateLocations[id]
     end
@@ -684,7 +683,7 @@ end
 ---@param square IsoGridSquare
 ---@param state boolean
 local function SetComputerStateOnSquare(square, state)
-    local id = ComputerUtils.squareToId(square)
+    local id = CommunityAPI.Utils.String.SquareToId(square)
     if id and GlobalModData.computerStateLocations then
         GlobalModData.computerStateLocations[id] = state
     end
@@ -694,7 +693,7 @@ end
 ---@param computer Computer
 local function AddComputerLocation(computer)
     if type(computer) == "table" and getmetatable(computer) == Classes.Computer then
-        local id = ComputerUtils.squareToId(computer.square)
+        local id = CommunityAPI.Utils.String.SquareToId(computer.square)
         if id and not GlobalModData.computerLocations[id] then
             local position = { x = computer.square:getX(), y = computer.square:getY(), z = computer.square:getZ() }
             GlobalModData.computerLocations[id] = position
@@ -708,7 +707,7 @@ end
 ---@param y number
 ---@param z number
 local function RemoveComputerLocation(x, y, z)
-    local id = ComputerUtils.positionToId(x, y, z)
+    local id = CommunityAPI.Utils.String.PositionToId(x, y, z)
     if id and GlobalModData.computerLocations[id] then
         GlobalModData.computerLocations[id] = nil
         print("ComputerMod: Removed Computer from ComputerLocations -> x:", x, " y:", y, " z:", z)
@@ -1122,7 +1121,7 @@ end
 ---@param container ItemContainer
 local function OnFillContainer(containerName, containerType, container)
     if instanceof(container, "ItemContainer") then
-        local ComputerMediums = ComputerUtils.findAllByTag(container, "ComputerMedium")
+        local ComputerMediums = CommunityAPI.Utils.Inventory.FindAllItemInInventoryByTag(container, "ComputerMedium")
         if ComputerMediums and ComputerMediums:size() > 0 then
             for i=0, ComputerMediums:size()-1 do
                 local item = ComputerMediums:get(i)

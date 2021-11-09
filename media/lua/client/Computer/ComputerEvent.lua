@@ -1,5 +1,5 @@
 require("ISBaseObject")
-require("Computer/ComputerUtils")
+require("CommunityAPI")
 
 ---@class ComputerEvent
 local ComputerEvent = ISBaseObject:derive("ComputerEvent")
@@ -24,7 +24,7 @@ function ComputerEvent:trigger(eventName, ...)
     local args = {...}
 
     for i, param in ipairs(self.paramTypes) do
-        if param ~= "any" and (args[i] == nil or (type(args[i]) == param or instanceof(args[i], param) or ComputerUtils.isClassChildOf(args[i], param)) == false) then
+        if param ~= "any" and (args[i] == nil or (type(args[i]) == param or instanceof(args[i], param) or CommunityAPI.Utils.Table.IsClassChildOf(args[i], param)) == false) then
             error("ComputerMod: Error in ComputerEvent["..eventName.."] Argument["..i.."] expected to be "..param..".", 2);
             return;
         end

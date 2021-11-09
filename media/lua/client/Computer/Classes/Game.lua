@@ -1,5 +1,5 @@
+require("CommunityAPI")
 require("ISBaseObject")
-require("Computer/ComputerUtils")
 
 ---@class Game
 local Game = ISBaseObject:derive("Game")
@@ -64,7 +64,7 @@ function Game:new(...)
     for i = 1, #args do
         if type(args[i]) ~= paramCheck[i].type then
             error("Error calling Game:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
-        elseif paramCheck[i].values and not ComputerUtils.tableContains(paramCheck[i].values, args[i]) then
+        elseif paramCheck[i].values and not CommunityAPI.Utils.Table.TableContains(paramCheck[i].values, args[i]) then
             error("Error calling Game:new - Argument["..i.."] ("..paramCheck[i].name..") expected to be of type "..paramCheck[i].type.." but was "..paramCheck[i].value..".", 2);
         else
             o[paramCheck[i].name] = args[i]
