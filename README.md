@@ -1,6 +1,6 @@
 # ProjectZomboid-Computer V2
   
-![Computer Banner](https://github.com/Konijima/PZ-Computer-Mod/blob/main/miscs/Computer2.0.png?raw=true)
+![Computer Banner](https://github.com/Konijima/PZ-Computer-Mod/blob/main/Images/Computer2.0.png?raw=true)
   
 ## Made using Capsid
 [Download IntelliJ Community](https://www.jetbrains.com/idea/download)  
@@ -11,4 +11,3 @@
 ### Links:
 [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2635550102)  
 [Development Wiki](https://github.com/Konijima/PZ-Computer-Mod/wiki)  
-  
