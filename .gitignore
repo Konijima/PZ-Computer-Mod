@@ -1,16 +1,2 @@
 *.sqlite
-.vs/VSWorkspaceState.json
-.vs/ProjectZomboid-Computer/v16/.suo
-.gradle/
 .idea/
-build/
-gradle/
-lib/
-logs/
-src/
-local.properties
-version.properties
-gradlew
-gradlew.bat
-Gemfile
-*.blend1

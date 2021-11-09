@@ -1,0 +1,7 @@
+name=Computer - Grand Theft Auto Game Pack
+poster=poster.png
+description=Game Pack for Computer: The complete Grand Theft Auto collection.
+author=Konijima
+id=ComputerGTAGamePack
+modversion=1.0
+require=Computer

@@ -1,13 +1,7 @@
-# ProjectZomboid-Computer V2
-  
-![Computer Banner](https://github.com/Konijima/PZ-Computer-Mod/blob/main/Images/Computer2.0.png?raw=true)
-  
-## Made using Capsid
-[Download IntelliJ Community](https://www.jetbrains.com/idea/download)  
-[Capsid Github Page](https://github.com/pzstorm/capsid)  
-[EmmyLua Documentation](https://emmylua.github.io/)  
-[Latest PZ Documentation](https://quarantin.github.io/zomboid-javadoc/41.56/)  
-  
+# ProjectZomboid-Computer V1
+
+![Computer Banner](https://steamuserimages-a.akamaihd.net/ugc/1787359110993955495/5E61CC45CEF2B10C065F1A49FFF14EE9366A5C16/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true)
+
 ### Links:
 [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2635550102)  
-[Development Wiki](https://github.com/Konijima/PZ-Computer-Mod/wiki)  
+[Development Wiki](https://github.com/Konijima/ProjectZomboid-Computer/wiki)  

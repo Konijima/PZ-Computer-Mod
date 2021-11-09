@@ -1,0 +1,7 @@
+name=Computer - Classics Game Pack
+poster=poster.png
+description=Game Pack for Computer: The 80s & 90s classics.
+author=Konijima
+id=ComputerClassicsGamePack
+modversion=1.0
+require=Computer
