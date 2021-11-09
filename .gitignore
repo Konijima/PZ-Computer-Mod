@@ -15,5 +15,4 @@ version.properties
 gradlew
 gradlew.bat
 Gemfile
-*.blend
-*.blend1
+Blender/
