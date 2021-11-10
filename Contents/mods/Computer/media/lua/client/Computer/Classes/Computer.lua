@@ -194,7 +194,7 @@ end
 
 ---@return boolean
 function Computer:hasElectricity()
-    return self.square ~= nil and self.square:haveElectricity() == true
+    return self.square:haveElectricity() or ((SandboxVars.AllowExteriorGenerator and self.square:haveElectricity()) or (SandboxVars.ElecShutModifier > -1 and GameTime:getInstance():getNightsSurvived() < SandboxVars.ElecShutModifier and not self.square:isOutside()))
 end
 
 ---@return boolean
