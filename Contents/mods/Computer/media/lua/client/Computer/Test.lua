@@ -5,14 +5,125 @@
 
 print("Test Reloaded!");
 
+----------------------------------------
 
 
 
+----------------------------------------
+
+--Events.OnGameStart.Add(function()
+--
+--    require("CommunityAPI")
+--
+--    local startTime = os.time()
+--
+--    local function onComputerBoot(param1)
+--        print("onComputerBoot", param1)
+--        error("test")
+--    end
+--
+--    CommunityAPI.Shared.Event.Add("Computer", "OnComputerBoot", onComputerBoot)
+--
+--    CommunityAPI.Shared.Event.Trigger("Computer", "OnComputerBoot", "Trigger 1") -- not triggered
+--
+--    --CommunityAPI.Shared.Event.Remove("Computer", "OnComputerBoot", onComputerBoot)
+--
+--    local endTime = os.time()
+--
+--    print(startTime, endTime, endTime - startTime)
+--
+--end)
+
+----------------------------------------
+
+-----@class HelicopterMod
+--local HelicopterMod = {}
+--HelicopterMod.functions = {}
+--function HelicopterMod.functions.applyDeathOrCrawlerToCrew(isoZombie)
+--    -- do thing
+--end
+--
+--CommunityAPI.Client.Spawner.SpawnZombie(data, {
+--    helicopterMod = {
+--        eventNameToCall = "applyDeathOrCrawlerToCrew"
+--    }
+--})
+--
+--local function onZombieSpawned(isoZombie, additionalData)
+--    if additionalData.helicopterMod then
+--        if HelicopterMod.functions[additionalData.helicopterMod.eventNameToCall] then
+--            HelicopterMod.functions[additionalData.helicopterMod.eventNameToCall](isoZombie)
+--        end
+--    end
+--end
+--CommunityAPI.Client.Spawner.OnZombieSpawned.Add(onZombieSpawned)
+
+----------------------------------------
+
+--ClimateManager.getInstance():
+--
+--function onConsumeItem(playerObj, items)
+--    -- run a timed action
+--end
+--
+--function doOnFillInventoryObjectContextMenu(player, context, items, item)
+--
+--    local playerObj = getSpecificPlayer(player)
+--    local playerModData = playerObj:getModData()
+--
+--    local myItem
+--    -- check if selected item/s is your item type
+--    if instanceof(item, "InventoryItem") then
+--        -- is the item
+--        if item:getFullType() == "Module.MyItem" then
+--            myItem = item
+--        end
+--    elseif items:size() > 0 then
+--        -- is an ArrayList
+--        myItem = items:get(0)
+--    end
+--
+--    if myItem then
+--        -- check if is allowed to consume if you want to limit it in anyway
+--        if not playerModData.itemConsumed then
+--            playerModData.itemConsumed = { }
+--        end
+--
+--        -- add option to consume
+--        context:addOption("Consume", playerObj, onConsumeItem, items)
+--    end
+--end
+--
+--Events.OnFillInventoryObjectContextMenu.Add(doOnFillInventoryObjectContextMenu)
 
 
 
+--local dummy
+--local function OnFillWorldObjectContextMenu(player, context, _, test)
+--    if test then return end
+--
+--    local character = getSpecificPlayer(player)
+--    local x = clickedSquare:getX()
+--    local y = clickedSquare:getY()
+--
+--    if dummy then
+--        getCell():addToProcessIsoObjectRemove(dummy)
+--        dummy = nil
+--        IsoCamera.setCamCharacter(character)
+--        print("removed dummy")
+--    else
+--        SystemDisabler.setOverridePOVCharacters(true)
+--        dummy = IsoDummyCameraCharacter.new(x, y, 0)
+--        getCell():addMovingObject(dummy)
+--        --IsoCamera.setCamCharacter(dummy)
+--        print("created dummy")
+--    end
+--
+--end
+--Events.OnFillWorldObjectContextMenu.Add(OnFillWorldObjectContextMenu)
+--
 
-
+----------------------------------------
 
 ---- Check a java object class fields
 --local player = getPlayer()
@@ -35,6 +146,8 @@ print("Test Reloaded!");
 --if hasError then
 --    print("There was an error running causeErrorButDontStopExecution() but this still got printed !")
 --end
+
+----------------------------------------
 
 ----- Find all ComputerMedium in container when loot is spawning
 -----@param name string
