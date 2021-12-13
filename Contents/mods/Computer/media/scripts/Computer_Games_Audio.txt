@@ -1,0 +1,129 @@
+module Base {
+
+    sound pz_8bit
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/pz_8bit.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound pz
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/pz.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound metal_gear
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/metal_gear.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound metal_gear_2
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/metal_gear_2.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound snake_revenge
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/snake_revenge.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound elite
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/elite.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound donkey_kong
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/donkey_kong.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound contra
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/contra.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound the_legend_of_zelda
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/the_legend_of_zelda.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound final_fantasy
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/final_fantasy.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound The_Lost_Vikings
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/The_Lost_Vikings.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound tetris
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/tetris.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound duke_nukem
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/duke_nukem.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound doom
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/doom.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound star_wars_x_wing
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/star_wars_x_wing.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound lemmings
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/lemmings.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound civilization
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/civilization.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound dune_2
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/dune_2.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound wolfenstein
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/wolfenstein.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound skate_or_die
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/skate_or_die.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound simcity
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/simcity.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+}

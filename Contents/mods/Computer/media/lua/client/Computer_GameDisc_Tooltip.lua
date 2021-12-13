@@ -74,9 +74,9 @@ function ISToolTipInv:render()
 		count = count + 1
 
 		--- Custom Line 3
-		self.tooltip:DrawText(font, "Released:", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
-		self.tooltip:DrawText(font, game.date, x + 87, y + textHeight * count, secondColor[1], secondColor[2], secondColor[3], 1)
-		count = count + 1
+		--self.tooltip:DrawText(font, "Released:", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
+		--self.tooltip:DrawText(font, game.date, x + 87, y + textHeight * count, secondColor[1], secondColor[2], secondColor[3], 1)
+		--count = count + 1
 
 		--- Custom Line 4
 		self.tooltip:DrawText(font, "Genre:", x, y + textHeight * count, 0, mainColor[1], mainColor[2], mainColor[3], 1)

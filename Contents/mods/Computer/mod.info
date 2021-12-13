@@ -1,7 +1,6 @@
 name=Computer
 poster=poster.png
-description=Computer system. No game included! (Install one or more Game Pack)
+description=Computer game system +20 games with real audio
 author=Konijima
 id=Computer
-modversion=1.0
-pzversion=41.55-IWBUMS
+modversion=1.1.1

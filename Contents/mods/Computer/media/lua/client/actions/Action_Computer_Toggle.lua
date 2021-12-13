@@ -26,10 +26,12 @@ function Action_Computer_Toggle:perform()
 	if ComputerMod.isComputerOn(self.computer) then
 		facing = ComputerMod.getComputerFacing(self.computer)
 		self.computer:setSpriteFromName(ComputerMod.SpriteComputerOff[facing])
+		if isClient() then self.computer:transmitUpdatedSpriteToServer() end -- fix for mp
 		ComputerMod.Events.OnComputerShutDown(self.computer)
 	else
 		facing = self.computer:getProperties():Val("Facing")
 		self.computer:setSpriteFromName(ComputerMod.SpriteComputerOn[facing])
+		if isClient() then self.computer:transmitUpdatedSpriteToServer() end -- fix for mp
 		ComputerMod.Events.OnComputerStartup(self.computer)
 	end
 

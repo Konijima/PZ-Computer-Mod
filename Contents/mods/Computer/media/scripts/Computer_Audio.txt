@@ -49,9 +49,87 @@ module Base {
 	}
 
 	sound ComputerGame1
-	{
-		category = Computer: Game, loop = true, is3D = true,
-		clip { file = media/sound/ComputerGame1.ogg, distanceMax = 10, volume = 1.0, } }
-	}
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame1.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame2
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame2.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame3
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame3.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame4
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame4.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame5
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame5.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame6
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame6.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame7
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame7.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame8
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame8.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame9
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame9.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame10
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame10.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame11
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame11.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame12
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame12.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame13
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame13.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound ComputerGame14
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/ComputerGame14.ogg, distanceMax = 10, volume = 1.0, } }
+    }
 
 }

@@ -1,7 +1,7 @@
 name=Computer - Corporal's Game Pack
 poster=poster.png
-description=Game Pack for Computer: Random funny game pack!
+description=Game Pack for Computer: Random funny game pack! (Random Audio)
 author=Corporal
 id=ComputerCorporalsGamePack
-modversion=1.0
+modversion=1.1
 require=Computer

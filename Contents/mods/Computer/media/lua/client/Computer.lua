@@ -3,7 +3,7 @@
 --- Doesn't turn off when power is down
 --- Power off only when interacting with it while power is down
 
-local activeMods = getActivatedMods(); -- I believe an arrayList?
+--[[local activeMods = getActivatedMods(); -- I believe an arrayList?
 if not activeMods:contains("CommunityAPI") then
 
 	print("Computer V1: CommunityAPI not found!")
@@ -14,7 +14,7 @@ else
 
 	print("Computer V1: CommunityAPI is loaded!")
 
-end
+end]]
 
 local ActiveComputer = nil
 local ActiveComputerPlayer = nil
@@ -38,7 +38,7 @@ ComputerMod = {
 }
 
 --- addGame
-function ComputerMod.addGame(id, title, date, publisher, genre)
+function ComputerMod.addGame(id, title, date, publisher, genre, audio)
 	if ComputerMod.Games[id] == nil then
 		local newGame = {
 			id = id,
@@ -46,11 +46,16 @@ function ComputerMod.addGame(id, title, date, publisher, genre)
 			date = date,
 			publisher = publisher,
 			genre = genre,
+			audio = audio,
 		}
 		ComputerMod.Games[id] = newGame
 		print("Adding computer game: " .. id)
 		return newGame
 	end
+end
+
+function ComputerMod.getRandomAudio()
+	return "ComputerGame" .. ZombRand(1, 14)
 end
 
 --- getAllGames
@@ -81,7 +86,7 @@ function ComputerMod.getGameDiscTooltipDescription(game)
 	if gameData then
 		description = " <RGB:1,1,0.8> Title:                 <RGB:1,1,1> " .. gameData.title
 		description = description .. " <LINE> <RGB:1,1,0.8> Publisher:     <RGB:1,1,1> " .. gameData.publisher
-		description = description .. " <LINE> <RGB:1,1,0.8> Released:      <RGB:1,1,1> " .. gameData.date
+		--description = description .. " <LINE> <RGB:1,1,0.8> Released:      <RGB:1,1,1> " .. gameData.date
 		description = description .. " <LINE> <RGB:1,1,0.8> Genre:              <RGB:1,1,1> " .. gameData.genre
 	else
 		description = " <RGB:1,0,0> Unknown Disc"
@@ -120,8 +125,8 @@ end
 
 --- getGameDiscData
 function ComputerMod.getGameDiscData(disc)
-	if disc and disc:getType() == "Disc_Game" then
-		return disc:getModData().game
+	if disc and disc:getType() == "Disc_Game" and disc:getModData().game then
+		return ComputerMod.getGame(disc:getModData().game.id)
 	end
 end
 
@@ -129,7 +134,9 @@ end
 function ComputerMod.setGameDiscData(disc, game)
 	if disc and disc:getType() == "Disc_Game" then
 		disc:setName("Game CD: " .. game.title)
-		disc:getModData().game = game
+		local modData = disc:getModData()
+		modData.game = game
+		--modData:transmitModData()
 	end
 end
 
@@ -250,6 +257,7 @@ function ComputerMod.insertDisc(inventory, computer, disc)
 			end
 
 			computerData.currentDisc = discData
+			computer:transmitModData() -- fix for mp
 			inventory:Remove(disc)
 
 			ComputerMod.Events.OnDiscInserted(computer, discData)
@@ -293,6 +301,7 @@ function ComputerMod.ejectDisc(inventory, computer)
 			print("Disc name: " .. tostring(computerData.currentDisc.name))
 
 			computerData.currentDisc = nil
+			computer:transmitModData() -- fix for mp
 
 			ComputerMod.Events.OnDiscEjected(computer, item)
 
@@ -341,6 +350,7 @@ function ComputerMod.installGame(computer, game)
 				computerData.installedGames = {}
 			end
 			table.insert(computerData.installedGames, game.id)
+			computer:transmitModData() -- fix for mp
 			print("Installed game " .. game.id)
 			return true
 		end
@@ -355,6 +365,7 @@ function ComputerMod.uninstallGame(computer, game)
 			for i=1, #computerData.installedGames do
 				if computerData.installedGames[i] == game.id then
 					table.remove(computerData.installedGames, i)
+					computer:transmitModData() -- fix for mp
 					print("Uninstalled game " .. game.id)
 					return true
 				end
@@ -419,6 +430,7 @@ local function setComputerOff(computer)
 		end
 
 		computer:setSpriteFromName(ComputerMod.SpriteComputerOff[facing])
+		if isClient() then computer:transmitUpdatedSpriteToServer() end
 
 		ComputerMod.Events.OnComputerShutDown()
 	end
@@ -718,5 +730,57 @@ local function doOnTickPlayerMoveAwayFromComputer()
 	end
 end
 
+--- Find all ComputerMedium in container when loot is spawning
+---@param containerName string
+---@param containerType string
+---@param container ItemContainer
+local function OnFillContainer(containerName, containerType, container)
+	if instanceof(container, "ItemContainer") then
+		if container and container:contains("Disc_Game") then
+			local containerItems = container:getItems()
+			if containerItems and containerItems:size() > 0 then
+				for cindex=0,containerItems:size()-1 do
+					local citem = containerItems:get(cindex)
+					if citem:getType() == "Disc_Game" then
+						if not ComputerMod.getGameDiscData(citem) then
+							local game = ComputerMod.getRandomGame()
+							if game then
+								ComputerMod.setGameDiscData(citem, game)
+								print("Randomize new Game CD:")
+								print("Title: " .. tostring(game.title))
+								print("Date: " .. tostring(game.date))
+								print("Publisher: " .. tostring(game.publisher))
+								print("Genre: " .. tostring(game.genre))
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+local function OnPreFillInventoryObjectContextMenu(player, context, items)
+	local playerObj = getSpecificPlayer(player)
+	local playerInv = playerObj:getInventory()
+	local inventoryItems = playerInv:FindAll("Computer.Disc_Game")
+	for i=0, inventoryItems:size()-1 do
+		local item = inventoryItems:get(i)
+		if not ComputerMod.getGameDiscData(item) then
+			local game = ComputerMod.getRandomGame()
+			if game then
+				ComputerMod.setGameDiscData(item, game)
+				print("Randomize new Game CD:")
+				print("Title: " .. tostring(game.title))
+				print("Date: " .. tostring(game.date))
+				print("Publisher: " .. tostring(game.publisher))
+				print("Genre: " .. tostring(game.genre))
+			end
+		end
+	end
+end
+
+Events.OnFillContainer.Add(OnFillContainer)
+Events.OnPreFillInventoryObjectContextMenu.Add(OnPreFillInventoryObjectContextMenu)
 Events.OnPreFillWorldObjectContextMenu.Add(doComputerMenu)
 Events.OnTick.Add(doOnTickPlayerMoveAwayFromComputer)

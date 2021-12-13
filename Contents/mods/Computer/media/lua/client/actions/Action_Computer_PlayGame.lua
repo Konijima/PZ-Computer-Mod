@@ -16,11 +16,22 @@ function Action_Computer_PlayGame:update()
 	self.character:PlayAnim("Idle")
 	self.character:faceThisObject(self.computer)
 
-	self.character:getStats():setStress(self.character:getStats():getStress() - (0.0005 * getGameTime():getMultiplier()))
-	self.character:getBodyDamage():setBoredomLevel(self.character:getBodyDamage():getBoredomLevel() - (ZomboidGlobals.BoredomDecrease * 1.5 * getGameTime():getMultiplier()))
+	self.character:getStats():setStress(self.character:getStats():getStress() - (0.0001 * getGameTime():getMultiplier()))
+	self.character:getStats():setFatigue(self.character:getStats():getFatigue() + (0.000015 * getGameTime():getMultiplier()))
+	self.character:getBodyDamage():setBoredomLevel(self.character:getBodyDamage():getBoredomLevel() - (0.01 * getGameTime():getMultiplier()))
+
+	local boredom = self.character:getBodyDamage():getBoredomLevel() / 100
+	local fatigue = self.character:getStats():getFatigue()
+	local stress = self.character:getStats():getStress()
 
 	if math.fmod(self.haloDelay, 300) == 0 then
-		HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Boredom"), false, HaloTextHelper.getColorGreen())
+		if boredom > stress and boredom > 0 then
+			HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Boredom"), false, HaloTextHelper.getColorGreen())
+		elseif stress > boredom and stress > 0 then
+			HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Stress"), false, HaloTextHelper.getColorGreen())
+		elseif fatigue > 0 then
+			HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Fatigue"), true, HaloTextHelper.getColorRed())
+		end
 	end
 	self.haloDelay = self.haloDelay + 1
 end
@@ -66,9 +77,13 @@ function Action_Computer_PlayGame:new(player, computer, game, time)
 	o.maxTime = time;
 	-- custom fields
 	o.haloDelay = 1
-	o.game = game
+	o.game = ComputerMod.getGame(game.id)
 	o.sound = "ComputerMouseClicks"
-	o.music = "ComputerGame1"
+	if type(o.game.audio) == "string" then
+		o.music = o.game.audio
+	else
+		o.music = ComputerMod.getRandomAudio()
+	end
 	o.audio = 0
 	o.audio2 = 0
 	o.computer = computer

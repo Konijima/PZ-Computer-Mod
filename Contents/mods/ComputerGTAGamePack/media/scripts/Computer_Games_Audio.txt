@@ -1,0 +1,57 @@
+module Base {
+
+    sound gta1
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta1.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta2
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta2.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta3
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta3.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta4
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta4.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta5
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta5.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta_london
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta_london.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta_san_andreas
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta_san_andreas.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta_chinatown
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta_chinatown.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+    sound gta1
+    {
+        category = Computer: Game, loop = true, is3D = true,
+        clip { file = media/sound/gta1.ogg, distanceMax = 10, volume = 1.0, } }
+    }
+
+}

@@ -63,6 +63,7 @@ function ISMoveableSpriteProps:placeMoveableInternal(_square, _item, _spriteName
 		-- Set the computerData to the object
 		if object and computerData then
 			object:getModData().computerData = computerData;
+			object:transmitModData() -- fix for mp
 		end
 
 	else
