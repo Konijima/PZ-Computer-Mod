@@ -13,6 +13,7 @@ function Action_Computer_PlayGame:update()
 	if self.music ~= "" and self.audio2 ~= 0 and not self.character:getEmitter():isPlaying(self.audio2) then
 		self.audio2 = self.character:getEmitter():playSound(self.music)
 	end
+
 	self.character:PlayAnim("Idle")
 	self.character:faceThisObject(self.computer)
 
@@ -22,9 +23,15 @@ function Action_Computer_PlayGame:update()
 
 	local boredom = self.character:getBodyDamage():getBoredomLevel() / 100
 	local fatigue = self.character:getStats():getFatigue()
+	local thirst = self.character:getStats():getThirst()
+	local hunger = self.character:getStats():getHunger()
 	local stress = self.character:getStats():getStress()
 
-	if math.fmod(self.haloDelay, 300) == 0 then
+	if math.fmod(self.speechDelay, 1250) == 0 then
+		self.character:Say(getText("UI_Computer_FunSpeech_" .. ZombRand(0, 26)))
+	end
+
+	if math.fmod(self.haloDelay, 750) == 0 then
 		if boredom > stress and boredom > 0 then
 			HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Boredom"), false, HaloTextHelper.getColorGreen())
 		elseif stress > boredom and stress > 0 then
@@ -33,7 +40,29 @@ function Action_Computer_PlayGame:update()
 			HaloTextHelper.addTextWithArrow(self.character, getText("IGUI_HaloNote_Fatigue"), true, HaloTextHelper.getColorRed())
 		end
 	end
+	self.speechDelay = self.speechDelay + 1
 	self.haloDelay = self.haloDelay + 1
+
+	if fatigue >= 0.9 then
+		self.character:Say(getText("UI_Computer_TiredSpeech_" .. ZombRand(0, 3)))
+		self:stopAction()
+	elseif thirst >= 0.85 then
+		self.character:Say(getText("UI_Computer_ThirstySpeech_" .. ZombRand(0, 3)))
+		self:stopAction()
+	elseif hunger >= 0.7 then
+		self.character:Say(getText("UI_Computer_HungrySpeech_" .. ZombRand(0, 3)))
+		self:stopAction()
+	end
+end
+
+function Action_Computer_PlayGame:stopAction()
+	if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
+		self.character:stopOrTriggerSound(self.audio)
+	end
+	if self.audio2 ~= 0 and self.character:getEmitter():isPlaying(self.audio2) then
+		self.character:stopOrTriggerSound(self.audio2)
+	end
+	ISBaseTimedAction.forceStop(self);
 end
 
 function Action_Computer_PlayGame:start()
@@ -46,24 +75,11 @@ function Action_Computer_PlayGame:start()
 end
 
 function Action_Computer_PlayGame:stop()
-	if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
-		self.character:stopOrTriggerSound(self.audio)
-	end
-	if self.audio2 ~= 0 and self.character:getEmitter():isPlaying(self.audio2) then
-		self.character:stopOrTriggerSound(self.audio2)
-	end
-	ISBaseTimedAction.stop(self);
+	self:stopAction()
 end
 
 function Action_Computer_PlayGame:perform()
-	if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
-		self.character:stopOrTriggerSound(self.audio)
-	end
-	if self.audio2 ~= 0 and self.character:getEmitter():isPlaying(self.audio2) then
-		self.character:stopOrTriggerSound(self.audio2)
-	end
-	-- needed to remove from queue / start next.
-	ISBaseTimedAction.perform(self);
+	self:stopAction()
 end
 
 function Action_Computer_PlayGame:new(player, computer, game, time)
@@ -76,6 +92,7 @@ function Action_Computer_PlayGame:new(player, computer, game, time)
 	o.stopOnRun = true;
 	o.maxTime = time;
 	-- custom fields
+	o.speechDelay = 1
 	o.haloDelay = 1
 	o.game = ComputerMod.getGame(game.id)
 	o.sound = "ComputerMouseClicks"

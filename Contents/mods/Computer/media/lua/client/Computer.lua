@@ -81,7 +81,10 @@ end
 
 --- getGameDiscTooltipDescription
 function ComputerMod.getGameDiscTooltipDescription(game)
-	local gameData = ComputerMod.getGame(game.id)
+	local gameData
+	if game then
+		gameData = ComputerMod.getGame(game.id)
+	end
 	local description = ""
 	if gameData then
 		description = " <RGB:1,1,0.8> Title:                 <RGB:1,1,1> " .. gameData.title
@@ -333,7 +336,7 @@ function ComputerMod.isGameInstalled(computer, game)
 		local computerData = ComputerMod.getComputerData(computer)
 		if computerData and computerData.installedGames then
 			for i=1, #computerData.installedGames do
-				if computerData.installedGames[i] == game.id and ComputerMod.getGame(game.id) then
+				if game and computerData.installedGames[i] == game.id and ComputerMod.getGame(game.id) then
 					return true
 				end
 			end
@@ -482,14 +485,14 @@ local function doInstallGame(player, computer, game)
 	local playerObj = getSpecificPlayer(player)
 	local square = ComputerMod.getComputerFrontSquare(computer)
 	ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, square))
-	ISTimedActionQueue.add(Action_Computer_InstallGame:new(player, computer, game, 500));
+	ISTimedActionQueue.add(Action_Computer_InstallGame:new(player, computer, game, 300));
 end
 
 local function doUninstallGame(player, computer, game)
 	local playerObj = getSpecificPlayer(player)
 	local square = ComputerMod.getComputerFrontSquare(computer)
 	ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, square))
-	ISTimedActionQueue.add(Action_Computer_UninstallGame:new(player, computer, game, 200));
+	ISTimedActionQueue.add(Action_Computer_UninstallGame:new(player, computer, game, 150));
 end
 
 local function doComputerMenu(player, context, worldobjects, test)
@@ -556,9 +559,9 @@ function ComputerMod.Events.OnInteractionMenuPoweredOptions(playerNum, computer,
 
 			if currentDisc.type == "Disc_Game" then
 				local option
-				if ComputerMod.isGameInstalled(computer, currentDisc.game) then
+				if currentDisc.game and ComputerMod.isGameInstalled(computer, currentDisc.game) then
 					option = subContext:addOption("Play Disc", playerNum, doPlayGame, computer, currentDisc.game)
-				elseif ComputerMod.getGame(currentDisc.game.id) then
+				elseif currentDisc.game and ComputerMod.getGame(currentDisc.game.id) then
 					option = subContext:addOption("Install Disc", playerNum, doInstallGame, computer, currentDisc.game)
 				end
 				if option then
@@ -569,10 +572,10 @@ function ComputerMod.Events.OnInteractionMenuPoweredOptions(playerNum, computer,
 			end
 
 			if currentDisc.type == "Disc_Retail" then
-				local option = subContext:addOption("Read Disc", playerNum, doPlayGame, computer)
-				option.toolTip = ISToolTip:new()
-				option.toolTip.name = currentDisc.name
-				option.toolTip.description = ComputerMod.getRetailDiscTooltipDescription(currentDisc.media)
+				--local option = subContext:addOption("Read Disc", playerNum, doPlayGame, computer)
+				--option.toolTip = ISToolTip:new()
+				--option.toolTip.name = currentDisc.name
+				--option.toolTip.description = ComputerMod.getRetailDiscTooltipDescription(currentDisc.media)
 			end
 
 			local option = subContext:addOption("Eject Disc", playerNum, doEjectDisc, computer)
@@ -620,36 +623,36 @@ function ComputerMod.Events.OnInteractionMenuPoweredOptions(playerNum, computer,
 	
 				--- Retail CD
 				if playerInv:contains("Disc_Retail") then
-					local diskRetailOption = diskDriveContext:addOption("Media CD")
-					local diskRetailContext = ISContextMenu:getNew(diskDriveContext)
-					diskDriveContext:addSubMenu(diskRetailOption, diskRetailContext)
-					local items = playerInv:getAllEvalRecurse(function(item)
-						return item:getType() == "Disc_Retail"
-					end)
-					for i=0, items:size() - 1 do
-						local item = items:get(i)
-						local discOption = diskRetailContext:addOption(item:getDisplayName(), playerNum, doInsertDisc, computer, item)
-						discOption.toolTip = ISToolTip:new()
-						discOption.toolTip.name = item:getName()
-						discOption.toolTip.description = ComputerMod.getRetailDiscTooltipDescription(ComputerMod.getRetailDiscData(item))
-					end
+					--local diskRetailOption = diskDriveContext:addOption("Media CD")
+					--local diskRetailContext = ISContextMenu:getNew(diskDriveContext)
+					--diskDriveContext:addSubMenu(diskRetailOption, diskRetailContext)
+					--local items = playerInv:getAllEvalRecurse(function(item)
+					--	return item:getType() == "Disc_Retail"
+					--end)
+					--for i=0, items:size() - 1 do
+					--	local item = items:get(i)
+					--	local discOption = diskRetailContext:addOption(item:getDisplayName(), playerNum, doInsertDisc, computer, item)
+					--	discOption.toolTip = ISToolTip:new()
+					--	discOption.toolTip.name = item:getName()
+					--	discOption.toolTip.description = ComputerMod.getRetailDiscTooltipDescription(ComputerMod.getRetailDiscData(item))
+					--end
 				end
 	
 				--- Writable CD
 				if playerInv:contains("Disc") then
-					local diskWritableOption = diskDriveContext:addOption("Writable CD")
-					local diskWritableContext = ISContextMenu:getNew(diskDriveContext)
-					diskDriveContext:addSubMenu(diskWritableOption, diskWritableContext)
-					local items = playerInv:getAllEvalRecurse(function(item)
-						return item:getType() == "Disc"
-					end)
-					for i=0, items:size() - 1 do
-						local item = items:get(i)
-						local discOption = diskWritableContext:addOption(item:getDisplayName(), playerNum, doInsertDisc, computer, item)
-						discOption.toolTip = ISToolTip:new()
-						discOption.toolTip.name = item:getName()
-						discOption.toolTip.description = " <RGB:1,0,0> Unknown Disc"
-					end
+					--local diskWritableOption = diskDriveContext:addOption("Writable CD")
+					--local diskWritableContext = ISContextMenu:getNew(diskDriveContext)
+					--diskDriveContext:addSubMenu(diskWritableOption, diskWritableContext)
+					--local items = playerInv:getAllEvalRecurse(function(item)
+					--	return item:getType() == "Disc"
+					--end)
+					--for i=0, items:size() - 1 do
+					--	local item = items:get(i)
+					--	local discOption = diskWritableContext:addOption(item:getDisplayName(), playerNum, doInsertDisc, computer, item)
+					--	discOption.toolTip = ISToolTip:new()
+					--	discOption.toolTip.name = item:getName()
+					--	discOption.toolTip.description = " <RGB:1,0,0> Unknown Disc"
+					--end
 				end
 			end
 		end

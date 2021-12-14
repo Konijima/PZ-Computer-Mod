@@ -1,0 +1,42 @@
+UI_EN = {
+
+    UI_Computer_FunSpeech_0 = "What an absolute masterpiece!",
+    UI_Computer_FunSpeech_1 = "Man, I love this game!",
+    UI_Computer_FunSpeech_2 = "Ah! Gotcha!",
+    UI_Computer_FunSpeech_3 = "What a fucking bot!",
+    UI_Computer_FunSpeech_4 = "Did I just find an easter egg?",
+    UI_Computer_FunSpeech_5 = "Oh man what a bug!",
+    UI_Computer_FunSpeech_6 = "Such a fucking grind!",
+    UI_Computer_FunSpeech_7 = "I should probably mod this game!",
+    UI_Computer_FunSpeech_8 = "Bahaha YESSS!",
+    UI_Computer_FunSpeech_9 = "This is so much fun!",
+    UI_Computer_FunSpeech_10 = "Shit this is hard!",
+    UI_Computer_FunSpeech_11 = "I don't remember the cheat codes!",
+    UI_Computer_FunSpeech_12 = "Impressive graphics!",
+    UI_Computer_FunSpeech_13 = "This is so relaxing!",
+    UI_Computer_FunSpeech_14 = "Awesome game mechanics!",
+    UI_Computer_FunSpeech_15 = "Again, what is this shit!",
+    UI_Computer_FunSpeech_16 = "C'mon fucking glitch!",
+    UI_Computer_FunSpeech_17 = "Hell yeah!",
+    UI_Computer_FunSpeech_18 = "NICE!",
+    UI_Computer_FunSpeech_19 = "First time I see this!",
+    UI_Computer_FunSpeech_20 = "Woah! Amazing!",
+    UI_Computer_FunSpeech_21 = "I could play this all day!",
+    UI_Computer_FunSpeech_22 = "I might just play this all day!",
+    UI_Computer_FunSpeech_23 = "Almost forgot it's the apocalypse right now!",
+    UI_Computer_FunSpeech_24 = "FINALLY!",
+    UI_Computer_FunSpeech_25 = "Alright I should probably save now!",
+
+    UI_Computer_HungrySpeech_0 = "Argh, I'm just too hungry for this!",
+    UI_Computer_HungrySpeech_1 = "I should really play, after I eat something!",
+    UI_Computer_HungrySpeech_2 = "Can't concentrate, just too hungry!",
+
+    UI_Computer_ThirstySpeech_0 = "Argh, I'm just too thirsty for this!",
+    UI_Computer_ThirstySpeech_1 = "I should really play, after I drink something!",
+    UI_Computer_ThirstySpeech_2 = "Can't concentrate, just too thirsty!",
+
+    UI_Computer_TiredSpeech_0 = "Argh, I'm just too tired for this!",
+    UI_Computer_TiredSpeech_1 = "I should really play, after I sleep!",
+    UI_Computer_TiredSpeech_2 = "Can barely see anything on the screen, just too tired!",
+
+}
