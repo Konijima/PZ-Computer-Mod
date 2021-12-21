@@ -1,6 +1,6 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_Toggle = ISBaseTimedAction:derive("Action_Computer_Toggle");
+local Action_Computer_Toggle = ISBaseTimedAction:derive("Action_Computer_Toggle");
 
 function Action_Computer_Toggle:isValid()
 	return true
@@ -54,3 +54,5 @@ function Action_Computer_Toggle:new(player, computer, time)
 	o.computer = computer
 	return o;
 end
+
+return Action_Computer_Toggle

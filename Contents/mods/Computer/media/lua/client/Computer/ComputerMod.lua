@@ -1,20 +1,11 @@
--- PROBLEMS/BUGS
---- Doesn't consume power
---- Doesn't turn off when power is down
---- Power off only when interacting with it while power is down
-
---[[local activeMods = getActivatedMods(); -- I believe an arrayList?
-if not activeMods:contains("CommunityAPI") then
-
-	print("Computer V1: CommunityAPI not found!")
-	local PopupCommunityAPI = require("PopupCommunityAPI")
-	Events.OnGameStart.Add(PopupCommunityAPI.Open)
-
-else
-
-	print("Computer V1: CommunityAPI is loaded!")
-
-end]]
+local Action_Computer_EjectCD = require("Computer/Actions/Action_Computer_EjectCD")
+local Action_Computer_InsertCD = require("Computer/Actions/Action_Computer_InsertCD")
+local Action_Computer_InstallGame = require("Computer/Actions/Action_Computer_InstallGame")
+local Action_Computer_OpenMail = require("Computer/Actions/Action_Computer_OpenMail")
+local Action_Computer_OpenNotepad = require("Computer/Actions/Action_Computer_OpenNotepad")
+local Action_Computer_PlayGame = require("Computer/Actions/Action_Computer_PlayGame")
+local Action_Computer_Toggle = require("Computer/Actions/Action_Computer_Toggle")
+local Action_Computer_UninstallGame = require("Computer/Actions/Action_Computer_UninstallGame")
 
 local ActiveComputer = nil
 local ActiveComputerPlayer = nil
@@ -551,6 +542,47 @@ function ComputerMod.Events.OnInteractionMenuPoweredOptions(playerNum, computer,
 		local playerInv = playerObj:getInventory()
 		local currentDisc = ComputerMod.getCurrentDisc(computer)
 		local allInstalledGamesIds = ComputerMod.getAllInstalledGameIds(computer)
+
+		------------------
+
+		local function EmailServiceCreateUser()
+			sendClientCommand(playerObj, "EmailService", "CreateUser", {});
+		end
+		subContext:addOption("Create Email Address", nil, EmailServiceCreateUser);
+
+		------------------
+
+		local function EmailServiceSendEmail(to, title, message)
+			local args = {
+				to = to,
+				title = title,
+				message = message,
+			};
+			sendClientCommand(playerObj, "EmailService", "SendEmail", args);
+		end
+		subContext:addOption("Send Email", playerObj:getUsername(), EmailServiceSendEmail, "New title", "New message");
+
+		------------------
+
+		local function EmailServiceReadEmail(emailId)
+			local args = {
+				emailId = emailId
+			};
+			sendClientCommand(playerObj, "EmailService", "ReadEmail", args);
+		end
+		subContext:addOption("Read Email", "mail_1", EmailServiceReadEmail);
+
+		------------------
+
+		local function EmailServiceDeleteEmail(emailId)
+			local args = {
+				emailId = emailId
+			};
+			sendClientCommand(playerObj, "EmailService", "DeleteEmail", args);
+		end
+		subContext:addOption("Delete Email", "mail_1", EmailServiceDeleteEmail);
+
+		------------------
 
 		if currentDisc then
 			if currentDisc.type == "Disc" then

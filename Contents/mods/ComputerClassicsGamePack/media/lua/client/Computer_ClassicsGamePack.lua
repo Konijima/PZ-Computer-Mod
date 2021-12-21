@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 ---                 uniqueId,      title,       date,       publisher,      genre
 ComputerMod.addGame("minesweeper", "Minesweeper", "1990", "Microsoft Entertainment", "Puzzle")
 ComputerMod.addGame("commander_keen", "Commander Keen in Invasion of the Vorticons", "1990", "Apogee Software", "Platformer")

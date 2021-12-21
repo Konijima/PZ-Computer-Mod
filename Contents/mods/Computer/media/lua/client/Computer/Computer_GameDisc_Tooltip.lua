@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 local old_render = ISToolTipInv.render
 function ISToolTipInv:render()
 	

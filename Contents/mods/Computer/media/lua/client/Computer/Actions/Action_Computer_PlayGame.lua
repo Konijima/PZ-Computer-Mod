@@ -1,6 +1,6 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_PlayGame = ISBaseTimedAction:derive("Action_Computer_PlayGame");
+local Action_Computer_PlayGame = ISBaseTimedAction:derive("Action_Computer_PlayGame");
 
 function Action_Computer_PlayGame:isValid()
 	return ComputerMod.getCurrentDisc(self.computer) ~= nil and ComputerMod.isGameInstalled(self.computer, self.game)
@@ -106,3 +106,5 @@ function Action_Computer_PlayGame:new(player, computer, game, time)
 	o.computer = computer
 	return o;
 end
+
+return Action_Computer_PlayGame

@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 --- pickUpMoveableInternal
 local original_ISMoveableSpriteProps_pickUpMoveableInternal = ISMoveableSpriteProps.pickUpMoveableInternal
 function ISMoveableSpriteProps:pickUpMoveableInternal(_character, _square, _object, _sprInstance, _spriteName, _createItem, _rotating, ...)

@@ -1,6 +1,6 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_OpenMail = ISBaseTimedAction:derive("Action_Computer_OpenMail");
+local Action_Computer_OpenMail = ISBaseTimedAction:derive("Action_Computer_OpenMail");
 
 function Action_Computer_OpenMail:isValid()
 	return true
@@ -47,3 +47,5 @@ function Action_Computer_OpenMail:new(player, computer, time)
 	o.computer = computer
 	return o;
 end
+
+return Action_Computer_OpenMail

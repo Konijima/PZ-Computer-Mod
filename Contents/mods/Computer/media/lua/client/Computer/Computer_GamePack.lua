@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 ---                 uniqueId,      title,       date,       publisher,      genre
 ComputerMod.addGame("pz_b41", "Project Zomboid", "2013", "The Indie Stone", "Survival game", "pz")
 ComputerMod.addGame("metal_gear", "Metal Gear", "1987", "Konami", "Stealth game", "metal_gear")

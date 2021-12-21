@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 ---                 uniqueId,      title,       date,       publisher,      genre
 ComputerMod.addGame("starve", "Starve.", "1993", "O-Kei Entertainment", "Survival")
 ComputerMod.addGame("ssw", "Super Spiffo World!", "1990", "Spiffo Corp.", "Platformer")

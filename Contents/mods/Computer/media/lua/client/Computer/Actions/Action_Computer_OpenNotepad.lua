@@ -1,6 +1,6 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_OpenNotepad = ISBaseTimedAction:derive("Action_Computer_OpenNotepad");
+local Action_Computer_OpenNotepad = ISBaseTimedAction:derive("Action_Computer_OpenNotepad");
 
 function Action_Computer_OpenNotepad:isValid()
 	return true
@@ -49,3 +49,5 @@ function Action_Computer_OpenNotepad:new(player, computer, disk, time)
 	o.disk = disk
 	return o;
 end
+
+return Action_Computer_OpenNotepad

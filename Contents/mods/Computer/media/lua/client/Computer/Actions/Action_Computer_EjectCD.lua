@@ -1,37 +1,37 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_InsertCD = ISBaseTimedAction:derive("Action_Computer_InsertCD");
+local Action_Computer_EjectCD = ISBaseTimedAction:derive("Action_Computer_EjectCD");
 
-function Action_Computer_InsertCD:isValid()
-	return ComputerMod.getCurrentDisc(self.computer) == nil and self.character:getInventory():contains(self.disc)
+function Action_Computer_EjectCD:isValid()
+	return ComputerMod.getCurrentDisc(self.computer) ~= nil
 end
 
-function Action_Computer_InsertCD:update()
+function Action_Computer_EjectCD:update()
 	self.character:faceThisObject(self.computer)
 end
 
-function Action_Computer_InsertCD:start()
+function Action_Computer_EjectCD:start()
 	if self.sound ~= "" then
 		self.audio = self.character:getEmitter():playSound(self.sound)
 	end
 end
 
-function Action_Computer_InsertCD:stop()
+function Action_Computer_EjectCD:stop()
 	if self.audio ~= 0 and self.character:getEmitter():isPlaying(self.audio) then
 		self.character:stopOrTriggerSound(self.audio)
 	end
 	ISBaseTimedAction.stop(self);
 end
 
-function Action_Computer_InsertCD:perform()
+function Action_Computer_EjectCD:perform()
 
-	local currentDisc = ComputerMod.insertDisc(self.character:getInventory(), self.computer, self.disc)
+	local discItem = ComputerMod.ejectDisc(self.character:getInventory(), self.computer)
 
 	-- needed to remove from queue / start next.
 	ISBaseTimedAction.perform(self);
 end
 
-function Action_Computer_InsertCD:new(player, computer, disc, time)
+function Action_Computer_EjectCD:new(player, computer, time)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
@@ -41,9 +41,10 @@ function Action_Computer_InsertCD:new(player, computer, disc, time)
 	o.stopOnRun = true;
 	o.maxTime = time;
 	-- custom fields
-	o.sound = "ComputerInsertDisc"
+	o.sound = "ComputerEjectDisc"
 	o.audio = 0
 	o.computer = computer
-	o.disc = disc
 	return o;
 end
+
+return Action_Computer_EjectCD

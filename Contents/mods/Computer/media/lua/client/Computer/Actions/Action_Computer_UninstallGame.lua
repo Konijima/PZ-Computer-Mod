@@ -1,6 +1,6 @@
 require "TimedActions/ISBaseTimedAction"
 
-Action_Computer_UninstallGame = ISBaseTimedAction:derive("Action_Computer_UninstallGame");
+local Action_Computer_UninstallGame = ISBaseTimedAction:derive("Action_Computer_UninstallGame");
 
 function Action_Computer_UninstallGame:isValid()
 	return ComputerMod.isGameInstalled(self.computer, self.game)
@@ -50,3 +50,5 @@ function Action_Computer_UninstallGame:new(player, computer, game, time)
 	o.game = game
 	return o;
 end
+
+return Action_Computer_UninstallGame

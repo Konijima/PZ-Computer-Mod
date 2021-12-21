@@ -1,3 +1,5 @@
+require("Computer/ComputerMod")
+
 ---                 uniqueId,      title,       date,       publisher,      genre
 ComputerMod.addGame("gta", "Grand Theft Auto", "1997", "Rockstar Games", "Action-Adventure", "gta1")
 ComputerMod.addGame("gta_london", "Grand Theft Auto: London", "1999", "Rockstar Games", "Action-Adventure", "gta_london")
