@@ -1,6 +1,5 @@
 module Computer
 {
-
     imports {
         Base,
     }
@@ -12,6 +11,6 @@ module Computer
         DisplayName      = Game CD,
         Icon             = Disc,
         WorldStaticModel = Disk,
+        OnCreate         = ComputerMod_OnGameDiscCreated,
     }
-
 }

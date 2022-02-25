@@ -1,0 +1,23 @@
+local GameAPI = require("ComputerMod/GameAPI");
+
+---                 uniqueId,      title,       date,       publisher,      genre
+GameAPI.Add("pz_b41", "Project Zomboid", "2013", "The Indie Stone", "Survival game", "pz")
+GameAPI.Add("metal_gear", "Metal Gear", "1987", "Konami", "Stealth game", "metal_gear")
+GameAPI.Add("metal_gear_2", "Metal Gear 2: Solid Snake", "1990", "Konami", "Stealth game", "metal_gear_2")
+GameAPI.Add("snake_revenge", "Snake's Revenge", "1990", "Konami", "Stealth game", "snake_revenge")
+GameAPI.Add("elite", "Elite", "1984", "Frontier Developments", "Space sim", "elite")
+GameAPI.Add("donkey_kong", "Donkey Kong", "1981", "Nintendo", "Arcade", "donkey_kong")
+GameAPI.Add("contra", "Contra", "1987", "Konami", "Run & Gun Shooter", "Contra")
+GameAPI.Add("the_legend_of_zelda", "The Legend of Zelda", "1986", "Nintendo", "Adventure", "the_legend_of_zelda")
+GameAPI.Add("final_fantasy", "Final Fantasy", "1986", "Square", "RPG", "final_fantasy")
+GameAPI.Add("the_lost_vikings", "The Lost Vikings", "1992", " Blizzard Entertainment", "Arcade", "The_Lost_Vikings")
+GameAPI.Add("tetris", "Tetris", "1984", "Alexey Pajitnov", "Puzzle", "tetris")
+GameAPI.Add("duke_nukem", "Duke Nukem", "1991", "Apogee Entertainment", "Platformer", "duke_nukem")
+GameAPI.Add("doom", "Doom", "1993", "id Software", "FPS", "doom")
+GameAPI.Add("star_wars_x_wing", "Star Wars: X-Wing", "1993", "Lucasarts", "Space", "star_wars_x_wing")
+GameAPI.Add("lemmings", "Lemmings", "1991", "Psygnosis", "Puzzle", "lemmings")
+GameAPI.Add("civilization", "Civilization", "1991", "MicroProse", "4X Strategy", "civilization")
+GameAPI.Add("dune_2", "Dune II", "1992", "Virgin Games", "RTS", "dune_2")
+GameAPI.Add("wolfenstein_3d", "Wolfenstein 3D", "1992", "Apogee Software", "FPS", "wolfenstein")
+GameAPI.Add("skate_or_die", "Skate or Die!", "1987", "Electronic Arts", "Sports", "skate_or_die")
+GameAPI.Add("simcity", "SimCity", "1989", "Maxis", "Simulation", "simcity")

@@ -1,5 +1,7 @@
 UI_EN = {
 
+    UI_Computer_ListCategory = "Game CD",
+
     UI_Computer_FunSpeech_0 = "What an absolute masterpiece!",
     UI_Computer_FunSpeech_1 = "Man, I love this game!",
     UI_Computer_FunSpeech_2 = "Ah! Gotcha!",
@@ -38,5 +40,13 @@ UI_EN = {
     UI_Computer_TiredSpeech_0 = "Argh, I'm just too tired for this!",
     UI_Computer_TiredSpeech_1 = "I should really play, after I sleep!",
     UI_Computer_TiredSpeech_2 = "Can barely see anything on the screen, just too tired!",
+
+    UI_Computer_PlayAgainSpeech_0 = "Let's play %1 again!",
+    UI_Computer_PlayAgainSpeech_1 = "Let's play %1 some more!",
+    UI_Computer_PlayAgainSpeech_2 = "%1 my favorite game!",
+
+    UI_Computer_PlayCompleteSpeech_0 = "Yes finished the game!",
+    UI_Computer_PlayCompleteSpeech_1 = "Wow that ending was great!",
+    UI_Computer_PlayCompleteSpeech_2 = "This was such a great game!",
 
 }

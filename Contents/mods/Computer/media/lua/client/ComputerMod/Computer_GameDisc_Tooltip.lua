@@ -64,12 +64,12 @@ function ISToolTipInv:render()
 		if wos > 0 then y = y + textHeight end
 
 		--- Custom Line 1
-		self.tooltip:DrawText(font, "Title:", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
+		self.tooltip:DrawText(font, "Title: ", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
 		self.tooltip:DrawText(font, game.title, x + 87, y + textHeight * count, secondColor[1], secondColor[2], secondColor[3], 1)
 		count = count + 1
 
 		--- Custom Line 2
-		self.tooltip:DrawText(font, "Publisher:", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
+		self.tooltip:DrawText(font, "Publisher: ", x, y + textHeight * count, mainColor[1], mainColor[2], mainColor[3], 1)
 		self.tooltip:DrawText(font, game.publisher, x + 87, y + textHeight * count, secondColor[1], secondColor[2], secondColor[3], 1)
 		count = count + 1
 
@@ -79,7 +79,7 @@ function ISToolTipInv:render()
 		--count = count + 1
 
 		--- Custom Line 4
-		self.tooltip:DrawText(font, "Genre:", x, y + textHeight * count, 0, mainColor[1], mainColor[2], mainColor[3], 1)
+		self.tooltip:DrawText(font, "Genre: ", x, y + textHeight * count, 0, mainColor[1], mainColor[2], mainColor[3], 1)
 		self.tooltip:DrawText(font, game.genre, x + 87, y + textHeight * count, secondColor[1], secondColor[2], secondColor[3], 1)
 		count = count + 1
 
