@@ -58,9 +58,11 @@ function ISLiteratureGameList:doDrawItem(y, item, alt)
 
 	local itemPadY = (item.height - self.fontHgt) / 2
 	local r,g,b,a = 0.5,0.5,0.5,1.0
-    self.modData.playedGameCD["GameCD_" .. item.item.title] = self.modData.playedGameCD["GameCD_" .. item.item.title] or 0;
-    if self.modData.playedGameCD["GameCD_" .. item.item.title] >= Action_Computer_PlayGame.TotalPlayTime then
-		r,g,b = 1.0,1.0,1.0
+    if self.modData.playedGameCD then
+        self.modData.playedGameCD["GameCD_" .. item.item.title] = self.modData.playedGameCD["GameCD_" .. item.item.title] or 0;
+        if self.modData.playedGameCD["GameCD_" .. item.item.title] >= Action_Computer_PlayGame.TotalPlayTime then
+            r,g,b = 1.0,1.0,1.0
+        end
     end
 	self:drawText(item.text, 6 + 32 + 6, y+itemPadY, r, g, b, a, self.font)
 
