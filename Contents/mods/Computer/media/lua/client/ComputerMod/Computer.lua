@@ -545,12 +545,12 @@ end
 
 local function doComputerMenu(player, context, worldobjects, test)
 	if test == true then return end
-
+	
 	local playerObj = getSpecificPlayer(player)
 	local playerInv = playerObj:getInventory()
 	local computer = nil
 
-	if square then
+	if clickedSquare then
 
 		computer = ComputerMod.GetComputerOnSquare(clickedSquare);
 
@@ -558,7 +558,7 @@ local function doComputerMenu(player, context, worldobjects, test)
 			for i = 1, #worldobjects do
 				if ComputerMod.isComputer(worldobjects[i]) then
 					computer = worldobjects[i];
-					-- print("Found computer in worldobjects")
+					print("Found computer in worldobjects")
 					break
 				end
 			end
@@ -569,9 +569,9 @@ local function doComputerMenu(player, context, worldobjects, test)
 			local square = getCell():getGridSquare(sx + 1, sy + 1, sz);
 			if square then
 				computer = ComputerMod.GetComputerOnSquare(square);
-				-- if computer then
-				-- 	print("Found computer in offset position")
-				-- end
+				if computer then
+					print("Found computer in offset position")
+				end
 			end
 		end
 		
