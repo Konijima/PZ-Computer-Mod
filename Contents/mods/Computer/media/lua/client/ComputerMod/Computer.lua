@@ -862,13 +862,13 @@ local function OnPreFillInventoryObjectContextMenu(player, context, items)
 	for i = 1, #items do
 		if instanceof(items[i], "InventoryItem") and items[i]:getType() == "Disc_Game" then
 			foundCds:add(items[i]);
-		else
-			for j = 2, #items[i].items do
-				if instanceof(items[i].items[j], "InventoryItem") and items[i].items[j]:getType() == "Disc_Game" then
+		elseif items[i].items then
+			for j = 1, #items[i].items do
+				if instanceof(items[i].items[j], "InventoryItem") and items[i].items[j]:getType() == "Disc_Game" and not foundCds:contains(items[i].items[j]) then
 					foundCds:add(items[i].items[j]);
 				end
 			end
-		end 
+		end
 	end
 	print("Found " .. tostring(foundCds:size()) .. " game cd")
 	for i = 0, foundCds:size() - 1 do
