@@ -1,0 +1,51 @@
+module Base {
+
+	sound ComputerToggle
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerToggle.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerDiscActivity
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerDiscActivity.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerStartupMusic
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerStartupMusic.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerErrorSound
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerErrorSound.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerMouseClicks
+	{
+		category = Main, loop = true, is3D = true,
+		clip { file = media/sound/Computer/ComputerMouseClicks.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerKeyboardFast
+	{
+		category = Main, loop = true, is3D = true,
+		clip { file = media/sound/Computer/ComputerKeyboardFast.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerInsertDisc
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerInsertDisc.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+	sound ComputerEjectDisc
+	{
+		category = Main, loop = false, is3D = true,
+		clip { file = media/sound/Computer/ComputerEjectDisc.ogg, distanceMax = 15, volume = 1.0, }
+	}
+
+}

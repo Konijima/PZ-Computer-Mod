@@ -1,6 +1,5 @@
 local GameAPI = require("ComputerMod/GameAPI");
 
----                 uniqueId,      title,       date,       publisher,      genre
 GameAPI.Add("pz_b41", "Project Zomboid", "2013", "The Indie Stone", "Survival game", "pz")
 GameAPI.Add("metal_gear", "Metal Gear", "1987", "Konami", "Stealth game", "metal_gear")
 GameAPI.Add("metal_gear_2", "Metal Gear 2: Solid Snake", "1990", "Konami", "Stealth game", "metal_gear_2")
@@ -10,7 +9,7 @@ GameAPI.Add("donkey_kong", "Donkey Kong", "1981", "Nintendo", "Arcade", "donkey_
 GameAPI.Add("contra", "Contra", "1987", "Konami", "Run & Gun Shooter", "Contra")
 GameAPI.Add("the_legend_of_zelda", "The Legend of Zelda", "1986", "Nintendo", "Adventure", "the_legend_of_zelda")
 GameAPI.Add("final_fantasy", "Final Fantasy", "1986", "Square", "RPG", "final_fantasy")
-GameAPI.Add("the_lost_vikings", "The Lost Vikings", "1992", " Blizzard Entertainment", "Arcade", "The_Lost_Vikings")
+GameAPI.Add("the_lost_vikings", "The Lost Vikings", "1992", " Blizzard Entertainment", "Arcade", "the_lost_vikings")
 GameAPI.Add("tetris", "Tetris", "1984", "Alexey Pajitnov", "Puzzle", "tetris")
 GameAPI.Add("duke_nukem", "Duke Nukem", "1991", "Apogee Entertainment", "Platformer", "duke_nukem")
 GameAPI.Add("doom", "Doom", "1993", "id Software", "FPS", "doom")

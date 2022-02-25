@@ -1,0 +1,215 @@
+module Base {
+
+    sound pz_8bit
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/pz_8bit.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound pz
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/pz.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound metal_gear
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/metal_gear.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound metal_gear_2
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/metal_gear_2.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound snake_revenge
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/snake_revenge.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound elite
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/elite.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound donkey_kong
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/donkey_kong.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound contra
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/contra.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound the_legend_of_zelda
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/the_legend_of_zelda.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound final_fantasy
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/final_fantasy.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound the_lost_vikings
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/the_lost_vikings.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound tetris
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/tetris.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound duke_nukem
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/duke_nukem.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound doom
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/doom.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound star_wars_x_wing
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/star_wars_x_wing.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound lemmings
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/lemmings.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound civilization
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/civilization.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound dune_2
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/dune_2.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound wolfenstein
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/wolfenstein.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound skate_or_die
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/skate_or_die.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound simcity
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/simcity.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    /* GENERIC */
+
+    sound ComputerGame1
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame1.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame2
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame2.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame3
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame3.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame4
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame4.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame5
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame5.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame6
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame6.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame7
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame7.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame8
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame8.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame9
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame9.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame10
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame10.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame11
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame11.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame12
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame12.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame13
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame13.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+    sound ComputerGame14
+    {
+        category = Game, loop = true, is3D = true,
+        clip { file = media/sound/Computer/ComputerGame14.ogg, distanceMax = 15, volume = 1.0, }
+    }
+
+}`
