@@ -1,1 +1,52 @@
+UI_CH = {
 
+    UI_Computer_ListCategory = "遊戲光碟",
+
+    UI_Computer_FunSpeech_0 = "這絕對是一款大作!",
+    UI_Computer_FunSpeech_1 = "老兄,我愛死這遊戲了!",
+    UI_Computer_FunSpeech_2 = "噢! 逮到你啦!",
+    UI_Computer_FunSpeech_3 = "這天殺的bot!",
+    UI_Computer_FunSpeech_4 = "我該不會找到彩蛋了吧?",
+    UI_Computer_FunSpeech_5 = "老天這啥鬼bug!",
+    UI_Computer_FunSpeech_6 = "作業感相當濃厚啊!",
+    UI_Computer_FunSpeech_7 = "我應該要幫這遊戲搞些模組!",
+    UI_Computer_FunSpeech_8 = "噗哈哈哈 好耶!",
+    UI_Computer_FunSpeech_9 = "這實在太好玩了!",
+    UI_Computer_FunSpeech_10 = "慘了這好像很難!",
+    UI_Computer_FunSpeech_11 = "我忘了密技怎麼弄!",
+    UI_Computer_FunSpeech_12 = "這畫面超有沈浸感!",
+    UI_Computer_FunSpeech_13 = "有夠抒壓!",
+    UI_Computer_FunSpeech_14 = "了不起的遊戲機制!",
+    UI_Computer_FunSpeech_15 = "又來了, 這到底是怎樣!",
+    UI_Computer_FunSpeech_16 = "靠腰啊這該死的婊子!",
+    UI_Computer_FunSpeech_17 = "爽啦!",
+    UI_Computer_FunSpeech_18 = "讚哦!",
+    UI_Computer_FunSpeech_19 = "我從沒見過這個!",
+    UI_Computer_FunSpeech_20 = "哇! 太讚了!",
+    UI_Computer_FunSpeech_21 = "我能玩上一整天!",
+    UI_Computer_FunSpeech_22 = "我想玩到廢寢忘食!",
+    UI_Computer_FunSpeech_23 = "差點忘了現在可是浩劫末日啊!",
+    UI_Computer_FunSpeech_24 = "總算!",
+    UI_Computer_FunSpeech_25 = "好吧我大概得先存個檔!",
+
+    UI_Computer_HungrySpeech_0 = "呃, 現在玩遊戲可會餓肚子!",
+    UI_Computer_HungrySpeech_1 = "我真該玩一下, 等我填飽肚子吧!",
+    UI_Computer_HungrySpeech_2 = "無法專注, 實在太餓啦!",
+
+    UI_Computer_ThirstySpeech_0 = "呃, 現在玩遊戲有點口乾舌燥!",
+    UI_Computer_ThirstySpeech_1 = "我真該玩一下, 等我補充些水分吧!",
+    UI_Computer_ThirstySpeech_2 = "無法專注, 有夠渴!",
+
+    UI_Computer_TiredSpeech_0 = "呃, 現在玩遊戲太累了點!",
+    UI_Computer_TiredSpeech_1 = "我真該玩個爽, 不過得先睡一下!",
+    UI_Computer_TiredSpeech_2 = "我都看不清畫面了, 實在太累啦!",
+
+    UI_Computer_PlayAgainSpeech_0 = "讓我再玩一次 %1 !",
+    UI_Computer_PlayAgainSpeech_1 = "讓我再多玩一點 %1 !",
+    UI_Computer_PlayAgainSpeech_2 = "%1 我的最愛!",
+
+    UI_Computer_PlayCompleteSpeech_0 = "太讚了 全破!",
+    UI_Computer_PlayCompleteSpeech_1 = "哇塞 好讚的結局!",
+    UI_Computer_PlayCompleteSpeech_2 = "多麼美妙的遊戲!",
+
+}
